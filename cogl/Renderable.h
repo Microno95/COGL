@@ -9,6 +9,20 @@
 #include "Shader.h"
 #include "Camera.h"
 
+/*
+ * This file defines the primitives used in the cogl library.
+ *
+ * RenderTypes enumerates the various GL_ rendering schemes under shorter names.
+ * This is for code brevity rather than clarity though the shorthand names have been
+ * made to be as clear as possible.
+ *
+ * The Vertex is the current vertex data structure that stores positions, normals,
+ * vertex colours and uv coordinates.
+ *
+ * Renderable is a pure virtual class that defines an interface for the necessary functions required
+ * to create/delete VAOs and to render objects which take Shader and Camera arguments.
+ * */
+
 namespace cogl {
     enum RenderTypes {
         Ls = GL_LINES,

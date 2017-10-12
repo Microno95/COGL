@@ -7,6 +7,36 @@
 
 #include "Renderable.h"
 
+/*
+ * Generic class to store Mesh data.
+ *
+ * Uses indexed vertices to render with opengl. The vertices and indices are stored in the
+ * vertices and indices std::vectors.
+ *
+ * The mesh retains the rotation, translation and scaling matrices separate in order to allow
+ * easier manipulation at the cost of runtime performance.
+ *
+ * The normal matrix is recalculated whenever a transformation such as a rotation, translation or a scaling is applied.
+ * This is to ensure that when the mesh is being rendered the normal matrix is ready to be streamed to the GPU.
+ *
+ * The MVP (Model-View-Projection) matrix is calculated every frame using the given Camera instance. This allows
+ * dynamically redrawing from different views and affords the opportunity to change cameras at will
+ * by swapping the given Camera instance.
+ *
+ * Similarly, the render method also takes a Shader instance that determines the vertex and fragment shading
+ * that will be applied to the mesh. This enables changing the rendering scheme.
+ *
+ * TODO:
+ *  - Add ability to use deferred shading, currently this requires having a set of Light Source instances
+ *    that the render method needs to accept as an argument. Somewhat tricky.
+ *  - Potentially add the ability to remesh at will, this will require an overhaul of the mesh data structure
+ *    as the current setup does not allow for variable number of nor remeshing of an existing set of vertices.
+ *    Alternatively, this could be done through just recreating the mesh and so may not be necessary.
+ *  - Add the ability to load in .stl files as well. This requires distinguishing between ASCII and binary stl
+ *    which may be tricky depending on the software that saved the stl in the first place.
+ *
+ * */
+
 namespace cogl {
     class Mesh : public Renderable {
     private:
@@ -41,11 +71,11 @@ namespace cogl {
         // Destructor
         ~Mesh();
 
-        void initialiseVAO();
+        void initialiseVAO() override;
 
-        void clearVAO();
+        void clearVAO() override;
 
-        void render(const Shader &program, const Camera &renderCamera);
+        void render(const Shader &program, const Camera &renderCamera) override;
 
         void rotateMesh(const double angle, const glm::vec3 axisOfRotation);
 
@@ -59,7 +89,11 @@ namespace cogl {
 
         void setRenderType(const RenderTypes rType);
 
-        const RenderTypes getRenderType();
+        const std::vector<Vertex> getVertices() const;
+
+        const std::vector<unsigned int> getIndices() const;
+
+        const RenderTypes getRenderType() const;
 
         const glm::mat4x4 getModelMatrix() const;
 

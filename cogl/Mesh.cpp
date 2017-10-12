@@ -185,6 +185,14 @@ namespace cogl {
         renderType = rType;
     }
 
+    const std::vector<Vertex> Mesh::getVertices() const {
+        return std::vector<Vertex>(this->vertices);
+    }
+
+    const std::vector<unsigned int> Mesh::getIndices() const {
+        return std::vector<unsigned int>(this->indices);
+    }
+
     const glm::mat4x4 Mesh::getModelMatrix() const {
         return (transMatrix * rotMatrix * scaleMatrix);
     }
@@ -193,7 +201,7 @@ namespace cogl {
         return (normalMatrix);
     }
 
-    const RenderTypes Mesh::getRenderType() {
+    const RenderTypes Mesh::getRenderType() const {
         return renderType;
     }
 

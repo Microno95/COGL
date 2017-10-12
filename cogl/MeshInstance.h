@@ -6,11 +6,18 @@
 #define IDEK_MESHINSTANCED_H
 
 #include "Renderable.h"
+#include "Mesh.h"
+
+/*
+ * Generic class to store a set of renderable meshes that share the same vertex structure but located at
+ * different positions/rotations/scalings. The purpose is to increase rendering speed when the same mesh is
+ * rendered multiple times using the same shader.
+ * */
 
 namespace cogl {
     class MeshInstance : public Renderable {
     private:
-        static const unsigned int SUBDIVIDE_UPDATE_MESH_COUNT = 250000;
+        static const unsigned int SUBDIVIDE_UPDATE_MESH_COUNT = 1;
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
         std::vector<bool> changedMatrices;
@@ -38,6 +45,8 @@ namespace cogl {
         MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
                      const std::vector<glm::mat4x4> &transformMatrices, RenderTypes rType = RenderTypes::Tris);
 
+        MeshInstance(const Mesh &other, const std::size_t numCopies);
+
         //Move Constructor
         MeshInstance(MeshInstance &&other);
 
@@ -49,11 +58,11 @@ namespace cogl {
 
         ~MeshInstance();
 
-        void initialiseVAO();
+        void initialiseVAO() override;
 
-        void clearVAO();
+        void clearVAO() override;
 
-        void render(const Shader &program, const Camera &renderCamera);
+        void render(const Shader &program, const Camera &renderCamera) override;
 
         void rotateMesh(const int objectID, const double &angle, const glm::vec3 &axisOfRotation);
 
@@ -91,6 +100,8 @@ namespace cogl {
 
         const std::vector<glm::mat4x4> &getScaleMatrix() const;
 
+        void addInstance();
+
         void addInstance(const glm::mat4x4 &transform,
                          const glm::mat4x4 &rotation,
                          const glm::mat4x4 &scale);
@@ -107,7 +118,9 @@ namespace cogl {
 
         void removeInstances(const std::vector<unsigned long long> objectID);
 
-        unsigned long long activeInstances() { return modelMatrix.size(); };
+        const unsigned long long activeInstances() const {
+            return modelMatrix.size();
+        };
     };
 
 }

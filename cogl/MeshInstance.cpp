@@ -49,11 +49,11 @@ namespace cogl {
         modelMatrix = std::vector<glm::mat4x4>();
         modelMatrix.reserve(25);
         changedMatrices = std::vector<bool>(25);
-        rotMatrix.push_back(glm::mat4x4(1.0f));
-        transMatrix.push_back(glm::mat4x4(1.0f));
-        scaleMatrix.push_back(glm::mat4x4(1.0f));
-        normalMatrix.push_back(glm::mat4x4(1.0f));
-        modelMatrix.push_back(glm::mat4x4(1.0f));
+        rotMatrix.emplace_back(1.0f);
+        transMatrix.emplace_back(1.0f);
+        scaleMatrix.emplace_back(1.0f);
+        normalMatrix.emplace_back(1.0f);
+        modelMatrix.emplace_back(1.0f);
     }
 
     MeshInstance::MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
@@ -72,11 +72,11 @@ namespace cogl {
         modelMatrix = std::vector<glm::mat4x4>();
         modelMatrix.reserve(25);
         changedMatrices = std::vector<bool>(25);
-        rotMatrix.push_back(glm::mat4x4(1.0f));
-        transMatrix.push_back(glm::mat4x4(1.0f));
-        scaleMatrix.push_back(glm::mat4x4(1.0f));
-        normalMatrix.push_back(glm::mat4x4(1.0f));
-        modelMatrix.push_back(glm::mat4x4(1.0f));
+        rotMatrix.emplace_back(1.0f);
+        transMatrix.emplace_back(1.0f);
+        scaleMatrix.emplace_back(1.0f);
+        normalMatrix.emplace_back(1.0f);
+        modelMatrix.emplace_back(1.0f);
     }
 
     MeshInstance::MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
@@ -97,12 +97,24 @@ namespace cogl {
         modelMatrix = std::vector<glm::mat4x4>(transformMatrices);
         changedMatrices = std::vector<bool>(transformMatrices.size());
         for (auto &i : transformMatrices) {
-            transMatrix.push_back(glm::mat4x4(1.0f));
+            transMatrix.emplace_back(1.0f);
             rotMatrix.push_back(glm::extractMatrixRotation(i));
             normalMatrix.push_back(glm::inverseTranspose(i));
             transMatrix.back()[3] = i[3] / i[3][3];
             scaleMatrix.push_back(glm::inverse(rotMatrix.back()) * glm::inverse(transMatrix.back()) * i);
         }
+    }
+
+    MeshInstance::MeshInstance(const Mesh &other, const std::size_t numCopies) {
+        vertices = other.getVertices();
+        indices = other.getIndices();
+        rotMatrix = std::vector<glm::mat4x4>(numCopies, other.getRotMatrix());
+        transMatrix = std::vector<glm::mat4x4>(numCopies, other.getTransMatrix());
+        scaleMatrix = std::vector<glm::mat4x4>(numCopies, other.getScaleMatrix());
+        normalMatrix = std::vector<glm::mat4x4>(numCopies, other.getNormalMatrix());
+        modelMatrix = std::vector<glm::mat4x4>(numCopies, other.getModelMatrix());
+        changedMatrices = std::vector<bool>(numCopies);
+        renderType = other.getRenderType();
     }
 
     MeshInstance::MeshInstance(MeshInstance &&other) {
@@ -351,8 +363,8 @@ namespace cogl {
 
     void MeshInstance::moveMeshTo(const int objectID, const glm::vec3 &translation) {
         if (objectID == -1) {
-            for (auto i = 0; i < rotMatrix.size(); ++i) {
-                transMatrix[i] = glm::translate(glm::mat4(1.0f), translation);
+            for (auto i = 0; i < transMatrix.size(); ++i) {
+                transMatrix[i] = glm::translate(glm::mat4x4(1.0f), translation);
                 if (renderType != RenderTypes::Points) {
                     modelMatrix[i] = transMatrix[i] * rotMatrix[i] * scaleMatrix[i];
                     normalMatrix[i] = glm::inverseTranspose(getModelMatrix(i));
@@ -362,7 +374,7 @@ namespace cogl {
             }
             changedMatrices = std::vector<bool>(changedMatrices.size(), true);
         } else {
-            transMatrix[objectID] = glm::translate(glm::mat4(1.0f), translation);
+            transMatrix[objectID] = glm::translate(glm::mat4x4(1.0f), translation);
             modelMatrix[objectID] = transMatrix[objectID] * rotMatrix[objectID] * scaleMatrix[objectID];
             normalMatrix[objectID] = glm::inverseTranspose(getModelMatrix(objectID));
             changedMatrices[objectID] = true;
@@ -371,7 +383,7 @@ namespace cogl {
 
     void MeshInstance::moveMeshTo(const std::vector<glm::vec3> &translation) {
         for (auto i = 0; i < translation.size(); ++i) {
-            transMatrix[i] = glm::translate(glm::mat4(1.0f), translation[i]);
+            transMatrix[i] = glm::translate(glm::mat4x4(1.0f), translation[i]);
             if (renderType != RenderTypes::Points) {
                 modelMatrix[i] = transMatrix[i] * rotMatrix[i] * scaleMatrix[i];
                 normalMatrix[i] = glm::inverseTranspose(getModelMatrix(i));
@@ -428,6 +440,16 @@ namespace cogl {
 
     const std::vector<glm::mat4x4> &MeshInstance::getScaleMatrix() const {
         return scaleMatrix;
+    }
+
+    void
+    MeshInstance::addInstance() {
+        transMatrix.emplace_back();
+        rotMatrix.emplace_back(1.0f);
+        scaleMatrix.emplace_back(1.0f);
+        modelMatrix.emplace_back(1.0f);
+        normalMatrix.push_back(glm::inverseTranspose(modelMatrix.back()));
+        changedMatrices.push_back(false);
     }
 
     void
