@@ -75,7 +75,7 @@ namespace cogl {
 
         void clearVAO() override;
 
-        void render(const Shader &program, const Camera &renderCamera) override;
+        void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data = true) override;
 
         void rotateMesh(const double angle, const glm::vec3 axisOfRotation);
 
@@ -110,7 +110,7 @@ namespace cogl {
         static const Mesh Icosahedron;
         // -------------- //
 
-        friend std::ostream &operator<<(std::ostream &outstream, const Mesh &rhs) {
+        /*friend std::ostream &operator<<(std::ostream &outstream, const Mesh &rhs) {
             for (auto i = 0; i < rhs.vertices.size(); ++i) {
                 std::cout << "Vertex " << i << ":" << std::endl << rhs.vertices[i] << std::endl;
             }
@@ -118,7 +118,7 @@ namespace cogl {
             std::cout << std::endl;
             std::cout << glm::to_string(rhs.getModelMatrix()) << std::endl;
             return outstream;
-        }
+        }*/
 
         static Mesh load_from_obj(const std::string filename);
     };

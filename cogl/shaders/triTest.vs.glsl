@@ -1,19 +1,23 @@
-#version 330 core
+#version 400 core
 uniform mat4 proj;
 uniform mat4 view;
 
-layout(location = 0) in vec3 vPos;
-layout(location = 1) in vec3 normal;
-layout(location = 2) in vec4 vCol;
-layout(location = 3) in mat4 modelMatrix;
-layout(location = 7) in mat4 normalMatrix;
+struct vertex {
+    vec3 pos;
+    vec3 normal;
+    vec4 colour;
+    vec2 uv;
+};
+
+layout(location = 0) in vertex vertex_in;
+
+layout(location = 4) in mat4 model;
+
 out vec4 color;
-out vec3 fragPos;
-out vec3 Normal;
 void main() {
-    gl_Position = proj * view * modelMatrix * vec4(vPos, 1.0);
-    gl_PointSize = 7.5;
-    color = vCol;
-    fragPos = vec3(proj * view * modelMatrix * vec4(vPos, 1.0));
-    Normal = normalize(vec3(normalMatrix * vec4(normal, 0.0f)));
+    gl_Position = proj * view * model * vec4(vertex_in.pos, 1.0);
+    gl_PointSize = 25.0;
+    float angle = atan(gl_Position.x, gl_Position.z);
+    color = vec4(1.0f + 0.5f * cos(angle) + gl_Position.x, 1.0f + 0.5f * sin(angle) + gl_Position.y, 0.5f, 0.5f);
+    color = normalize(color);
 }

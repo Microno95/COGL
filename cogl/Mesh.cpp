@@ -127,7 +127,7 @@ namespace cogl {
         glDeleteVertexArrays(1, &VAO);
     }
 
-    void Mesh::render(const Shader &program, const Camera &renderCamera) {
+    void Mesh::render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) {
         if (!VAO_initialised) initialiseVAO();
         program.bind();
         glm::mat4x4 temp;
@@ -143,11 +143,11 @@ namespace cogl {
             temp = renderCamera.getVMatrix();
             glUniformMatrix4fv(program.getUniformLoc("view"), 1, GL_FALSE, (const GLfloat *) &temp[0][0]);
         };
-        if (program.getAttribLoc("modelMatrix") != -1) {
+        if (program.getAttribLoc("modelMatrix") != -1 && update_gpu_data) {
             temp = getModelMatrix();
             glVertexAttrib4fv(program.getAttribLoc("modelMatrix"), (const GLfloat *) &temp[0][0]);
         };
-        if (program.getAttribLoc("normalMatrix") != -1) {
+        if (program.getAttribLoc("normalMatrix") != -1 && update_gpu_data) {
             temp = getNormalMatrix();
             glVertexAttrib4fv(program.getAttribLoc("normalMatrix"), (const GLfloat *) &temp[0][0]);
         };

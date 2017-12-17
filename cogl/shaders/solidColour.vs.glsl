@@ -16,6 +16,5 @@ layout(location = 4) in mat4 model;
 out vec4 color;
 void main() {
     gl_Position = proj * view * model * vec4(vertex_in.pos, 1.0);
-    gl_PointSize = 25.0;
     color = vec4(1.0f);
 }

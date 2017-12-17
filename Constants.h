@@ -2,7 +2,11 @@
 // Created by ekin4 on 28/04/2017.
 //
 
+#ifndef __gl_h_
 #include <glad/glad.h>
+
+#endif
+
 #include <GLFW/glfw3.h>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
@@ -22,10 +26,11 @@
 #ifndef CUSTOMOGL_CONSTANTS_H
 #define CUSTOMOGL_CONSTANTS_H
 
+#define check_gl_error_w(data) _check_gl_error(__FILE__,__LINE__, data)
 #define check_gl_error() _check_gl_error(__FILE__,__LINE__)
 #define check_fbo_status() _check_fbo_status(__FILE__,__LINE__)
 
-static void _check_gl_error(const char *file, int line) {
+static void _check_gl_error(const char *file, int line, int additional_data = 0) {
     GLenum errNum = glGetError();
     while (errNum != GL_NO_ERROR) {
         std::string error;
@@ -50,7 +55,7 @@ static void _check_gl_error(const char *file, int line) {
                 break;
         }
 
-        std::cerr << "GL_" << error.c_str() << " - " << file << ":" << line << std::endl;
+        std::cerr << additional_data << " | GL_" << error.c_str() << " - " << file << ":" << line << std::endl;
         errNum = glGetError();
     }
 }

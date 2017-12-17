@@ -6,9 +6,9 @@
 
 namespace cogl {
 
-    GLWindow::GLWindow(int _swapInterval, int _contextMajor, int _aaSamples, int _contextMinor, int _windowWidth,
-                       int _windowHeight,
-                       int _aspectRatioWidth, int _aspectRatioHeight, std::string _windowTitle, std::string pps_file) :
+    GLWindow::GLWindow(int _swapInterval, int _contextMajor, int _contextMinor, int _aaSamples, int _windowWidth,
+                       int _windowHeight, int _aspectRatioWidth, int _aspectRatioHeight, std::string _windowTitle,
+                       std::string pps_file, bool fullscreen) :
             swapInterval(_swapInterval), contextMajor(_contextMajor), aaSamples(_aaSamples),
             contextMinor(_contextMinor), windowWidth(_windowWidth), windowHeight(_windowHeight),
             aspectRatioWidth(_aspectRatioWidth), aspectRatioHeight(_aspectRatioHeight), windowTitle(_windowTitle) {
@@ -22,7 +22,12 @@ namespace cogl {
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE); // To make MacOS happy; should not be needed
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
         glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
-        contextHandle = glfwCreateWindow(windowWidth, windowHeight, windowTitle.c_str(), NULL, NULL);
+        if (fullscreen != true) {
+            contextHandle = glfwCreateWindow(windowWidth, windowHeight, windowTitle.c_str(), NULL, NULL);
+        } else {
+            contextHandle = glfwCreateWindow(windowWidth, windowHeight, windowTitle.c_str(), glfwGetPrimaryMonitor(),
+                                             NULL);
+        }
         if (!contextHandle) {
             glfwTerminate();
             exit(EXIT_FAILURE);
@@ -58,7 +63,7 @@ namespace cogl {
         glDeleteBuffers(1, &quad_indexbuffer);
         check_gl_error();
 
-        postProcessingShader = std::make_unique<Shader>(std::string(pps_file));
+        postProcessingShader = std::make_unique<Shader>(std::move(pps_file));
         check_gl_error();
         windowCreated = true;
     }

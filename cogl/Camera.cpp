@@ -38,7 +38,12 @@ namespace cogl {
 
     Camera &Camera::moveCamera(const glm::vec3 &translation) {
         camPos += translation;
+        computeViewMatrix();
+        return *this;
+    }
 
+    Camera &Camera::moveCameraTarget(const glm::vec3 &translation) {
+        camTarget += translation;
         computeViewMatrix();
         return *this;
     }
@@ -85,6 +90,12 @@ namespace cogl {
         return *this;
     }
 
+    Camera &Camera::moveCameraTargetTo(const glm::vec3 &translation) {
+        camTarget = translation;
+        computeViewMatrix();
+        return *this;
+    }
+
     void Camera::computeViewMatrix() {
         viewMatrix = glm::lookAt(camPos, camTarget, camUp);
     }
@@ -108,29 +119,40 @@ namespace cogl {
                              int action, int mods) {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GLFW_TRUE);
-        double motionVel = 0.1f * getDistanceToTarget();
+        double motionVel = 0.01f * getDistanceToTarget();
+        glm::vec3 forward = glm::vec3({1.0f, 0.0f, 0.0f});
+        glm::vec3 left = glm::vec3({0.0f, 0.0f, 1.0f});
         if (key == GLFW_KEY_W) {
             moveCamera(motionVel * getCameraUp());
-            moveCamera(getCameraForward() * (getDistanceToTarget() - motionVel * 10.0));
         }
         if (key == GLFW_KEY_S) {
             moveCamera(-motionVel * getCameraUp());
-            moveCamera(getCameraForward() * (getDistanceToTarget() - motionVel * 10.0));
         }
         if (key == GLFW_KEY_A) {
             moveCamera(motionVel * getCameraLeft());
-            moveCamera(getCameraForward() * (getDistanceToTarget() - motionVel * 10.0));
         }
         if (key == GLFW_KEY_D) {
             moveCamera(-motionVel * getCameraLeft());
-            moveCamera(getCameraForward() * (getDistanceToTarget() - motionVel * 10.0));
         }
         if (key == GLFW_KEY_R) {
             moveCameraTo(glm::vec3(5.0f));
+            moveCameraTargetTo(glm::vec3(0.0f));
+        }
+        if (key == GLFW_KEY_UP) {
+            moveCamera(motionVel * forward);
+        }
+        if (key == GLFW_KEY_DOWN) {
+            moveCamera(-motionVel * forward);
+        }
+        if (key == GLFW_KEY_LEFT) {
+            moveCameraTarget(motionVel * left);
+        }
+        if (key == GLFW_KEY_RIGHT) {
+            moveCameraTarget(-motionVel * left);
         }
     }
 
     void Camera::scrollcallback(GLFWwindow *window, double xoffset, double yoffset) {
-        moveCamera(2.5f * yoffset * getCameraForward() * pow(getDistanceToTarget(), 1 / 3));
+        moveCamera(0.1f * yoffset * getCameraForward() * pow(getDistanceToTarget(), 1.0 / 2.0));
     }
 }

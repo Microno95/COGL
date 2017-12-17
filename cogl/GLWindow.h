@@ -40,10 +40,11 @@ namespace cogl {
         bool windowCreated = false;
 
     public:
-        GLWindow(int _swapInterval = 1, int _contextMajor = 4, int _aaSamples = 1,
-                 int _contextMinor = 3, int _windowWidth = 1280, int _windowHeight = 720,
+        GLWindow(int _swapInterval = 1, int _contextMajor = 4,
+                 int _contextMinor = 3, int _aaSamples = 1, int _windowWidth = 1280, int _windowHeight = 720,
                  int _aspectRatioWidth = 16, int _aspectRatioHeight = 9,
-                 std::string _windowTitle = "NULL", std::string pps_file = "cogl/shaders/postProcessing");
+                 std::string _windowTitle = "NULL", std::string pps_file = "cogl/shaders/postProcessing",
+                 bool fullscreen = false);
 
         GLWindow(GLWindow const &) = delete;
 
@@ -111,7 +112,7 @@ namespace cogl {
 
         static void error_callback(int error, const char *description);
 
-        virtual void windowsizecallback(GLFWwindow *window, int width, int height);
+        void windowsizecallback(GLFWwindow *window, int width, int height) override;
 
         void renderFramebuffers();
     };

@@ -36,6 +36,10 @@ namespace cogl {
 
         Camera &moveCameraTo(const glm::vec3 &translation);
 
+        Camera &moveCameraTarget(const glm::vec3 &translation);
+
+        Camera &moveCameraTargetTo(const glm::vec3 &translation);
+
         Camera &rotateCamera(const double &angle, const glm::vec3 &center, const glm::vec3 &axisOfRotation,
                              const angUnits units = angUnits::radians);
 
@@ -85,6 +89,14 @@ namespace cogl {
         float getDistanceToTarget() const {
             float result = glm::distance(camPos, camTarget);
             return result;
+        }
+
+        glm::vec3 getCameraPosition() const {
+            return camPos;
+        }
+
+        glm::vec3 getCameraTargetPosition() const {
+            return camTarget;
         }
 
         void computeViewMatrix();

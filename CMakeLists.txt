@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.6)
 project(CustomOGL)
+enable_testing()
 
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -ggdb3")
-set(CMAKE_CXX_FLAGS_RELEASE "-O0")
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -22,6 +21,14 @@ ELSE ()
     message("Missed OpenMP!")
 ENDIF ()
 
+include_directories(${CUDA_PART_SOURCE_DIR}/common)
+# packages
+find_package(CUDA REQUIRED)
+
+# nvcc flags
+set(CUDA_NVCC_FLAGS -gencode arch=compute_60,code=sm_60;-G;-g)
+set(CUDA_VERBOSE_BUILD ON)
+
 add_subdirectory(OpenGL/glfw)
 include_directories(OpenGL/glfw/include)
 include_directories(OpenGL/glfw/deps/)
@@ -30,7 +37,7 @@ include_directories(OpenGL/glm/)
 find_package(OpenGL REQUIRED)
 include_directories(idek ${OPENGL_INCLUDE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
-set(SOURCE_FILES main.cpp
+set(SOURCE_FILES
         cogl.h
         cogl/Camera.cpp
         cogl/Camera.h
@@ -48,6 +55,13 @@ set(SOURCE_FILES main.cpp
         Constants.h
         OpenGL/glfw/deps/glad.c cogl/StateBase.h cogl/StateBase.cpp cogl/Framebuffer.cpp cogl/Framebuffer.h cogl/StateBaseGLWindow.cpp cogl/StateBaseGLWindow.h)
 
-add_executable(CustomOGL ${SOURCE_FILES})
+CUDA_ADD_LIBRARY(CustomOGL ${SOURCE_FILES})
 target_link_libraries(CustomOGL ${OPENGL_gl_LIBRARY})
 target_link_libraries(CustomOGL glfw ${GLFW_LIBRARIES})
+
+add_executable(base_test "tests/Base_Test/main.cpp" ${SOURCE_FILES})
+add_executable(instancing_test "tests/Instancing_Test/main.cpp" ${SOURCE_FILES})
+target_link_libraries(base_test ${OPENGL_gl_LIBRARY})
+target_link_libraries(base_test glfw ${GLFW_LIBRARIES})
+target_link_libraries(instancing_test ${OPENGL_gl_LIBRARY})
+target_link_libraries(instancing_test glfw ${GLFW_LIBRARIES})

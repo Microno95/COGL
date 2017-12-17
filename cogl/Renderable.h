@@ -67,7 +67,7 @@ namespace cogl {
 
         virtual void clearVAO() = 0;
 
-        virtual void render(const Shader &program, const Camera &renderCamera) = 0;
+        virtual void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) = 0;
     };
 }
 

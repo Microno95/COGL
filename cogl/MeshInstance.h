@@ -17,18 +17,16 @@
 namespace cogl {
     class MeshInstance : public Renderable {
     private:
-        static const unsigned int SUBDIVIDE_UPDATE_MESH_COUNT = 1;
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
-        std::vector<bool> changedMatrices;
-        std::vector<glm::mat4x4> rotMatrix, transMatrix, scaleMatrix, normalMatrix, modelMatrix;
+        std::vector<glm::mat4x4> rotMatrix, transMatrix, scaleMatrix, modelMatrix;
         RenderTypes renderType = RenderTypes::Points;
 
         void removeInstanceHelper(const unsigned long long objectID);
 
     protected:
         bool VAO_initialised = false;
-        GLuint transformBuffer, normalBuffer;
+        GLuint transformBuffer;
         GLuint VAO;
     public:
 
@@ -45,10 +43,10 @@ namespace cogl {
         MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
                      const std::vector<glm::mat4x4> &transformMatrices, RenderTypes rType = RenderTypes::Tris);
 
-        MeshInstance(const Mesh &other, const std::size_t numCopies);
+        MeshInstance(const Mesh &other, std::size_t numCopies);
 
         //Move Constructor
-        MeshInstance(MeshInstance &&other);
+        MeshInstance(MeshInstance &&other) noexcept;
 
         // Move Assignment
         MeshInstance &operator=(MeshInstance &&other);
@@ -62,7 +60,7 @@ namespace cogl {
 
         void clearVAO() override;
 
-        void render(const Shader &program, const Camera &renderCamera) override;
+        void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data = true) override;
 
         void rotateMesh(const int objectID, const double &angle, const glm::vec3 &axisOfRotation);
 
@@ -82,8 +80,6 @@ namespace cogl {
 
         const glm::mat4x4 &getModelMatrix(const int objectID) const;
 
-        const glm::mat4x4 &getNormalMatrix(const int objectID) const;
-
         const glm::mat4x4 &getTransMatrix(const int objectID) const;
 
         const glm::mat4x4 &getRotMatrix(const int objectID) const;
@@ -91,8 +87,6 @@ namespace cogl {
         const glm::mat4x4 &getScaleMatrix(const int objectID) const;
 
         const std::vector<glm::mat4x4> &getModelMatrix() const;
-
-        const std::vector<glm::mat4x4> &getNormalMatrix() const;
 
         const std::vector<glm::mat4x4> &getTransMatrix() const;
 
@@ -118,9 +112,13 @@ namespace cogl {
 
         void removeInstances(const std::vector<unsigned long long> objectID);
 
-        const unsigned long long activeInstances() const {
+        unsigned long long activeInstances() const {
             return modelMatrix.size();
         };
+
+        GLuint getTransformBuffer() {
+            return transformBuffer;
+        }
     };
 
 }

@@ -9,10 +9,9 @@
 
 namespace cogl {
     class Shader {
-    private:
+    public:
         // Store the programID
         GLuint Program = 0;
-    public:
         // "Load and Compile" Constructors
         Shader() {};
 

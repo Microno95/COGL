@@ -41,7 +41,7 @@ namespace cogl {
         // Create the shaders
         GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
         GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-
+        
         // Read the Vertex Shader code from the file
         std::string VertexShaderCode;
         std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
@@ -77,7 +77,7 @@ namespace cogl {
         // Check Vertex Shader
         glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
         glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-        if (InfoLogLength > 0) {
+        if (Result == GL_FALSE || InfoLogLength > 0) {
             std::vector<char> VertexShaderErrorMessage(InfoLogLength + 1);
             glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
             printf("%s\n", &VertexShaderErrorMessage[0]);
@@ -94,7 +94,7 @@ namespace cogl {
         // Check Fragment Shader
         glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
         glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-        if (InfoLogLength > 0) {
+        if (Result == GL_FALSE || InfoLogLength > 0) {
             std::vector<char> FragmentShaderErrorMessage(InfoLogLength + 1);
             glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
             printf("%s\n", &FragmentShaderErrorMessage[0]);
@@ -106,19 +106,17 @@ namespace cogl {
         glAttachShader(Program, VertexShaderID);
         glAttachShader(Program, FragmentShaderID);
         glLinkProgram(Program);
-
+        
         // Check the program
         glGetProgramiv(Program, GL_LINK_STATUS, &Result);
         glGetProgramiv(Program, GL_INFO_LOG_LENGTH, &InfoLogLength);
-        if (InfoLogLength > 0) {
+        if (Result == GL_FALSE || InfoLogLength > 0) {
             std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
             glGetProgramInfoLog(Program, InfoLogLength, NULL, &ProgramErrorMessage[0]);
             printf("%s\n", &ProgramErrorMessage[0]);
         }
 
         glValidateProgram(Program);
-        check_gl_error();
-
 
         glDetachShader(Program, VertexShaderID);
         glDetachShader(Program, FragmentShaderID);
@@ -127,7 +125,9 @@ namespace cogl {
     }
 
     void Shader::bind() const {
-        glUseProgram(this->Program);
+        check_gl_error();
+        glUseProgram(Program);
+        check_gl_error_w(Program);
     }
 
     GLuint Shader::getUniformLoc(const char *uniformName) const {
