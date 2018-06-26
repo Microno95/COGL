@@ -54,7 +54,7 @@ namespace cogl {
 
         Mesh(const Mesh &other);
 
-        Mesh(const std::vector<Vertex> &verticesInit);
+        explicit Mesh(const std::vector<Vertex> &verticesInit);
 
         Mesh(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
              RenderTypes rType = RenderTypes::Tris);
@@ -77,17 +77,17 @@ namespace cogl {
 
         void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data = true) override;
 
-        void rotateMesh(const double angle, const glm::vec3 axisOfRotation);
+        void rotateMesh(double angle, glm::vec3 axisOfRotation);
 
-        void scaleMesh(const double xScale, const double yScale, const double zScale);
+        void scaleMesh(double xScale, double yScale, double zScale);
 
         void scaleMesh(const double &scale) { this->scaleMesh(scale, scale, scale); };
 
-        void moveMesh(const glm::vec3 translation);
+        void moveMesh(glm::vec3 translation);
 
-        void moveMeshTo(const glm::vec3 translation);
+        void moveMeshTo(glm::vec3 translation);
 
-        void setRenderType(const RenderTypes rType);
+        void setRenderType(RenderTypes rType);
 
         const std::vector<Vertex> getVertices() const;
 
@@ -120,7 +120,7 @@ namespace cogl {
             return outstream;
         }*/
 
-        static Mesh load_from_obj(const std::string filename);
+        static Mesh load_from_obj(std::string filename);
     };
 
 }

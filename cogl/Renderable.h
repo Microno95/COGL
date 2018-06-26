@@ -39,10 +39,10 @@ namespace cogl {
     };
 
     struct alignas(8) Vertex {
-        float x, y, z;
-        float nx, ny, nz;
-        float r, g, b, alpha;
-        float u, v;
+        float x = 0, y = 0, z = 0;
+        float nx = 0, ny = 0, nz = 0;
+        float r = 0, g = 0, b = 0, alpha = 0;
+        float u = 0, v = 0;
 
         friend std::ostream &operator<<(std::ostream &outstream, const Vertex &rhs) {
             outstream << "x: " << rhs.x << ", ";

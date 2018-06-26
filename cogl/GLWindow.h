@@ -40,7 +40,7 @@ namespace cogl {
         bool windowCreated = false;
 
     public:
-        GLWindow(int _swapInterval = 1, int _contextMajor = 4,
+        explicit GLWindow(int _swapInterval = 1, int _contextMajor = 4,
                  int _contextMinor = 3, int _aaSamples = 1, int _windowWidth = 1280, int _windowHeight = 720,
                  int _aspectRatioWidth = 16, int _aspectRatioHeight = 9,
                  std::string _windowTitle = "NULL", std::string pps_file = "cogl/shaders/postProcessing",
@@ -92,7 +92,7 @@ namespace cogl {
 
         void setAASamples(int aas);
 
-        void setTitle(const std::string title);
+        void setTitle(std::string title);
 
         void setTitle(const char *title);
 

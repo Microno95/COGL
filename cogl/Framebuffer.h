@@ -16,7 +16,7 @@ namespace cogl {
         GLuint depthRenderBuffer = 0;
         int width = 0, height = 0;
 
-        Framebuffer(int windowWidth = 1024, int windowHeight = 1024);
+        explicit Framebuffer(int windowWidth = 1024, int windowHeight = 1024);
 
         ~Framebuffer();
 
@@ -55,7 +55,7 @@ namespace cogl {
         GLuint depthRenderBuffer = 0;
         int width = 0, height = 0, numAAs = 0;
 
-        FramebufferMultisampled(int aaSamples = 1, int windowWidth = 1024, int windowHeight = 1024);
+        explicit FramebufferMultisampled(int aaSamples = 1, int windowWidth = 1024, int windowHeight = 1024);
 
         ~FramebufferMultisampled();
 

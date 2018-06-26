@@ -4,15 +4,46 @@
 
 #include "../../Constants.h"
 #include "../../cogl.h"
+#include <exception>
+
+#include <cstdio>  /* defines FILENAME_MAX */
+#ifdef WINDOWS
+    #include <direct.h>
+    #define GetCurrentDir _getcwd
+#else
+    #include <unistd.h>
+    #define GetCurrentDir getcwd
+#endif
+
+std::string GetCurrentWorkingDir() {
+    char cCurrentPath[FILENAME_MAX];
+
+    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
+    {
+        throw std::runtime_error("Current Dir makes no sense");
+    }
+
+    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
+
+    return cCurrentPath;
+}
 
 int main() {
-    cogl::GLWindow mainWindow(1, 4, 0, 1, 3840, 2160);
+    std::cout << GetCurrentWorkingDir() << std::endl;
+    cogl::GLWindow mainWindow(1, 4, 0, 1, 1024, 768);
+    check_gl_error();
     mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
+    check_gl_error();
     mainWindow.enableCapability(GL_DEPTH_TEST);
+    check_gl_error();
     mainWindow.enableCapability(GL_CULL_FACE);
+    check_gl_error();
     mainWindow.setCullType(GL_BACK);
+    check_gl_error();
     mainWindow.setDepthFunction(GL_LESS);
+    check_gl_error();
     mainWindow.setAASamples(0);
+    check_gl_error();
 
     cogl::Mesh cube = cogl::Mesh::load_from_obj("dragon.obj");
     cogl::Mesh otherCube = cogl::Mesh::Cube;
@@ -45,7 +76,9 @@ int main() {
     defaultCamera.setEventHandling();
 
     cogl::Shader defShader("cogl/shaders/triTest");
+    check_gl_error();
     cogl::Shader solidShader("cogl/shaders/solidColour");
+    check_gl_error();
     double previousTime = glfwGetTime();
     int frameCount = 0;
     int frameCounterDebug = 0;
@@ -53,11 +86,14 @@ int main() {
 
     while (!mainWindow.shouldClose()) {
         otherCube.moveMeshTo(target_on_floor);
+        check_gl_error();
         cubes.rotateMesh(-1, PI * 0.1f, glm::vec3(0.0f, 1.0f, 0.0f));
+        check_gl_error();
         mainWindow.renderBegin();
+        check_gl_error();
+
 
         target_on_floor = defaultCamera.getCameraTargetPosition();
-        std::cout << glm::to_string(target_on_floor) << std::endl;
         otherCube.render(solidShader, defaultCamera);
         cubes.render(defShader, defaultCamera);
         mainWindow.renderEnd();

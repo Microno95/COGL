@@ -13,7 +13,7 @@ namespace cogl {
         // Store the programID
         GLuint Program = 0;
         // "Load and Compile" Constructors
-        Shader() {};
+        Shader() = default;;
 
         explicit Shader(const char *vertex_file_path, const char *fragment_file_path);
 
@@ -21,7 +21,7 @@ namespace cogl {
 
         Shader(std::string vertex_file_path, std::string fragment_file_path);
 
-        Shader(std::string shader_file_path);
+        explicit Shader(std::string shader_file_path);
 
         //Move Constructor
         Shader(Shader &&other);

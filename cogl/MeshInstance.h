@@ -22,7 +22,7 @@ namespace cogl {
         std::vector<glm::mat4x4> rotMatrix, transMatrix, scaleMatrix, modelMatrix;
         RenderTypes renderType = RenderTypes::Points;
 
-        void removeInstanceHelper(const unsigned long long objectID);
+        void removeInstanceHelper(unsigned long long objectID);
 
     protected:
         bool VAO_initialised = false;
@@ -34,7 +34,7 @@ namespace cogl {
 
         MeshInstance(const MeshInstance &other);
 
-        MeshInstance(const std::vector<Vertex> &verticesInit,
+        explicit MeshInstance(const std::vector<Vertex> &verticesInit,
                      RenderTypes rType = RenderTypes::Tris);
 
         MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
@@ -62,15 +62,15 @@ namespace cogl {
 
         void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data = true) override;
 
-        void rotateMesh(const int objectID, const double &angle, const glm::vec3 &axisOfRotation);
+        void rotateMesh(int objectID, const double &angle, const glm::vec3 &axisOfRotation);
 
-        void scaleMesh(const int objectID, const double &xScale, const double &yScale, const double &zScale);
+        void scaleMesh(int objectID, const double &xScale, const double &yScale, const double &zScale);
 
         void scaleMesh(const int objectID, const double &scale) { this->scaleMesh(objectID, scale, scale, scale); };
 
-        void moveMesh(const int objectID, const glm::vec3 &translation);
+        void moveMesh(int objectID, const glm::vec3 &translation);
 
-        void moveMeshTo(const int objectID, const glm::vec3 &translation);
+        void moveMeshTo(int objectID, const glm::vec3 &translation);
 
         void moveMeshTo(const std::vector<glm::vec3> &translation);
 
@@ -78,13 +78,13 @@ namespace cogl {
 
         const RenderTypes &getRenderType() const;
 
-        const glm::mat4x4 &getModelMatrix(const int objectID) const;
+        const glm::mat4x4 &getModelMatrix(int objectID) const;
 
-        const glm::mat4x4 &getTransMatrix(const int objectID) const;
+        const glm::mat4x4 &getTransMatrix(int objectID) const;
 
-        const glm::mat4x4 &getRotMatrix(const int objectID) const;
+        const glm::mat4x4 &getRotMatrix(int objectID) const;
 
-        const glm::mat4x4 &getScaleMatrix(const int objectID) const;
+        const glm::mat4x4 &getScaleMatrix(int objectID) const;
 
         const std::vector<glm::mat4x4> &getModelMatrix() const;
 
@@ -108,9 +108,9 @@ namespace cogl {
 
         void addInstances(const std::vector<glm::mat4x4> &modelMatrices);
 
-        void removeInstance(const unsigned long long objectID);
+        void removeInstance(unsigned long long objectID);
 
-        void removeInstances(const std::vector<unsigned long long> objectID);
+        void removeInstances(std::vector<unsigned long long> objectID);
 
         unsigned long long activeInstances() const {
             return modelMatrix.size();

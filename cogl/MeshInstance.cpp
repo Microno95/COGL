@@ -176,7 +176,7 @@ namespace cogl {
                      GL_STREAM_DRAW);
 
         glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) 0);
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) nullptr);
         glEnableVertexAttribArray(5);
         glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) (sizeof(glm::vec4)));
         glEnableVertexAttribArray(6);
@@ -231,7 +231,7 @@ namespace cogl {
                                 (GLsizei) modelMatrix.size());
 
         glBindVertexArray(0);
-        program.unbind();
+        cogl::Shader::unbind();
     }
 
     void MeshInstance::rotateMesh(const int objectID, const double &angle, const glm::vec3 &axisOfRotation) {

@@ -103,7 +103,7 @@ namespace cogl {
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0); // Position Vector
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr); // Position Vector
 
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) (sizeof(float) * 3)); // Normal Vector
@@ -156,9 +156,9 @@ namespace cogl {
             glVertexAttrib4fv(program.getAttribLoc("uTessLevel"), (const GLfloat *) &tessLevel);
         };
         glBindVertexArray(VAO);
-        glDrawElements(renderType, indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(renderType, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);
         glBindVertexArray(0);
-        program.unbind();
+        cogl::Shader::unbind();
     }
 
     void Mesh::rotateMesh(const double angle, const glm::vec3 axisOfRotation) {
@@ -178,7 +178,9 @@ namespace cogl {
 
     void Mesh::moveMeshTo(const glm::vec3 translation) {
         transMatrix = glm::translate(translation);
+        check_gl_error();
         normalMatrix = glm::inverseTranspose(getModelMatrix());
+        check_gl_error();
     }
 
     void Mesh::setRenderType(const RenderTypes rType) {
@@ -259,7 +261,7 @@ namespace cogl {
         std::vector<std::string> objectCode;
         std::ifstream objectStream(filename, std::ios::in);
         if (objectStream.is_open()) {
-            std::string Line = "";
+            std::string Line;
             while (getline(objectStream, Line))
                 objectCode.emplace_back(Line);
             objectStream.close();
@@ -271,7 +273,7 @@ namespace cogl {
         for (auto &i : objectCode) {
             if (i[0] == 'v') {
                 std::stringstream temp(i);
-                Vertex temp2;
+                Vertex temp2{};
                 char throwaway;
                 temp >> throwaway;
                 temp >> temp2.x;

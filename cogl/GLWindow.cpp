@@ -3,6 +3,7 @@
 //
 
 #include "GLWindow.h"
+#include <utility>
 
 namespace cogl {
 
@@ -11,7 +12,8 @@ namespace cogl {
                        std::string pps_file, bool fullscreen) :
             swapInterval(_swapInterval), contextMajor(_contextMajor), aaSamples(_aaSamples),
             contextMinor(_contextMinor), windowWidth(_windowWidth), windowHeight(_windowHeight),
-            aspectRatioWidth(_aspectRatioWidth), aspectRatioHeight(_aspectRatioHeight), windowTitle(_windowTitle) {
+            aspectRatioWidth(_aspectRatioWidth), aspectRatioHeight(_aspectRatioHeight), windowTitle(std::move(
+            std::move(_windowTitle))) {
 
         if (!glfwInit()) {
             exit(EXIT_FAILURE);
@@ -22,11 +24,11 @@ namespace cogl {
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE); // To make MacOS happy; should not be needed
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
         glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
-        if (fullscreen != true) {
-            contextHandle = glfwCreateWindow(windowWidth, windowHeight, windowTitle.c_str(), NULL, NULL);
+        if (!fullscreen) {
+            contextHandle = glfwCreateWindow(windowWidth, windowHeight, windowTitle.c_str(), nullptr, nullptr);
         } else {
             contextHandle = glfwCreateWindow(windowWidth, windowHeight, windowTitle.c_str(), glfwGetPrimaryMonitor(),
-                                             NULL);
+                                             nullptr);
         }
         if (!contextHandle) {
             glfwTerminate();
@@ -54,7 +56,7 @@ namespace cogl {
         glBindBuffer(GL_ARRAY_BUFFER, quad_vertexbuffer);
         glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(glm::vec3), &g_quad_vertex_buffer_data, GL_STATIC_DRAW);
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
         glGenBuffers(1, &quad_indexbuffer);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quad_indexbuffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLuint), &g_quad_vertex_buffer_indices, GL_STATIC_DRAW);
@@ -139,9 +141,13 @@ namespace cogl {
 
     void GLWindow::renderBegin() {
         MSFBO->bindFBO();
+        check_gl_error();
         glViewport(0, 0, MSFBO->width, MSFBO->height);
+        check_gl_error();
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        check_gl_error();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        check_gl_error();
     }
 
     void GLWindow::renderEnd() {

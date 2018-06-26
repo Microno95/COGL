@@ -35,7 +35,7 @@ include_directories(OpenGL/glfw/deps/)
 add_subdirectory(OpenGL/glm)
 include_directories(OpenGL/glm/)
 find_package(OpenGL REQUIRED)
-include_directories(idek ${OPENGL_INCLUDE_DIR})
+include_directories(CustomOGL ${OPENGL_INCLUDE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 set(SOURCE_FILES
         cogl.h

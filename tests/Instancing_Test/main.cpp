@@ -124,7 +124,7 @@ int main() {
         glBindVertexArray(0);
         glFinish();
 
-        defShader.unbind();
+        cogl::Shader::unbind();
         mainWindow.renderEnd();
         double currentTime = glfwGetTime();
         frameCount++;

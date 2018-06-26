@@ -23,7 +23,7 @@ namespace cogl {
         glm::vec3 camPos, camTarget, camUp;
         glm::mat4x4 projMatrix, viewMatrix;
     public:
-        Camera(projection proj = projection::perspective);
+        explicit Camera(projection proj = projection::perspective);
 
         Camera(const glm::vec3 &cameraPosition, const glm::vec3 &cameraTarget, const glm::vec3 &cameraUp,
                projection proj = projection::perspective);
@@ -41,10 +41,10 @@ namespace cogl {
         Camera &moveCameraTargetTo(const glm::vec3 &translation);
 
         Camera &rotateCamera(const double &angle, const glm::vec3 &center, const glm::vec3 &axisOfRotation,
-                             const angUnits units = angUnits::radians);
+                             angUnits units = angUnits::radians);
 
         Camera &
-        rotateCamera(const double &angle, const glm::vec3 &axisOfRotation, const angUnits units = angUnits::radians);
+        rotateCamera(const double &angle, const glm::vec3 &axisOfRotation, angUnits units = angUnits::radians);
 
         Camera &changeFoV(const double &fov);
 
@@ -103,16 +103,16 @@ namespace cogl {
 
         void computeProjectionMatrix();
 
-        virtual void keycallback(
+        void keycallback(
                 GLFWwindow *window,
                 int key,
                 int scancode,
                 int action,
-                int mods);
+                int mods) override;
 
-        virtual void scrollcallback(
+        void scrollcallback(
                 GLFWwindow *window,
-                double xoffset, double yoffset);
+                double xoffset, double yoffset) override;
 
     };
 }

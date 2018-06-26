@@ -29,7 +29,7 @@ namespace cogl {
         LightBlock lightParams;
     public:
         // Constructors //
-        LightSource(const Mesh *appearance = nullptr,
+        explicit LightSource(const Mesh *appearance = nullptr,
                     const glm::vec3 &lightDir = glm::vec3(0.0f),
                     const glm::vec3 &lightPos = glm::vec3(0.0f),
                     const glm::vec3 &lightAttenuation = glm::vec3(0.0f));
