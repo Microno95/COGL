@@ -7,13 +7,9 @@
 #include <exception>
 
 #include <cstdio>  /* defines FILENAME_MAX */
-#ifdef WINDOWS
-    #include <direct.h>
-    #define GetCurrentDir _getcwd
-#else
-    #include <unistd.h>
-    #define GetCurrentDir getcwd
-#endif
+
+#include <direct.h>
+#define GetCurrentDir _getcwd
 
 std::string GetCurrentWorkingDir() {
     char cCurrentPath[FILENAME_MAX];
@@ -30,7 +26,7 @@ std::string GetCurrentWorkingDir() {
 
 int main() {
     std::cout << GetCurrentWorkingDir() << std::endl;
-    cogl::GLWindow mainWindow(1, 4, 0, 1, 1024, 768);
+    cogl::GLWindow mainWindow(1, 4, 5, 1, 1024, 768);
     check_gl_error();
     mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
     check_gl_error();
@@ -42,7 +38,7 @@ int main() {
     check_gl_error();
     mainWindow.setDepthFunction(GL_LESS);
     check_gl_error();
-    mainWindow.setAASamples(0);
+    mainWindow.setAASamples(1);
     check_gl_error();
 
     cogl::Mesh cube = cogl::Mesh::load_from_obj("dragon.obj");
@@ -52,7 +48,7 @@ int main() {
     cogl::Mesh test2(list);
     test2.setRenderType(cogl::RenderTypes::Points);
 
-    cogl::MeshInstance cubes(cube, 2500);
+    std::vector<cogl::Mesh> cubes(2500, cube);
     check_gl_error();
 
     cogl::Camera defaultCamera = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
@@ -65,12 +61,12 @@ int main() {
     float radius = 3;
     float angle = 0.0;
 
-    for (auto i = 0; i < cubes.activeInstances(); ++i) {
+    for (auto i = 0; i < cubes.size(); ++i) {
         glm::vec3 dest = {glm::cos(angle), 0.0f, glm::sin(angle)};
         dest *= radius;
-        cubes.scaleMesh(i, 0.001, 0.001, 0.001);
-        cubes.moveMeshTo(i, dest);
-        angle += (float) (2 * PI / cubes.activeInstances());
+        cubes[i].scaleMesh(0.001, 0.001, 0.001);
+        cubes[i].moveMeshTo(dest);
+        angle += (float) (2 * PI / cubes.size());
     }
 
     defaultCamera.setEventHandling();
@@ -82,20 +78,21 @@ int main() {
     double previousTime = glfwGetTime();
     int frameCount = 0;
     int frameCounterDebug = 0;
-    glm::vec3 target_on_floor;
+	glm::vec3 target_on_floor{ 0.0,0.0,0.0 };
 
     while (!mainWindow.shouldClose()) {
         otherCube.moveMeshTo(target_on_floor);
-        check_gl_error();
-        cubes.rotateMesh(-1, PI * 0.1f, glm::vec3(0.0f, 1.0f, 0.0f));
-        check_gl_error();
+		for (auto i = 0; i < cubes.size(); ++i) {
+			cubes[i].rotateMesh(PI * 0.1f, glm::vec3(0.0f, 1.0f, 0.0f));
+		}
         mainWindow.renderBegin();
-        check_gl_error();
 
 
         target_on_floor = defaultCamera.getCameraTargetPosition();
         otherCube.render(solidShader, defaultCamera);
-        cubes.render(defShader, defaultCamera);
+		for (auto i = 0; i < cubes.size(); ++i) {
+			cubes[i].render(defShader, defaultCamera);
+		}
         mainWindow.renderEnd();
         double currentTime = glfwGetTime();
         frameCount++;

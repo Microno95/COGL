@@ -2,9 +2,9 @@
 // Created by ekin4 on 28/04/2017.
 //
 
-#ifndef __gl_h_
 #include <glad/glad.h>
-#endif
+
+#define GLM_ENABLE_EXPERIMENTAL
 
 #include <GLFW/glfw3.h>
 #include <glm/vec3.hpp>
@@ -78,9 +78,6 @@ static void _check_fbo_status(const char *file, int line) {
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
             fboStatus = "incomplete attachment";
-            break;
-        case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-            fboStatus = "incomplete dimensions";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
             fboStatus = "incomplete missing attachment";

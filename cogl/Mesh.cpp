@@ -156,7 +156,7 @@ namespace cogl {
             glVertexAttrib4fv(program.getAttribLoc("uTessLevel"), (const GLfloat *) &tessLevel);
         };
         glBindVertexArray(VAO);
-        glDrawElements(renderType, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(renderType, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, (void *) 0);
         glBindVertexArray(0);
         cogl::Shader::unbind();
     }

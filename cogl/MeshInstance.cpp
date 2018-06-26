@@ -154,7 +154,7 @@ namespace cogl {
 
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid * )
-        nullptr); // Position Vector
+        0); // Position Vector
 
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
@@ -176,7 +176,7 @@ namespace cogl {
                      GL_STREAM_DRAW);
 
         glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) nullptr);
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) 0);
         glEnableVertexAttribArray(5);
         glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) (sizeof(glm::vec4)));
         glEnableVertexAttribArray(6);
@@ -227,7 +227,7 @@ namespace cogl {
                                  (GLvoid * ) & modelMatrix.front());
         }
 
-        glDrawElementsInstanced(renderType, (GLsizei) indices.size(), GL_UNSIGNED_INT, nullptr,
+        glDrawElementsInstanced(renderType, (GLsizei) indices.size(), GL_UNSIGNED_INT, (void *) 0,
                                 (GLsizei) modelMatrix.size());
 
         glBindVertexArray(0);

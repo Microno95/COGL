@@ -8,13 +8,29 @@ cogl::Framebuffer::Framebuffer(int windowWidth, int windowHeight) {
     width = windowWidth;
     height = windowHeight;
     generateFBO();
+	check_fbo_status();
+	check_gl_error();
     generateColorBuffer(windowWidth, windowHeight);
+	check_fbo_status();
+	check_gl_error();
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffers, 0);
+	check_fbo_status();
+	check_gl_error();
     generateRenderBuffer(windowWidth, windowHeight);
+	check_fbo_status();
+	check_gl_error();
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthRenderBuffer);
+	check_fbo_status();
+	check_gl_error();
     GLenum DrawBuffers = GL_COLOR_ATTACHMENT0;
+	check_fbo_status();
+	check_gl_error();
     glDrawBuffers(1, &DrawBuffers);
+	check_fbo_status();
+	check_gl_error();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	check_fbo_status();
+	check_gl_error();
 }
 
 cogl::Framebuffer::~Framebuffer() {
@@ -25,7 +41,11 @@ cogl::Framebuffer::~Framebuffer() {
 
 void cogl::Framebuffer::generateFBO() {
     glGenFramebuffers(1, &framebuffer);
+	check_fbo_status();
+	check_gl_error();
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	check_fbo_status();
+	check_gl_error();
     glGenTextures(1, &colorBuffers);
     glGenRenderbuffers(1, &depthRenderBuffer);
 }
@@ -38,7 +58,7 @@ void cogl::Framebuffer::generateColorBuffer(int windowWidth, int windowHeight) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, windowWidth, windowHeight, 0, GL_RGBA, GL_FLOAT, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, windowWidth, windowHeight, 0, GL_RGBA, GL_FLOAT, (void *) 0);
     glObjectLabel(GL_TEXTURE, colorBuffers, -1, "Example Texture");
     glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -101,7 +121,7 @@ void cogl::FramebufferMultisampled::generateFBO() {
 
 void cogl::FramebufferMultisampled::generateColorBuffer(int aaSamples, int windowWidth, int windowHeight) {
     glBindRenderbuffer(GL_RENDERBUFFER, colorBuffers);
-    glRenderbufferStorageMultisample(GL_RENDERBUFFER, aaSamples, GL_RGBA16F, windowWidth, windowHeight);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, aaSamples, GL_RGBA16F, windowWidth, windowHeight);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 

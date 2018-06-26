@@ -1,6 +1,5 @@
 #version 400 core
-uniform mat4 proj;
-uniform mat4 view;
+uniform mat4 mvp;
 
 struct vertex {
     vec3 pos;
@@ -9,15 +8,21 @@ struct vertex {
     vec2 uv;
 };
 
-layout(location = 0) in vertex vertex_in;
+layout(location = 0) in vec3 _pos;
+layout(location = 1) in vec3 _normal;
+layout(location = 2) in vec4 _colour;
+layout(location = 3) in vec2 _uv;
 
 layout(location = 4) in mat4 model;
 
 out vec4 color;
+
+vertex vertex_in = vertex(_pos, _normal, _colour, _uv);
+
 void main() {
-    gl_Position = proj * view * model * vec4(vertex_in.pos, 1.0);
+    gl_Position = mvp * vec4(vertex_in.pos, 1.0);
     gl_PointSize = 25.0;
-    float angle = atan(gl_Position.x, gl_Position.z);
-    color = vec4(1.0f + 0.5f * cos(angle) + gl_Position.x, 1.0f + 0.5f * sin(angle) + gl_Position.y, 0.5f, 0.5f);
+    float angle = atan(vertex_in.pos.x, vertex_in.pos.z);
+    color = vec4(1.0f + 0.5f * cos(angle) + vertex_in.pos.x, 1.0f + 0.5f * sin(angle) + vertex_in.pos.y, 0.5f, 0.5f);
     color = normalize(color);
 }
