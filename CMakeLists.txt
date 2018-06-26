@@ -21,14 +21,6 @@ ELSE ()
     message("Missed OpenMP!")
 ENDIF ()
 
-include_directories(${CUDA_PART_SOURCE_DIR}/common)
-# packages
-find_package(CUDA REQUIRED)
-
-# nvcc flags
-set(CUDA_NVCC_FLAGS -gencode arch=compute_60,code=sm_60;-G;-g)
-set(CUDA_VERBOSE_BUILD ON)
-
 add_subdirectory(OpenGL/glfw)
 include_directories(OpenGL/glfw/include)
 include_directories(OpenGL/glfw/deps/)
@@ -36,6 +28,7 @@ add_subdirectory(OpenGL/glm)
 include_directories(OpenGL/glm/)
 find_package(OpenGL REQUIRED)
 include_directories(CustomOGL ${OPENGL_INCLUDE_DIR})
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 set(SOURCE_FILES
         cogl.h
@@ -55,7 +48,7 @@ set(SOURCE_FILES
         Constants.h
         OpenGL/glfw/deps/glad.c cogl/StateBase.h cogl/StateBase.cpp cogl/Framebuffer.cpp cogl/Framebuffer.h cogl/StateBaseGLWindow.cpp cogl/StateBaseGLWindow.h)
 
-CUDA_ADD_LIBRARY(CustomOGL ${SOURCE_FILES})
+
 target_link_libraries(CustomOGL ${OPENGL_gl_LIBRARY})
 target_link_libraries(CustomOGL glfw ${GLFW_LIBRARIES})
 
