@@ -8,29 +8,13 @@ cogl::Framebuffer::Framebuffer(int windowWidth, int windowHeight) {
     width = windowWidth;
     height = windowHeight;
     generateFBO();
-	check_fbo_status();
-	check_gl_error();
     generateColorBuffer(windowWidth, windowHeight);
-	check_fbo_status();
-	check_gl_error();
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffers, 0);
-	check_fbo_status();
-	check_gl_error();
     generateRenderBuffer(windowWidth, windowHeight);
-	check_fbo_status();
-	check_gl_error();
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthRenderBuffer);
-	check_fbo_status();
-	check_gl_error();
     GLenum DrawBuffers = GL_COLOR_ATTACHMENT0;
-	check_fbo_status();
-	check_gl_error();
     glDrawBuffers(1, &DrawBuffers);
-	check_fbo_status();
-	check_gl_error();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	check_fbo_status();
-	check_gl_error();
 }
 
 cogl::Framebuffer::~Framebuffer() {
@@ -41,11 +25,7 @@ cogl::Framebuffer::~Framebuffer() {
 
 void cogl::Framebuffer::generateFBO() {
     glGenFramebuffers(1, &framebuffer);
-	check_fbo_status();
-	check_gl_error();
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	check_fbo_status();
-	check_gl_error();
     glGenTextures(1, &colorBuffers);
     glGenRenderbuffers(1, &depthRenderBuffer);
 }

@@ -70,7 +70,6 @@ target_link_libraries(${PROJECT_NAME} glm)
 
 # Add glad libraries
 set(GLAD_DIR "${LIB_DIR}/glad")
-add_subdirectory(${GLAD_DIR})
 set(GLAD_PROFILE "core" CACHE STRING "OpenGL profile")
 set(GLAD_API "" CACHE STRING "API type/version pairs, like \"gl=3.2,gles=\", no version means latest")
 
@@ -82,7 +81,7 @@ set(GLAD_API "" CACHE STRING "API type/version pairs, like \"gl=3.2,gles=\", no 
 
 set(GLAD_EXTENSIONS "" CACHE STRING "Path to extensions file or comma separated list of extensions, if missing all extensions are included")
 set(GLAD_SPEC "gl" CACHE STRING "Name of the spec")
-message("${GLAD_INCLUDE_DIRS}")
+add_subdirectory(${GLAD_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${GLAD_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} glad)
 

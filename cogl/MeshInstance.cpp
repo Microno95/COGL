@@ -210,7 +210,6 @@ namespace cogl {
         if (!VAO_initialised) initialiseVAO();
         program.bind();
         glm::mat4x4 temp1, temp2;
-
         if (program.getUniformLoc("proj") != -1) {
             temp1 = renderCamera.getPMatrix();
             glUniformMatrix4fv(program.getUniformLoc("proj"), 1, GL_FALSE, (const GLfloat *) &temp1);
@@ -225,6 +224,7 @@ namespace cogl {
         if (update_gpu_data) {
             glNamedBufferSubData(transformBuffer, 0, modelMatrix.size() * sizeof(glm::mat4x4),
                                  (GLvoid * ) & modelMatrix.front());
+			check_gl_error();
         }
 
         glDrawElementsInstanced(renderType, (GLsizei) indices.size(), GL_UNSIGNED_INT, (void *) 0,
