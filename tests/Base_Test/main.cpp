@@ -28,6 +28,7 @@ int main() {
     std::cout << GetCurrentWorkingDir() << std::endl;
     cogl::GLWindow mainWindow(1, 4, 5, 1, 1024, 768);
     mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
+	mainWindow.enableCapability(GL_PROGRAM_POINT_SIZE);
     mainWindow.enableCapability(GL_DEPTH_TEST);
     mainWindow.enableCapability(GL_CULL_FACE);
     mainWindow.setCullType(GL_BACK);
@@ -57,12 +58,10 @@ int main() {
 	cube.scaleMesh(0.01f);
 	cube.moveMeshTo(target_on_floor);
 
-	std::cout << glm::to_string(defaultCamera.getMVPMatrix(cube.getModelMatrix())) << std::endl;
-
     while (!mainWindow.shouldClose()) {
 		cube.rotateMesh(PI * angular_speed, glm::vec3(0.0f, 1.0f, 0.0f));
         mainWindow.renderBegin();
-		cube.render(defShader, defaultCamera);
+		cube.render(solidShader, defaultCamera);
         mainWindow.renderEnd();
         double currentTime = glfwGetTime();
         frameCount++;

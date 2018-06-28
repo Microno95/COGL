@@ -39,7 +39,6 @@ void cogl::Framebuffer::generateColorBuffer(int windowWidth, int windowHeight) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, windowWidth, windowHeight, 0, GL_RGBA, GL_FLOAT, (void *) 0);
-    glObjectLabel(GL_TEXTURE, colorBuffers, -1, "Example Texture");
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 

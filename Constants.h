@@ -92,4 +92,18 @@ static void _check_fbo_status(const char *file, int line) {
 constexpr double PI = 3.141592653589793238462643383279502884197169399375105820975;
 constexpr double sqrt2 = 1.414213562373095048801688724209698078569671875376948073176;
 
+/*
+
+Contains function to test if container contains an element. 
+Source: https://codereview.stackexchange.com/a/59999
+
+*/
+
+template<class C, class T>
+auto contains(const C& v, const T& x)
+-> decltype(end(v), true)
+{
+	return end(v) != std::find(begin(v), end(v), x);
+}
+
 #endif //CUSTOMOGL_CONSTANTS_H

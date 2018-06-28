@@ -105,6 +105,10 @@ namespace cogl {
 
         const glm::mat4x4 getScaleMatrix() const;
 
+		const GLuint getVAOLabel() const {
+			return this->VAO;
+		}
+
         // Default Shapes //
         static const Mesh Cube;
         static const Mesh Icosahedron;

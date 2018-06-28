@@ -23,6 +23,7 @@ namespace cogl {
         int swapInterval, aaSamples, contextMajor, contextMinor,
                 windowWidth, windowHeight, aspectRatioWidth, aspectRatioHeight;
         std::string windowTitle;
+		std::vector<GLenum> enabled_capabilities;
 
         // Framebuffers for postprocessing //
         GLuint quad_vertexbuffer, quad_indexbuffer, quad_vao;
@@ -33,7 +34,7 @@ namespace cogl {
                                                   glm::vec3(1.0f, -1.0f, 0.0f),
                                                   glm::vec3(1.0f, 1.0f, 0.0f),
                                                   glm::vec3(-1.0f, 1.0f, 0.0f)};
-        GLint g_quad_vertex_buffer_indices[6] = {0, 1, 2, 2, 3, 0};
+        GLint g_quad_vertex_buffer_indices[6] = {2, 1, 0, 0, 3, 2};
 
         // Protect window parameters during runtime //
         std::mutex paramLock;

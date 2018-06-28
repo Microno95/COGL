@@ -26,7 +26,7 @@ namespace cogl {
 
     protected:
         bool VAO_initialised = false;
-        GLuint transformBuffer;
+        GLuint transformBuffer, vertexBuffer, indexBuffer;
         GLuint VAO;
     public:
 

@@ -141,7 +141,6 @@ namespace cogl {
     }
 
     void MeshInstance::initialiseVAO() {
-        GLuint vertexBuffer, indexBuffer;
 
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
@@ -153,12 +152,10 @@ namespace cogl {
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices.front(), GL_STATIC_DRAW);
 
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid * )
-        0); // Position Vector
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid * ) 0); // Position Vector
 
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                              (GLvoid *) (sizeof(float) * 3)); // Normal Vector
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 3)); // Normal Vector
 
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 6)); // RGBA Values
@@ -194,15 +191,15 @@ namespace cogl {
         for (GLuint i = 4; i <= 7; ++i) glVertexAttribDivisor(i, 1);
 
         glBindVertexArray(0);
-        glDeleteBuffers(1, &vertexBuffer);
-        glDeleteBuffers(1, &indexBuffer);
         VAO_initialised = true;
     }
 
     void MeshInstance::clearVAO() {
         if (VAO_initialised) {
-            glDeleteVertexArrays(1, &VAO);
+			glDeleteBuffers(1, &vertexBuffer);
+			glDeleteBuffers(1, &indexBuffer);
             glDeleteBuffers(1, &transformBuffer);
+			glDeleteVertexArrays(1, &VAO);
         }
     }
 
@@ -224,11 +221,11 @@ namespace cogl {
         if (update_gpu_data) {
             glNamedBufferSubData(transformBuffer, 0, modelMatrix.size() * sizeof(glm::mat4x4),
                                  (GLvoid * ) & modelMatrix.front());
-			check_gl_error();
         }
 
-        glDrawElementsInstanced(renderType, (GLsizei) indices.size(), GL_UNSIGNED_INT, (void *) 0,
+        glDrawElementsInstanced(renderType, (GLsizei) indices.size(), GL_UNSIGNED_INT, 0,
                                 (GLsizei) modelMatrix.size());
+		check_gl_error();
 
         glBindVertexArray(0);
         cogl::Shader::unbind();

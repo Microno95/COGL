@@ -66,8 +66,6 @@ namespace cogl {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quad_indexbuffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLuint), &g_quad_vertex_buffer_indices, GL_STATIC_DRAW);
         glBindVertexArray(0);
-        glDeleteBuffers(1, &quad_vertexbuffer);
-        glDeleteBuffers(1, &quad_indexbuffer);
         check_gl_error();
 
         postProcessingShader = std::make_unique<Shader>(std::move(pps_file));
@@ -76,6 +74,8 @@ namespace cogl {
     }
 
     GLWindow::~GLWindow() {
+		glDeleteBuffers(1, &quad_vertexbuffer);
+		glDeleteBuffers(1, &quad_indexbuffer);
         glDeleteVertexArrays(1, &quad_vao);
         terminateWindow();
     }
@@ -153,8 +153,6 @@ namespace cogl {
 
     void GLWindow::renderEnd() {
         renderFramebuffers();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glfwSwapBuffers(contextHandle);
         glfwPollEvents();
         if (glfwGetKey(contextHandle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             glfwSetWindowShouldClose(contextHandle, GL_TRUE);
@@ -164,6 +162,7 @@ namespace cogl {
     bool GLWindow::enableCapability(GLenum Capability) {
         if (windowCreated) {
             std::unique_lock<std::mutex> lock(paramLock);
+			this->enabled_capabilities.push_back(Capability);
             glEnable(Capability);
         }
         return glIsEnabled(Capability);
@@ -172,6 +171,7 @@ namespace cogl {
     bool GLWindow::disableCapability(GLenum Capability) {
         if (windowCreated) {
             std::unique_lock<std::mutex> lock(paramLock);
+			enabled_capabilities.erase(std::remove(enabled_capabilities.begin(), enabled_capabilities.end(), Capability));
             glDisable(Capability);
         }
         return !glIsEnabled(Capability);
@@ -196,14 +196,16 @@ namespace cogl {
     void GLWindow::renderFramebuffers() {
         MSFBO->bindFBORead();
         nonMSFBO->bindFBODraw();
-        glViewport(0, 0, windowWidth, windowHeight);
+		glViewport(0, 0, windowWidth, windowHeight);
         glBlitFramebuffer(0, 0, MSFBO->width, MSFBO->height,
                           0, 0, nonMSFBO->width, nonMSFBO->height,
                           GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glViewport(0, 0, windowWidth, windowHeight);
+		glDisable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
+		glViewport(0, 0, windowWidth, windowHeight);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         glActiveTexture(GL_TEXTURE0);
         GLuint fbo_textureID = postProcessingShader->getUniformLoc("fbo_texture");
         GLuint timeID = postProcessingShader->getUniformLoc("time");
@@ -215,7 +217,10 @@ namespace cogl {
         glBindVertexArray(quad_vao);
         glActiveTexture(GL_TEXTURE0 + 0);
         glBindTexture(GL_TEXTURE_2D, nonMSFBO->colorBuffers);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void *) 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         postProcessingShader->unbind();
+		if (contains(enabled_capabilities, GL_CULL_FACE)) glEnable(GL_CULL_FACE);
+		if (contains(enabled_capabilities, GL_DEPTH_TEST)) glEnable(GL_DEPTH_TEST);
+		glfwSwapBuffers(contextHandle);
     }
 }
