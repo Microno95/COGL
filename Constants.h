@@ -21,6 +21,7 @@
 #include <mutex>
 #include <memory>
 #include <sstream>
+#include <chrono>
 
 #ifndef CUSTOMOGL_CONSTANTS_H
 #define CUSTOMOGL_CONSTANTS_H
@@ -105,5 +106,39 @@ auto contains(const C& v, const T& x)
 {
 	return end(v) != std::find(begin(v), end(v), x);
 }
+
+class Timer {
+private:
+	std::string label = "";
+	std::chrono::high_resolution_clock::time_point startTime;
+	std::chrono::high_resolution_clock::time_point endTime;
+	bool endTimeSet = false;
+public:
+	Timer() {
+		startTime = std::chrono::high_resolution_clock::now();
+	}
+	Timer(std::string _label) : label(_label), startTime(std::chrono::high_resolution_clock::now()) {}
+
+	~Timer() {
+		if (!endTimeSet) {
+			endTime = std::chrono::high_resolution_clock::now();
+		}
+		std::cout << label << " : " << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() << "ms" << std::endl;
+	}
+
+	void Stop() {
+		endTime = std::chrono::high_resolution_clock::now();
+		endTimeSet = true;
+	}
+
+	void Start() {
+		startTime = std::chrono::high_resolution_clock::now();
+		endTimeSet = false;
+	}
+
+	void Report() {
+		std::cout << label << " : " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count() << "ms" << std::endl;
+	}
+};
 
 #endif //CUSTOMOGL_CONSTANTS_H

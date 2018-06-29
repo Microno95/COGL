@@ -1,5 +1,5 @@
 #version 410 core
-uniform mat4 mvp;
+uniform mat4 vp;
 
 struct vertex {
     vec3 pos;
@@ -20,6 +20,6 @@ out vec4 color;
 vertex vertex_in = vertex(_pos, _normal, _colour, _uv);
 
 void main() {
-    gl_Position = mvp * vec4(vertex_in.pos, 1.0);
+    gl_Position = vp * model * vec4(vertex_in.pos, 1.0);
     color = vec4(1.0f);
 }

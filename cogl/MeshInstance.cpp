@@ -206,15 +206,19 @@ namespace cogl {
     void MeshInstance::render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) {
         if (!VAO_initialised) initialiseVAO();
         program.bind();
-        glm::mat4x4 temp1, temp2;
+        glm::mat4x4 temp1, temp2, temp3;
         if (program.getUniformLoc("proj") != -1) {
             temp1 = renderCamera.getPMatrix();
             glUniformMatrix4fv(program.getUniformLoc("proj"), 1, GL_FALSE, (const GLfloat *) &temp1);
         };
-        if (program.getUniformLoc("view") != -1) {
-            temp2 = renderCamera.getVMatrix();
-            glUniformMatrix4fv(program.getUniformLoc("view"), 1, GL_FALSE, (const GLfloat *) &temp2);
-        };
+		if (program.getUniformLoc("view") != -1) {
+			temp2 = renderCamera.getVMatrix();
+			glUniformMatrix4fv(program.getUniformLoc("view"), 1, GL_FALSE, (const GLfloat *)&temp2);
+		};
+		if (program.getUniformLoc("vp") != -1) {
+			temp3 = renderCamera.getVPMatrix();
+			glUniformMatrix4fv(program.getUniformLoc("vp"), 1, GL_FALSE, (const GLfloat *)&temp3);
+		};
 
         glBindVertexArray(VAO);
 
@@ -233,6 +237,7 @@ namespace cogl {
 
     void MeshInstance::rotateMesh(const int objectID, const double &angle, const glm::vec3 &axisOfRotation) {
         if (objectID == -1) {
+#pragma omp parallel for
             for (auto i = 0; i < rotMatrix.size(); ++i) {
                 rotMatrix[i] = glm::rotate((float) angle, axisOfRotation) * rotMatrix[i];
                 if (renderType != RenderTypes::Points) {

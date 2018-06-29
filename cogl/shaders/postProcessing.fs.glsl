@@ -45,5 +45,5 @@ void main()
 	// Gamma correction
 	mapped = pow(mapped, vec3(1.0 / gamma));
 
-	color = texture(fbo_texture,f_texcoord);
+	color = vec4(mapped, 1.0f);
 }

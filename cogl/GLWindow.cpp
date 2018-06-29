@@ -145,7 +145,7 @@ namespace cogl {
     };
 
     void GLWindow::renderBegin() {
-        MSFBO->bindFBO();
+        MSFBO->bindFBODraw();
         glViewport(0, 0, MSFBO->width, MSFBO->height);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -204,8 +204,8 @@ namespace cogl {
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 		glViewport(0, 0, windowWidth, windowHeight);
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        /*glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);*/
         glActiveTexture(GL_TEXTURE0);
         GLuint fbo_textureID = postProcessingShader->getUniformLoc("fbo_texture");
         GLuint timeID = postProcessingShader->getUniformLoc("time");

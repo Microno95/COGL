@@ -1,6 +1,5 @@
 #version 410 core
-uniform mat4 view;
-uniform mat4 proj;
+uniform mat4 vp;
 
 struct vertex {
     vec3 pos;
@@ -21,6 +20,8 @@ out vec4 color;
 vertex vertex_in = vertex(_pos, _normal, _colour, _uv);
 
 void main() {
-    gl_Position = proj * view * model * vec4(vertex_in.pos.xyz, 1.0f);
-    color = vec4(1.0f);
+    gl_Position = vp * model * vec4(vertex_in.pos.xyz, 1.0f);
+	float angle = atan(vertex_in.pos.x, vertex_in.pos.z);
+    color = vec4(1.0f + 0.5f * cos(angle) + vertex_in.pos.x, 1.0f + 0.5f * sin(angle) + vertex_in.pos.y, 0.5f, 0.5f);
+    color = normalize(color);
 }
