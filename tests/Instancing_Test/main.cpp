@@ -6,7 +6,7 @@
 #include "../../cogl.h"
 
 int main() {
-	cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768);
+	cogl::GLWindow mainWindow(1, 4, 5, 1, 1024, 768);
 	mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_DEPTH_TEST);
@@ -22,12 +22,12 @@ int main() {
     float radius = 3;
     float angle = 0.0;
 
-    for (auto i = 0; i < cubes.activeInstances(); ++i) {
-		angle = i * (float)(2 * PI / cubes.activeInstances());
-        glm::vec3 dest = {glm::cos(angle), 0.0f, glm::sin(angle)};
-        dest *= radius;
-		cubes.moveMeshTo(i, dest);
-    }
+	double dx = 0.1;
+	int rowWidth = 24;
+
+	for (auto i = 0; i < cubes.activeInstances(); ++i) {
+		cubes.moveMeshTo(i, glm::vec3({ -1.0f * dx * (i / rowWidth - rowWidth / 2), 0.0f, dx * (i % rowWidth - rowWidth / 2)}));
+	}
 
 	cubes.scaleMesh(-1, 0.025f);
 
