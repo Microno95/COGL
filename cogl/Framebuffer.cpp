@@ -18,9 +18,7 @@ cogl::Framebuffer::Framebuffer(int windowWidth, int windowHeight) {
 }
 
 cogl::Framebuffer::~Framebuffer() {
-    glDeleteTextures(1, &colorBuffers);
-    glDeleteRenderbuffers(1, &depthRenderBuffer);
-    glDeleteFramebuffers(1, &framebuffer);
+    release();
 }
 
 void cogl::Framebuffer::generateFBO() {
@@ -71,6 +69,34 @@ void cogl::Framebuffer::bindFBODraw() {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
 }
 
+void cogl::Framebuffer::release() {
+    if (glfwGetCurrentContext() != NULL) {
+        glDeleteTextures(1, &colorBuffers);
+        glDeleteRenderbuffers(1, &depthRenderBuffer);
+        glDeleteFramebuffers(1, &framebuffer);
+    }
+}
+
+cogl::Framebuffer &cogl::Framebuffer::operator=(cogl::Framebuffer &&other) noexcept {
+    //ALWAYS check for self-assignment.
+    if(this != &other)
+    {
+        release();
+        //obj_ is now 0.
+        std::swap(framebuffer, other.framebuffer);
+        std::swap(colorBuffers, other.colorBuffers);
+        std::swap(depthRenderBuffer, other.depthRenderBuffer);
+    }
+}
+
+cogl::Framebuffer::Framebuffer(cogl::Framebuffer &&other) noexcept : framebuffer(other.framebuffer),colorBuffers(other.colorBuffers),
+                                                            depthRenderBuffer(other.depthRenderBuffer),width(other.width),height(other.height)
+{
+    other.framebuffer = 0;
+    other.colorBuffers = 0;
+    other.depthRenderBuffer = 0;
+}
+
 cogl::FramebufferMultisampled::FramebufferMultisampled(int aaSamples, int windowWidth, int windowHeight) {
     width = windowWidth;
     height = windowHeight;
@@ -85,10 +111,36 @@ cogl::FramebufferMultisampled::FramebufferMultisampled(int aaSamples, int window
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void cogl::FramebufferMultisampled::release() {
+    if (glfwGetCurrentContext() != NULL) {
+        glDeleteTextures(1, &colorBuffers);
+        glDeleteRenderbuffers(1, &depthRenderBuffer);
+        glDeleteFramebuffers(1, &framebuffer);
+    }
+}
+
+cogl::FramebufferMultisampled &cogl::FramebufferMultisampled::operator=(cogl::FramebufferMultisampled &&other) noexcept  {
+    //ALWAYS check for self-assignment.
+    if(this != &other)
+    {
+        release();
+        //obj_ is now 0.
+        std::swap(framebuffer, other.framebuffer);
+        std::swap(colorBuffers, other.colorBuffers);
+        std::swap(depthRenderBuffer, other.depthRenderBuffer);
+    }
+}
+
+cogl::FramebufferMultisampled::FramebufferMultisampled(cogl::FramebufferMultisampled &&other) noexcept  : framebuffer(other.framebuffer),colorBuffers(other.colorBuffers),
+                                                            depthRenderBuffer(other.depthRenderBuffer),width(other.width),height(other.height)
+{
+    other.framebuffer = 0;
+    other.colorBuffers = 0;
+    other.depthRenderBuffer = 0;
+}
+
 cogl::FramebufferMultisampled::~FramebufferMultisampled() {
-    glDeleteRenderbuffers(1, &colorBuffers);
-    glDeleteRenderbuffers(1, &depthRenderBuffer);
-    glDeleteFramebuffers(1, &framebuffer);
+    release();
 }
 
 void cogl::FramebufferMultisampled::generateFBO() {

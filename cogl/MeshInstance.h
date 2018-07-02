@@ -17,50 +17,47 @@
 namespace cogl {
     class MeshInstance : public Renderable {
     private:
-        std::vector<Vertex> vertices;
-        std::vector<unsigned int> indices;
+        MeshRepresentation meshRepr;
         std::vector<glm::mat4x4> rotMatrix, transMatrix, scaleMatrix, modelMatrix;
         RenderTypes renderType = RenderTypes::Points;
 
         void removeInstanceHelper(unsigned long long objectID);
 
+        void initialiseVAO();
+
     protected:
         bool VAO_initialised = false;
-        GLuint transformBuffer, vertexBuffer, indexBuffer;
-        GLuint VAO;
+        GLuint transformBuffer = 0, vertexBuffer = 0, indexBuffer = 0;
+        GLuint VAO = 0;
+
     public:
 
-        MeshInstance();
-
-        MeshInstance(const MeshInstance &other);
-
-        explicit MeshInstance(const std::vector<Vertex> &verticesInit,
-                     RenderTypes rType = RenderTypes::Tris);
+        MeshInstance(const MeshInstance &other)=delete;
 
         MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
-                     RenderTypes rType = RenderTypes::Tris);
+                     unsigned int numCopies, RenderTypes rType = RenderTypes::Tris);
 
         MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
                      const std::vector<glm::mat4x4> &transformMatrices, RenderTypes rType = RenderTypes::Tris);
 
         MeshInstance(const Mesh &other, std::size_t numCopies);
 
+        MeshInstance(MeshRepresentation other, std::size_t numCopies);
+
         //Move Constructor
         MeshInstance(MeshInstance &&other) noexcept;
 
         // Move Assignment
-        MeshInstance &operator=(MeshInstance &&other);
+        MeshInstance &operator=(MeshInstance &&other) noexcept;
 
         // Copy Assignment
-        MeshInstance &operator=(const MeshInstance &other);
+        MeshInstance &operator=(const MeshInstance &other)=delete;
 
         ~MeshInstance();
 
-        void initialiseVAO() override;
+        void release();
 
-        void clearVAO() override;
-
-        void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data = true) override;
+        void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) override;
 
         void rotateMesh(int objectID, const double &angle, const glm::vec3 &axisOfRotation);
 

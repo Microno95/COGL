@@ -63,10 +63,6 @@ namespace cogl {
 
     class Renderable {
     public:
-        virtual void initialiseVAO() = 0;
-
-        virtual void clearVAO() = 0;
-
         virtual void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) = 0;
     };
 }

@@ -77,6 +77,9 @@ namespace cogl {
 		glDeleteBuffers(1, &quad_vertexbuffer);
 		glDeleteBuffers(1, &quad_indexbuffer);
         glDeleteVertexArrays(1, &quad_vao);
+        MSFBO.reset();
+        nonMSFBO.reset();
+        postProcessingShader.reset();
         terminateWindow();
     }
 

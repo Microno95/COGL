@@ -9,11 +9,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(SOURCE_FILES
         cogl.h
+		Constants.h
         cogl/Camera.cpp
         cogl/Camera.h
-        cogl/LightSource.cpp
-        cogl/LightSource.h
-        cogl/Mesh.cpp
+		cogl/Mesh.cpp
         cogl/Mesh.h
         cogl/MeshInstance.cpp
         cogl/MeshInstance.h
@@ -22,13 +21,14 @@ set(SOURCE_FILES
         cogl/Shader.cpp
         cogl/Shader.h
         cogl/Renderable.h
-        Constants.h
         cogl/StateBase.h 
 		cogl/StateBase.cpp 
 		cogl/Framebuffer.cpp 
 		cogl/Framebuffer.h 
 		cogl/StateBaseGLWindow.cpp 
-		cogl/StateBaseGLWindow.h)
+		cogl/StateBaseGLWindow.h
+		cogl/MeshRepresentation.cpp
+		cogl/MeshRepresentation.h)
 
 # Include OpenMP libraries
 message(STATUS "Checking OpenMP")
@@ -85,8 +85,9 @@ add_subdirectory(${GLAD_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${GLAD_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} glad)
 
-add_executable(base_test "tests/Base_Test/main.cpp" ${SOURCE_FILES})
+add_executable(base_test "tests/Base_Test/main.cpp" ${SOURCE_FILES} cogl/MeshRepresentation.cpp)
 add_executable(instancing_test "tests/Instancing_Test/main.cpp" ${SOURCE_FILES})
+add_executable(other_test "tests/Other_Test/main.cpp" ${SOURCE_FILES})
 target_link_libraries(base_test ${OPENGL_gl_LIBRARY})
 target_link_libraries(base_test glfw ${GLFW_LIBRARIES})
 target_link_libraries(base_test glm)
@@ -97,3 +98,8 @@ target_link_libraries(instancing_test glfw ${GLFW_LIBRARIES})
 target_link_libraries(instancing_test glm)
 target_link_libraries(instancing_test glad)
 target_link_libraries(instancing_test ${PROJECT_NAME})
+target_link_libraries(other_test ${OPENGL_gl_LIBRARY})
+target_link_libraries(other_test glfw ${GLFW_LIBRARIES})
+target_link_libraries(other_test glm)
+target_link_libraries(other_test glad)
+target_link_libraries(other_test ${PROJECT_NAME})

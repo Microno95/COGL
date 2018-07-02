@@ -24,17 +24,22 @@ namespace cogl {
     }
 
     Shader::Shader(Shader &&other) {
+        release();
         std::swap(this->Program, other.Program);
     }
 
     Shader &Shader::operator=(Shader &&other) {
+        release();
         std::swap(this->Program, other.Program);
         return *this;
     }
 
     Shader::~Shader() {
-        glUseProgram(0);
-        if (glIsProgram(Program)) glDeleteProgram(Program);
+        release();
+    }
+
+    void Shader::release() {
+        glDeleteProgram(Program);
     }
 
     void Shader::loadAndCompile(const char *vertex_file_path, const char *fragment_file_path) {

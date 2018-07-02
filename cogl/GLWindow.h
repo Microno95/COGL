@@ -26,7 +26,7 @@ namespace cogl {
 		std::vector<GLenum> enabled_capabilities;
 
         // Framebuffers for postprocessing //
-        GLuint quad_vertexbuffer, quad_indexbuffer, quad_vao;
+        GLuint quad_vertexbuffer = 0, quad_indexbuffer = 0, quad_vao = 0;
         std::unique_ptr<Shader> postProcessingShader;
         std::unique_ptr<Framebuffer> nonMSFBO;
         std::unique_ptr<FramebufferMultisampled> MSFBO;
@@ -39,6 +39,8 @@ namespace cogl {
         // Protect window parameters during runtime //
         std::mutex paramLock;
         bool windowCreated = false;
+
+        Camera mainCamera;
 
     public:
         explicit GLWindow(int _swapInterval = 1, int _contextMajor = 4,

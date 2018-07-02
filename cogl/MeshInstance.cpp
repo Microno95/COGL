@@ -5,71 +5,17 @@
 #include "MeshInstance.h"
 
 namespace cogl {
-    MeshInstance::MeshInstance() {
-        vertices = std::vector<Vertex>();
-        indices = std::vector<unsigned int>();
-        rotMatrix = std::vector<glm::mat4x4>();
-        rotMatrix.reserve(25);
-        scaleMatrix = std::vector<glm::mat4x4>();
-        scaleMatrix.reserve(25);
-        transMatrix = std::vector<glm::mat4x4>();
-        transMatrix.reserve(25);
-        modelMatrix = std::vector<glm::mat4x4>();
-        modelMatrix.reserve(25);
-    }
-
-    MeshInstance::MeshInstance(const MeshInstance &other) {
-        vertices = other.vertices;
-        indices = other.indices;
-        rotMatrix = other.rotMatrix;
-        transMatrix = other.transMatrix;
-        scaleMatrix = other.scaleMatrix;
-        modelMatrix = other.modelMatrix;
-    }
-
-    MeshInstance::MeshInstance(const std::vector<Vertex> &verticesInit,
-                               RenderTypes rType) {
+    MeshInstance::MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit, unsigned int numCopies, RenderTypes rType) : meshRepr(verticesInit, indicesInit){
+        rotMatrix = std::vector<glm::mat4x4>(numCopies, glm::mat4x4(1.0f));
+        transMatrix = std::vector<glm::mat4x4>(numCopies, glm::mat4x4(1.0f));
+        scaleMatrix = std::vector<glm::mat4x4>(numCopies, glm::mat4x4(1.0f));
+        modelMatrix = std::vector<glm::mat4x4>(numCopies, glm::mat4x4(1.0f));
         renderType = rType;
-        vertices = std::vector<Vertex>(verticesInit);
-        indices = std::vector<unsigned int>();
-        for (unsigned int i = 0; i < vertices.size(); i++) indices.push_back(i);
-        rotMatrix = std::vector<glm::mat4x4>();
-        rotMatrix.reserve(25);
-        scaleMatrix = std::vector<glm::mat4x4>();
-        scaleMatrix.reserve(25);
-        transMatrix = std::vector<glm::mat4x4>();
-        transMatrix.reserve(25);
-        modelMatrix = std::vector<glm::mat4x4>();
-        modelMatrix.reserve(25);
-        rotMatrix.emplace_back(1.0f);
-        transMatrix.emplace_back(1.0f);
-        scaleMatrix.emplace_back(1.0f);
-        modelMatrix.emplace_back(1.0f);
-    }
 
-    MeshInstance::MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
-                               RenderTypes rType) {
-        vertices = std::vector<Vertex>(verticesInit);
-        indices = std::vector<unsigned int>(indicesInit);
-        renderType = rType;
-        rotMatrix = std::vector<glm::mat4x4>();
-        rotMatrix.reserve(25);
-        scaleMatrix = std::vector<glm::mat4x4>();
-        scaleMatrix.reserve(25);
-        transMatrix = std::vector<glm::mat4x4>();
-        transMatrix.reserve(25);
-        modelMatrix = std::vector<glm::mat4x4>();
-        modelMatrix.reserve(25);
-        rotMatrix.emplace_back(1.0f);
-        transMatrix.emplace_back(1.0f);
-        scaleMatrix.emplace_back(1.0f);
-        modelMatrix.emplace_back(1.0f);
+        initialiseVAO();
     }
-
     MeshInstance::MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
-                               const std::vector<glm::mat4x4> &transformMatrices, RenderTypes rType) {
-        vertices = std::vector<Vertex>(verticesInit);
-        indices = std::vector<unsigned int>(indicesInit);
+                               const std::vector<glm::mat4x4> &transformMatrices, RenderTypes rType) : meshRepr(verticesInit, indicesInit) {
         renderType = rType;
         rotMatrix = std::vector<glm::mat4x4>();
         rotMatrix.reserve(transformMatrices.size());
@@ -77,8 +23,6 @@ namespace cogl {
         scaleMatrix.reserve(transformMatrices.size());
         transMatrix = std::vector<glm::mat4x4>();
         transMatrix.reserve(transformMatrices.size());
-        modelMatrix = std::vector<glm::mat4x4>();
-        modelMatrix.reserve(transformMatrices.size());
         modelMatrix = std::vector<glm::mat4x4>(transformMatrices);
         for (auto &i : transformMatrices) {
             transMatrix.emplace_back(1.0f);
@@ -86,125 +30,67 @@ namespace cogl {
             transMatrix.back()[3] = i[3] / i[3][3];
             scaleMatrix.push_back(glm::inverse(rotMatrix.back()) * glm::inverse(transMatrix.back()) * i);
         }
+
+        initialiseVAO();
     }
 
-    MeshInstance::MeshInstance(const Mesh &other, const std::size_t numCopies) {
-        vertices = other.getVertices();
-        indices = other.getIndices();
+    MeshInstance::MeshInstance(const Mesh &other, const std::size_t numCopies) : meshRepr(std::move(other.getMeshRepresentation())){
         rotMatrix = std::vector<glm::mat4x4>(numCopies, other.getRotMatrix());
         transMatrix = std::vector<glm::mat4x4>(numCopies, other.getTransMatrix());
         scaleMatrix = std::vector<glm::mat4x4>(numCopies, other.getScaleMatrix());
         modelMatrix = std::vector<glm::mat4x4>(numCopies, other.getModelMatrix());
         renderType = other.getRenderType();
+
+        initialiseVAO();
     }
 
-    MeshInstance::MeshInstance(MeshInstance &&other) noexcept {
-        std::swap(this->VAO, other.VAO);
-        std::swap(this->transformBuffer, other.transformBuffer);
-        std::swap(this->VAO_initialised, other.VAO_initialised);
-        std::swap(this->vertices, other.vertices);
-        std::swap(this->indices, other.indices);
-        std::swap(this->rotMatrix, other.rotMatrix);
-        std::swap(this->transMatrix, other.transMatrix);
-        std::swap(this->scaleMatrix, other.scaleMatrix);
-        std::swap(this->renderType, other.renderType);
+    MeshInstance::MeshInstance(MeshRepresentation other, const std::size_t numCopies) : meshRepr(std::move(other)){
+        rotMatrix = std::vector<glm::mat4x4>(numCopies, glm::mat4x4(1.0f));
+        transMatrix = std::vector<glm::mat4x4>(numCopies, glm::mat4x4(1.0f));
+        scaleMatrix = std::vector<glm::mat4x4>(numCopies, glm::mat4x4(1.0f));
+        modelMatrix = std::vector<glm::mat4x4>(numCopies, glm::mat4x4(1.0f));
+        renderType = cogl::RenderTypes::Tris;
+
+        initialiseVAO();
     }
 
-    MeshInstance &MeshInstance::operator=(MeshInstance &&other) {
-        std::swap(this->VAO, other.VAO);
-        std::swap(this->transformBuffer, other.transformBuffer);
-        std::swap(this->VAO_initialised, other.VAO_initialised);
-        std::swap(this->vertices, other.vertices);
-        std::swap(this->indices, other.indices);
-        std::swap(this->rotMatrix, other.rotMatrix);
-        std::swap(this->transMatrix, other.transMatrix);
-        std::swap(this->scaleMatrix, other.scaleMatrix);
-        std::swap(this->renderType, other.renderType);
-        return *this;
+    MeshInstance::MeshInstance(MeshInstance &&other) noexcept : VAO(other.VAO), indexBuffer(other.indexBuffer),
+                                                                vertexBuffer(other.vertexBuffer), transformBuffer(other.transformBuffer),
+                                                                meshRepr(other.meshRepr),rotMatrix(other.rotMatrix),transMatrix(other.transMatrix),
+                                                                scaleMatrix(other.scaleMatrix),renderType(other.renderType){
+        other.VAO = 0;
+        other.indexBuffer = 0;
+        other.vertexBuffer = 0;
+        other.transformBuffer = 0;
     }
 
-    MeshInstance &MeshInstance::operator=(const MeshInstance &other) {
-        vertices = other.vertices;
-        indices = other.indices;
-        rotMatrix = other.rotMatrix;
-        transMatrix = other.transMatrix;
-        scaleMatrix = other.scaleMatrix;
-        modelMatrix = other.modelMatrix;
-        if (other.VAO_initialised) {
-            this->initialiseVAO();
+    MeshInstance &MeshInstance::operator=(MeshInstance &&other) noexcept {
+        if (this != &other) {
+            release();
+            std::swap(this->VAO, other.VAO);
+            std::swap(this->transformBuffer, other.transformBuffer);
+            std::swap(this->VAO_initialised, other.VAO_initialised);
+            std::swap(this->meshRepr, other.meshRepr);
+            std::swap(this->rotMatrix, other.rotMatrix);
+            std::swap(this->transMatrix, other.transMatrix);
+            std::swap(this->scaleMatrix, other.scaleMatrix);
+            std::swap(this->renderType, other.renderType);
+            return *this;
         }
-        return *this;
     }
 
     MeshInstance::~MeshInstance() {
-        clearVAO();
+        release();
     }
 
-    void MeshInstance::initialiseVAO() {
-
-        glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
-
-        glGenBuffers(1, &vertexBuffer);
-        glGenBuffers(1, &indexBuffer);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices.front(), GL_STATIC_DRAW);
-
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid * ) 0); // Position Vector
-
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 3)); // Normal Vector
-
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 6)); // RGBA Values
-
-        glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 10)); // UV Coords
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices.front(), GL_STATIC_DRAW);
-
-        glGenBuffers(1, &transformBuffer);
-
-        glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
-        glBufferData(GL_ARRAY_BUFFER, modelMatrix.size() * sizeof(glm::mat4x4), (GLvoid *) &(modelMatrix.front()),
-                     GL_STREAM_DRAW);
-
-        glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) 0);
-        glEnableVertexAttribArray(5);
-        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) (sizeof(glm::vec4)));
-        glEnableVertexAttribArray(6);
-        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) (sizeof(glm::vec4) * 2));
-        glEnableVertexAttribArray(7);
-        glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) (sizeof(glm::vec4) * 3));
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-        glVertexAttribDivisor(0, 0);
-        glVertexAttribDivisor(1, 0);
-        glVertexAttribDivisor(2, 0);
-        glVertexAttribDivisor(3, 0);
-
-        for (GLuint i = 4; i <= 7; ++i) glVertexAttribDivisor(i, 1);
-
-        glBindVertexArray(0);
-        VAO_initialised = true;
-    }
-
-    void MeshInstance::clearVAO() {
-        if (VAO_initialised) {
-			glDeleteBuffers(1, &vertexBuffer);
-			glDeleteBuffers(1, &indexBuffer);
-            glDeleteBuffers(1, &transformBuffer);
-			glDeleteVertexArrays(1, &VAO);
-        }
+    void MeshInstance::release() {
+        glDeleteBuffers(1, &vertexBuffer);
+        glDeleteBuffers(1, &indexBuffer);
+        glDeleteBuffers(1, &transformBuffer);
+        glDeleteVertexArrays(1, &VAO);
     }
 
     void MeshInstance::render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) {
-        if (!VAO_initialised) initialiseVAO();
         program.bind();
         glm::mat4x4 temp1, temp2, temp3;
         if (program.getUniformLoc("proj") != -1) {
@@ -227,7 +113,7 @@ namespace cogl {
                                  (GLvoid * ) & modelMatrix.front());
         }
 
-        glDrawElementsInstanced(renderType, (GLsizei) indices.size(), GL_UNSIGNED_INT, 0,
+        glDrawElementsInstanced(renderType, (GLsizei) meshRepr.indices.size(), GL_UNSIGNED_INT, 0,
                                 (GLsizei) modelMatrix.size());
 		check_gl_error();
 
@@ -237,7 +123,6 @@ namespace cogl {
 
     void MeshInstance::rotateMesh(const int objectID, const double &angle, const glm::vec3 &axisOfRotation) {
         if (objectID == -1) {
-#pragma omp parallel for
             for (auto i = 0; i < rotMatrix.size(); ++i) {
                 rotMatrix[i] = glm::rotate((float) angle, axisOfRotation) * rotMatrix[i];
                 if (renderType != RenderTypes::Points) {
@@ -357,6 +242,8 @@ namespace cogl {
         rotMatrix.emplace_back(1.0f);
         scaleMatrix.emplace_back(1.0f);
         modelMatrix.emplace_back(1.0f);
+        release();
+        initialiseVAO();
     }
 
     void
@@ -365,13 +252,22 @@ namespace cogl {
         rotMatrix.push_back(rotation);
         scaleMatrix.push_back(scale);
         modelMatrix.push_back(transform * rotation * scale);
+        release();
+        initialiseVAO();
     }
 
     void
     MeshInstance::addInstances(const std::vector<glm::mat4x4> &transforms, const std::vector<glm::mat4x4> &rotations,
                                const std::vector<glm::mat4x4> &scales) {
-        for (auto i = 0; i < transforms.size(); ++i) addInstance(transforms[i], rotations[i], scales[i]);
-
+        for (auto i = 0; i < transforms.size(); ++i) {
+            transMatrix.push_back(transforms[i]);
+            rotMatrix.push_back(rotations[i]);
+            scaleMatrix.push_back(scales[i]);
+            modelMatrix.push_back(transforms[i] * rotations[i] * scales[i]);
+            addInstance(transforms[i], rotations[i], scales[i]);
+        }
+        release();
+        initialiseVAO();
     }
 
     void MeshInstance::addInstance(const glm::mat4x4 &modelMatrix) {
@@ -380,6 +276,8 @@ namespace cogl {
         transMatrix.back()[3] = modelMatrix[3] / modelMatrix[3][3];
         scaleMatrix.push_back(glm::inverse(rotMatrix.back()) * glm::inverse(transMatrix.back()) * modelMatrix);
         this->modelMatrix.push_back(transMatrix.back() * rotMatrix.back() * scaleMatrix.back());
+        release();
+        initialiseVAO();
     }
 
     void MeshInstance::addInstances(const std::vector<glm::mat4x4> &modelMatrices) {
@@ -391,14 +289,13 @@ namespace cogl {
             transMatrix.erase(transMatrix.begin() + objectID);
             rotMatrix.erase(rotMatrix.begin() + objectID);
             scaleMatrix.erase(scaleMatrix.begin() + objectID);
-            std::remove(indices.begin(), indices.end(), objectID);
         }
     }
 
     void MeshInstance::removeInstance(const unsigned long long objectID) {
         if (objectID < transMatrix.size()) {
             removeInstanceHelper(objectID);
-            clearVAO();
+            release();
             initialiseVAO();
         }
     }
@@ -407,8 +304,60 @@ namespace cogl {
         for (auto &&i : objectID) {
             if (i < transMatrix.size()) removeInstanceHelper(i);
         }
-        clearVAO();
+        release();
         initialiseVAO();
+    }
+
+    void MeshInstance::initialiseVAO() {
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+
+        glGenBuffers(1, &vertexBuffer);
+        glGenBuffers(1, &indexBuffer);
+
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+        glBufferData(GL_ARRAY_BUFFER, meshRepr.vertices.size() * sizeof(Vertex), &meshRepr.vertices.front(), GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid * ) 0); // Position Vector
+
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 3)); // Normal Vector
+
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 6)); // RGBA Values
+
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 10)); // UV Coords
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshRepr.indices.size() * sizeof(unsigned int), &meshRepr.indices.front(), GL_STATIC_DRAW);
+
+        glGenBuffers(1, &transformBuffer);
+
+        glBindBuffer(GL_ARRAY_BUFFER, transformBuffer);
+        glBufferData(GL_ARRAY_BUFFER, modelMatrix.size() * sizeof(glm::mat4x4), (GLvoid *) &(modelMatrix.front()),
+                     GL_STREAM_DRAW);
+
+        glEnableVertexAttribArray(4);
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) 0);
+        glEnableVertexAttribArray(5);
+        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) (sizeof(glm::vec4)));
+        glEnableVertexAttribArray(6);
+        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) (sizeof(glm::vec4) * 2));
+        glEnableVertexAttribArray(7);
+        glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4x4), (GLvoid *) (sizeof(glm::vec4) * 3));
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        glVertexAttribDivisor(0, 0);
+        glVertexAttribDivisor(1, 0);
+        glVertexAttribDivisor(2, 0);
+        glVertexAttribDivisor(3, 0);
+
+        for (GLuint i = 4; i <= 7; ++i) glVertexAttribDivisor(i, 1);
+
+        glBindVertexArray(0);
     }
 
 }

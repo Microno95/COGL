@@ -5,7 +5,9 @@
 #ifndef IDEK_MESHES_H
 #define IDEK_MESHES_H
 
-#include "Renderable.h"
+#include "MeshRepresentation.h"
+#include "Shader.h"
+#include "Camera.h"
 
 /*
  * Generic class to store Mesh data.
@@ -40,42 +42,40 @@
 namespace cogl {
     class Mesh : public Renderable {
     private:
-        std::vector<Vertex> vertices;
-        std::vector<unsigned int> indices;
+        MeshRepresentation meshRepr;
         glm::mat4x4 rotMatrix, transMatrix, scaleMatrix, normalMatrix;
         RenderTypes renderType;
 
+        void initialiseVAO();
+
     protected:
-        bool VAO_initialised = false;
-        GLuint VAO, vertexBuffer, indexBuffer;
+        GLuint VAO = 0, vertexBuffer = 0, indexBuffer = 0;
     public:
 
-        Mesh();
-
-        Mesh(const Mesh &other);
+        Mesh(const Mesh &other)=delete;
 
         explicit Mesh(const std::vector<Vertex> &verticesInit);
+
+        explicit Mesh(MeshRepresentation other);
 
         Mesh(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
              RenderTypes rType = RenderTypes::Tris);
 
         //Move Constructor
-        Mesh(Mesh &&other);
+        Mesh(Mesh &&other) noexcept;
 
         // Move Assignment
-        Mesh &operator=(Mesh &&other);
+        Mesh &operator=(Mesh &&other) noexcept;
 
         // Copy Assignment
-        Mesh &operator=(const Mesh &other);
+        Mesh &operator=(const Mesh &other)=delete;
 
         // Destructor
         ~Mesh();
 
-        void initialiseVAO() override;
+        void release();
 
-        void clearVAO() override;
-
-        void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data = true) override;
+        void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) override;
 
         void rotateMesh(double angle, glm::vec3 axisOfRotation);
 
@@ -89,9 +89,7 @@ namespace cogl {
 
         void setRenderType(RenderTypes rType);
 
-        const std::vector<Vertex> getVertices() const;
-
-        const std::vector<unsigned int> getIndices() const;
+        const MeshRepresentation getMeshRepresentation() const;
 
         const RenderTypes getRenderType() const;
 
@@ -109,11 +107,6 @@ namespace cogl {
 			return this->VAO;
 		}
 
-        // Default Shapes //
-        static const Mesh Cube;
-        static const Mesh Icosahedron;
-        // -------------- //
-
         /*friend std::ostream &operator<<(std::ostream &outstream, const Mesh &rhs) {
             for (auto i = 0; i < rhs.vertices.size(); ++i) {
                 std::cout << "Vertex " << i << ":" << std::endl << rhs.vertices[i] << std::endl;
@@ -126,6 +119,5 @@ namespace cogl {
 
         static Mesh load_from_obj(std::string filename);
     };
-
-}
+};
 #endif //IDEK_MESHES_H

@@ -59,7 +59,7 @@ int main() {
 	cube.moveMeshTo(target_on_floor);
 
     while (!mainWindow.shouldClose()) {
-		cube.rotateMesh(PI * angular_speed, glm::vec3(0.0f, 1.0f, 0.0f));
+		cube.rotateMesh(PI * angular_speed, glm::vec3({0.0f, 1.0f, 0.0f}));
         mainWindow.renderBegin();
 		cube.render(solidShader, defaultCamera);
         mainWindow.renderEnd();

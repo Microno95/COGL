@@ -6,18 +6,18 @@
 #include "../../cogl.h"
 
 int main() {
-	cogl::GLWindow mainWindow(1, 4, 5, 1, 1024, 768);
+	cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768);
 	mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_DEPTH_TEST);
 	mainWindow.enableCapability(GL_CULL_FACE);
 	mainWindow.setCullType(GL_BACK);
 	mainWindow.setDepthFunction(GL_LESS);
-	mainWindow.setAASamples(0);
+	mainWindow.setAASamples(1);
 
 	//cogl::MeshInstance cubes(cogl::Mesh::Cube, 25);
 	//auto cube = cogl::Mesh::Cube;
-	cogl::MeshInstance cubes(cogl::Mesh::Cube, 10000);
+	cogl::MeshInstance cubes(cogl::Mesh::load_from_obj("dragon.obj"), 250);
 
     float radius = 3;
     float angle = 0.0;
@@ -31,7 +31,7 @@ int main() {
 
 	cubes.scaleMesh(-1, 0.025f);
 
-	cogl::Camera defaultCamera = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
+	cogl::Camera defaultCamera = cogl::Camera(glm::vec3({1.0f, 1.0f, 0.0f}),
 		glm::vec3({ 0.f, 0.f, 0.f }),
 		glm::vec3({ 0.0f, 1.0f, 0.0f }), cogl::projection::perspective);
 	defaultCamera.changeAR(16.0 / 9.0);
@@ -48,12 +48,17 @@ int main() {
 	int every_n_frames = 5;
 	float rotation_speed = 0.001f;
 
+	cogl::Mesh test1 = cogl::Mesh(cogl::MeshRepresentation::Cube);
+
     while (!mainWindow.shouldClose()) {
 		Timer test = Timer("Frame Time");
 		previousTime = glfwGetTime();
+        test1 = cogl::Mesh(cogl::MeshRepresentation::Cube);
+        test1.scaleMesh(.25f);
 		cubes.rotateMesh(-1, 2 * PI * rotation_speed, glm::vec3({ 0.0f, 1.0f, 0.0f }));
 		mainWindow.renderBegin();
-		cubes.render(defShader, defaultCamera, false);
+		test1.render(defShader, defaultCamera, true);
+//		cubes.render(defShader, defaultCamera, true);
 		mainWindow.renderEnd();
 		currentTime = glfwGetTime();
         if (frameCount++ >= every_n_frames) {

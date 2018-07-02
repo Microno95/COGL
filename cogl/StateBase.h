@@ -40,6 +40,8 @@ namespace cogl {
             if (event_handling_instance)
                 event_handling_instance->scrollcallback(window, xoffset, yoffset);
         }
+
+
     };
 
 }

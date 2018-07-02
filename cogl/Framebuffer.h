@@ -18,7 +18,17 @@ namespace cogl {
 
         explicit Framebuffer(int windowWidth = 1024, int windowHeight = 1024);
 
+        //Delete the copy constructor/assignment.
+        Framebuffer(const Framebuffer &) = delete;
+        Framebuffer &operator=(const Framebuffer &) = delete;
+
+        Framebuffer(Framebuffer &&other) noexcept;
+
+        Framebuffer &operator=(Framebuffer &&other) noexcept;
+
         ~Framebuffer();
+
+        void release();
 
         void generateFBO();
 
@@ -57,7 +67,13 @@ namespace cogl {
 
         explicit FramebufferMultisampled(int aaSamples = 1, int windowWidth = 1024, int windowHeight = 1024);
 
+        FramebufferMultisampled(FramebufferMultisampled &&other) noexcept;
+
+        FramebufferMultisampled &operator=(FramebufferMultisampled &&other) noexcept;
+
         ~FramebufferMultisampled();
+
+        void release();
 
         void generateFBO();
 

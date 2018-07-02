@@ -3,93 +3,68 @@
 //
 
 #include "Mesh.h"
-#include "Shader.h"
-#include "Camera.h"
 
 namespace cogl {
-
-    Mesh::Mesh() {
-        vertices = std::vector<Vertex>();
-        indices = std::vector<unsigned int>();
+    Mesh::Mesh(const std::vector<Vertex> &verticesInit) : meshRepr(verticesInit){
         rotMatrix = glm::mat4x4(1.0f);
         transMatrix = glm::mat4x4(1.0f);
         scaleMatrix = glm::mat4x4(1.0f);
         normalMatrix = glm::mat4x4(1.0f);
         renderType = RenderTypes::Tris;
-    }
 
-    Mesh::Mesh(const Mesh &other) {
-        this->vertices = other.vertices;
-        this->indices = other.indices;
-        rotMatrix = glm::mat4x4(1.0f);
-        transMatrix = glm::mat4x4(1.0f);
-        scaleMatrix = glm::mat4x4(1.0f);
-        normalMatrix = glm::mat4x4(1.0f);
-        renderType = RenderTypes::Tris;
-    }
-
-    Mesh::Mesh(const std::vector<Vertex> &verticesInit) {
-        this->vertices = std::vector<Vertex>(verticesInit);
-        this->indices = std::vector<unsigned int>();
-        for (unsigned int i = 0; i < vertices.size(); i++) indices.push_back(i);
-        rotMatrix = glm::mat4x4(1.0f);
-        transMatrix = glm::mat4x4(1.0f);
-        scaleMatrix = glm::mat4x4(1.0f);
-        normalMatrix = glm::mat4x4(1.0f);
-        renderType = RenderTypes::Tris;
+        initialiseVAO();
     }
 
     Mesh::Mesh(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit,
-               RenderTypes rType) {
-        this->vertices = std::vector<Vertex>(verticesInit);
-        this->indices = std::vector<unsigned int>(indicesInit);
-        this->renderType = rType;
+               RenderTypes rType) : meshRepr(verticesInit, indicesInit) {
         rotMatrix = glm::mat4x4(1.0f);
         transMatrix = glm::mat4x4(1.0f);
         scaleMatrix = glm::mat4x4(1.0f);
         normalMatrix = glm::mat4x4(1.0f);
+        renderType = rType;
+
+        initialiseVAO();
     }
 
-    Mesh::Mesh(Mesh &&other) {
-        std::swap(this->VAO, other.VAO);
-        std::swap(this->vertexBuffer, other.vertexBuffer);
-        std::swap(this->indexBuffer, other.indexBuffer);
-        std::swap(this->vertices, other.vertices);
-        std::swap(this->indices, other.indices);
-        std::swap(this->rotMatrix, other.rotMatrix);
-        std::swap(this->transMatrix, other.transMatrix);
-        std::swap(this->scaleMatrix, other.scaleMatrix);
-        std::swap(this->normalMatrix, other.normalMatrix);
-        std::swap(this->renderType, other.renderType);
-    }
-
-    Mesh &Mesh::operator=(Mesh &&other) {
-        std::swap(this->VAO, other.VAO);
-        std::swap(this->vertexBuffer, other.vertexBuffer);
-        std::swap(this->indexBuffer, other.indexBuffer);
-        std::swap(this->vertices, other.vertices);
-        std::swap(this->indices, other.indices);
-        std::swap(this->rotMatrix, other.rotMatrix);
-        std::swap(this->transMatrix, other.transMatrix);
-        std::swap(this->scaleMatrix, other.scaleMatrix);
-        std::swap(this->normalMatrix, other.normalMatrix);
-        std::swap(this->renderType, other.renderType);
-        return *this;
-    }
-
-    Mesh &Mesh::operator=(const Mesh &other) {
-        this->vertices = other.vertices;
-        this->indices = other.indices;
+    Mesh::Mesh(MeshRepresentation other) : meshRepr(std::move(other)) {
         rotMatrix = glm::mat4x4(1.0f);
         transMatrix = glm::mat4x4(1.0f);
         scaleMatrix = glm::mat4x4(1.0f);
         normalMatrix = glm::mat4x4(1.0f);
         renderType = RenderTypes::Tris;
-        return *this;
+
+        initialiseVAO();
+    }
+
+    Mesh::Mesh(Mesh &&other) noexcept : meshRepr(other.meshRepr), VAO(other.VAO), vertexBuffer(other.vertexBuffer), indexBuffer(other.indexBuffer){
+        other.VAO = 0;
+        other.vertexBuffer = 0;
+        other.indexBuffer = 0;
+        std::swap(this->rotMatrix, other.rotMatrix);
+        std::swap(this->transMatrix, other.transMatrix);
+        std::swap(this->scaleMatrix, other.scaleMatrix);
+        std::swap(this->normalMatrix, other.normalMatrix);
+        std::swap(this->renderType, other.renderType);
+    }
+
+    Mesh &Mesh::operator=(Mesh &&other) noexcept {
+        if (this != &other) {
+            release();
+            std::swap(this->VAO, other.VAO);
+            std::swap(this->vertexBuffer, other.vertexBuffer);
+            std::swap(this->indexBuffer, other.indexBuffer);
+            std::swap(this->meshRepr, other.meshRepr);
+            std::swap(this->rotMatrix, other.rotMatrix);
+            std::swap(this->transMatrix, other.transMatrix);
+            std::swap(this->scaleMatrix, other.scaleMatrix);
+            std::swap(this->normalMatrix, other.normalMatrix);
+            std::swap(this->renderType, other.renderType);
+            return *this;
+        }
     }
 
     Mesh::~Mesh() {
-        clearVAO();
+        release();
     }
 
     void Mesh::initialiseVAO() {
@@ -100,7 +75,7 @@ namespace cogl {
         glGenBuffers(1, &indexBuffer);
 
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, meshRepr.vertices.size() * sizeof(Vertex), meshRepr.vertices.data(), GL_STATIC_DRAW);
 
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr); // Position Vector
@@ -115,20 +90,21 @@ namespace cogl {
         glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) (sizeof(float) * 10)); // UV Coords
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshRepr.indices.size() * sizeof(unsigned int), meshRepr.indices.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(0);
-        VAO_initialised = true;
     }
 
-    void Mesh::clearVAO() {
+    void Mesh::release() {
         glDeleteBuffers(1, &vertexBuffer);
         glDeleteBuffers(1, &indexBuffer);
         glDeleteVertexArrays(1, &VAO);
+        VAO = 0;
+        vertexBuffer = 0;
+        indexBuffer = 0;
     }
 
     void Mesh::render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) {
-        if (!VAO_initialised) initialiseVAO();
         program.bind();
         glm::mat4x4 temp;
         if (program.getUniformLoc("mvp") != -1) {
@@ -156,7 +132,7 @@ namespace cogl {
             glVertexAttrib4fv(program.getAttribLoc("uTessLevel"), (const GLfloat *) &tessLevel);
         };
         glBindVertexArray(VAO);
-        glDrawElements(renderType, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, (void *) 0);
+        glDrawElements(renderType, static_cast<GLsizei>(meshRepr.indices.size()), GL_UNSIGNED_INT, (void *) 0);
         glBindVertexArray(0);
         cogl::Shader::unbind();
     }
@@ -187,12 +163,8 @@ namespace cogl {
         renderType = rType;
     }
 
-    const std::vector<Vertex> Mesh::getVertices() const {
-        return std::vector<Vertex>(this->vertices);
-    }
-
-    const std::vector<unsigned int> Mesh::getIndices() const {
-        return std::vector<unsigned int>(this->indices);
+    const MeshRepresentation Mesh::getMeshRepresentation() const {
+        return MeshRepresentation(this->meshRepr);
     }
 
     const glm::mat4x4 Mesh::getModelMatrix() const {
@@ -219,81 +191,7 @@ namespace cogl {
         return scaleMatrix;
     }
 
-    const Mesh Mesh::Cube = Mesh(std::vector<Vertex>(
-            {{-1.0f, -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
-             {1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
-             {1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f},
-             {-1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
-             {-1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
-             {1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f},
-             {1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
-             {-1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}}),
-                                 std::vector<unsigned int>({/*front*/ 0, 1, 2, 2, 3, 0,   /*top*/  1, 5, 6, 6, 2, 1,
-                                                                   /*back*/  7, 6, 5, 5, 4, 7, /*bottom*/ 4, 0, 3, 3, 7,
-                                                                      4,
-                                                                   /*left*/  4, 5, 1, 1, 0, 4,  /*right*/ 3, 2, 6, 6, 7,
-                                                                      3,}));
-
-    const Mesh Mesh::Icosahedron = Mesh(std::vector<Vertex>(
-            {{0.000f,  0.000f,  1.000f,  -1.0f, -1.0f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
-             {0.894f,  0.000f,  0.447f,  1.0f,  -1.0f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
-             {0.276f,  0.851f,  0.447f,  1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f},
-             {-0.724f, 0.526f,  0.447f,  -1.0f, 1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
-             {-0.724f, -0.526f, 0.447f,  -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
-             {0.276f,  -0.851f, 0.447f,  1.0f,  -1.0f, 1.0f,  1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f},
-             {0.724f,  0.526f,  -0.447f, 1.0f,  1.0f,  -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
-             {-0.276f, 0.851f,  -0.447f, 1.0f,  1.0f,  -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
-             {-0.894f, 0.000f,  -0.447f, 1.0f,  1.0f,  -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
-             {-0.276f, -0.851f, -0.447f, 1.0f,  1.0f,  -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
-             {0.724f,  -0.526f, -0.447f, 1.0f,  1.0f,  -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
-             {0.000f,  0.000f,  -1.000f, -1.0f, 1.0f,  -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}}),
-                                        std::vector<unsigned int>({2, 1, 0, 3, 2, 0, 4, 3, 0, 5, 4, 0,
-                                                                   1, 5, 0, 11, 6, 7, 11, 7, 8, 11, 8, 9,
-                                                                   11, 9, 10, 11, 10, 6, 1, 2, 6, 2, 3, 7,
-                                                                   3, 4, 8, 4, 5, 9, 5, 1, 10, 2, 7, 6,
-                                                                   3, 8, 7, 4, 9, 8, 5, 10, 9, 1, 6, 10}));
-
     Mesh Mesh::load_from_obj(const std::string filename) {
-        std::vector<Vertex> verticesVector;
-        std::vector<unsigned int> indicesVector;
-
-        // Read the Vertex Shader code from the file
-        std::vector<std::string> objectCode;
-        std::ifstream objectStream(filename, std::ios::in);
-        if (objectStream.is_open()) {
-            std::string Line;
-            while (getline(objectStream, Line))
-                objectCode.emplace_back(Line);
-            objectStream.close();
-        } else {
-            printf("Impossible to open %s. Are you in the right directory?\n", filename);
-            getchar();
-        }
-
-        for (auto &i : objectCode) {
-            if (i[0] == 'v') {
-                std::stringstream temp(i);
-                Vertex temp2{};
-                char throwaway;
-                temp >> throwaway;
-                temp >> temp2.x;
-                temp >> temp2.y;
-                temp >> temp2.z;
-                verticesVector.push_back(temp2);
-            } else if (i[0] == 'f') {
-                std::stringstream temp(i);
-                unsigned int temp2;
-                char throwaway;
-                temp >> throwaway;
-                temp >> temp2;
-                indicesVector.push_back(temp2 - 1);
-                temp >> temp2;
-                indicesVector.push_back(temp2 - 1);
-                temp >> temp2;
-                indicesVector.push_back(temp2 - 1);
-            }
-        }
-
-        return Mesh(verticesVector, indicesVector);
+        return Mesh(MeshRepresentation::load_from_obj(filename));
     }
-}
+};
