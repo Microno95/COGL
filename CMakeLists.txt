@@ -7,8 +7,6 @@ set(CMAKE_CXX_STANDARD 14)
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/OpenGL")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
-
-
 set(SOURCE_FILES
         cogl.h
 		Constants.h
@@ -89,6 +87,7 @@ target_link_libraries(${PROJECT_NAME} glad)
 
 add_executable(base_test "tests/Base_Test/main.cpp" ${SOURCE_FILES})
 add_executable(instancing_test "tests/Instancing_Test/main.cpp" ${SOURCE_FILES})
+add_executable(merge_test "tests/Merge_Test/main.cpp" ${SOURCE_FILES})
 target_link_libraries(base_test ${OPENGL_gl_LIBRARY})
 target_link_libraries(base_test glfw ${GLFW_LIBRARIES})
 target_link_libraries(base_test glm)
@@ -99,3 +98,8 @@ target_link_libraries(instancing_test glfw ${GLFW_LIBRARIES})
 target_link_libraries(instancing_test glm)
 target_link_libraries(instancing_test glad)
 target_link_libraries(instancing_test ${PROJECT_NAME})
+target_link_libraries(merge_test ${OPENGL_gl_LIBRARY})
+target_link_libraries(merge_test glfw ${GLFW_LIBRARIES})
+target_link_libraries(merge_test glm)
+target_link_libraries(merge_test glad)
+target_link_libraries(merge_test ${PROJECT_NAME})

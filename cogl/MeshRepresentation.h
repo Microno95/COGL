@@ -22,6 +22,15 @@ namespace cogl {
         MeshRepresentation(std::vector<Vertex> mesh_verts, std::vector<unsigned int> mesh_indices) : vertices(
                 std::move(mesh_verts)), indices(std::move(mesh_indices)) {}
 
+		MeshRepresentation& mergeRepresentations(const MeshRepresentation& other) {
+			auto initial_size = vertices.size();
+			vertices.insert(std::end(vertices), std::begin(other.vertices), std::end(other.vertices));
+			auto other_indices = other.indices;
+			for (auto &i : other_indices) i += initial_size;
+			indices.insert(std::end(indices), std::begin(other_indices), std::end(other_indices));
+			return *this;
+		}
+
         static MeshRepresentation load_from_obj(const std::string &filename) {
             std::vector<Vertex> verticesVector;
             std::vector<unsigned int> indicesVector;
