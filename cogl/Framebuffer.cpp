@@ -87,6 +87,7 @@ cogl::Framebuffer &cogl::Framebuffer::operator=(cogl::Framebuffer &&other) noexc
         std::swap(colorBuffers, other.colorBuffers);
         std::swap(depthRenderBuffer, other.depthRenderBuffer);
     }
+	return *this;
 }
 
 cogl::Framebuffer::Framebuffer(cogl::Framebuffer &&other) noexcept : framebuffer(other.framebuffer),colorBuffers(other.colorBuffers),
@@ -129,6 +130,7 @@ cogl::FramebufferMultisampled &cogl::FramebufferMultisampled::operator=(cogl::Fr
         std::swap(colorBuffers, other.colorBuffers);
         std::swap(depthRenderBuffer, other.depthRenderBuffer);
     }
+	return *this;
 }
 
 cogl::FramebufferMultisampled::FramebufferMultisampled(cogl::FramebufferMultisampled &&other) noexcept  : framebuffer(other.framebuffer),colorBuffers(other.colorBuffers),

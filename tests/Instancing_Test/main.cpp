@@ -63,7 +63,7 @@ int main() {
 		currentTime = glfwGetTime();
         if (frameCount++ >= every_n_frames) {
             // Display the frame count here any way you want.
-            mainWindow.setTitle(std::to_string(((currentTime - previousTime)) * 1e3) + "ms");
+            mainWindow.setTitle(std::to_string(test.GetTimeDelta().count()) + "ms");
             frameCount = 0;
         }
     };

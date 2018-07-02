@@ -26,16 +26,16 @@ std::string GetCurrentWorkingDir() {
 
 int main() {
     std::cout << GetCurrentWorkingDir() << std::endl;
-    cogl::GLWindow mainWindow(1, 4, 5, 1, 1024, 768);
+    cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768);
     mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_PROGRAM_POINT_SIZE);
     mainWindow.enableCapability(GL_DEPTH_TEST);
     mainWindow.enableCapability(GL_CULL_FACE);
     mainWindow.setCullType(GL_BACK);
     mainWindow.setDepthFunction(GL_LESS);
-    mainWindow.setAASamples(1);
+    mainWindow.setAASamples(0);
 
-    cogl::Mesh cube = cogl::Mesh::load_from_obj("dragon.obj");
+    cogl::Mesh original_dragon = cogl::Mesh::load_from_obj("dragon.obj"), cube = cogl::Mesh::load_from_obj("dragon.obj");
 
     cogl::Camera defaultCamera = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
                                               glm::vec3({0.f, 0.f, 0.f}),
@@ -51,26 +51,42 @@ int main() {
     cogl::Shader solidShader("cogl/shaders/solidColour");
     check_gl_error();
     double previousTime = glfwGetTime();
+	double otherPreviousTime = glfwGetTime();
+	double reloadPeriod = 2.0;
     int frameCount = 0;
     int frameCounterDebug = 0;
+	bool dragon_or_cube = false;
 	glm::vec3 target_on_floor{ 0.0,0.0,0.0 };
-	float angular_speed = 0.025f;
-	cube.scaleMesh(0.01f);
-	cube.moveMeshTo(target_on_floor);
+	float angular_speed = 0.01f;
 
     while (!mainWindow.shouldClose()) {
+		Timer test = Timer("Frame Time", true);
 		cube.rotateMesh(PI * angular_speed, glm::vec3({0.0f, 1.0f, 0.0f}));
+		if (previousTime - otherPreviousTime >= reloadPeriod) {
+			Timer load_test = Timer((dragon_or_cube ? "Dragon Load" : "Cube Load"), false);
+			if (dragon_or_cube) {
+				cube = cogl::Mesh(original_dragon.getMeshRepresentation());
+				dragon_or_cube = false;
+			}
+			else {
+				cube = cogl::Mesh(cogl::MeshRepresentation::Cube);
+				dragon_or_cube = true;
+			}
+			otherPreviousTime = glfwGetTime();
+			cube.scaleMesh(0.01f);
+		}
+		cube.moveMeshTo(target_on_floor);
         mainWindow.renderBegin();
-		cube.render(solidShader, defaultCamera);
+		cube.render(defShader, defaultCamera, true);
         mainWindow.renderEnd();
-        double currentTime = glfwGetTime();
+		double currentTime = glfwGetTime();
+		if (currentTime - previousTime >= 1.0) {
+			// Display the frame count here any way you want.
+			mainWindow.setTitle("FPS: " + std::to_string(frameCount / (currentTime - previousTime)) + " | " + std::to_string(test.GetTimeDelta().count()) + "ms | frame: " + std::to_string(frameCounterDebug));
+			previousTime = glfwGetTime();
+			frameCount = 0;
+		}
         frameCount++;
-        if (currentTime - previousTime >= 1.0) {
-            // Display the frame count here any way you want.
-            mainWindow.setTitle(std::to_string(((double) frameCount) / (currentTime - previousTime)) + "FPS");
-            previousTime = glfwGetTime();
-            frameCount = 0;
-        }
         ++frameCounterDebug;
     };
 
