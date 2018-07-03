@@ -40,11 +40,12 @@ namespace cogl {
 		}
 		printf("OpenGL %d.%d\n", GLVersion.major, GLVersion.minor);
 		check_gl_error();
-        this->setEventHandling();
+
+		glfwSetWindowUserPointer(contextHandle, this);
         glfwSetErrorCallback((GLFWerrorfun) error_callback);
-        glfwSetWindowSizeCallback(contextHandle, (GLFWwindowsizefun) StateBaseGLWindow::windowsizecallback_dispatch);
-        glfwSetKeyCallback(contextHandle, cogl::StateBase::keycallback_dispatch);
-        glfwSetScrollCallback(contextHandle, cogl::StateBase::scrollcallback_dispatch);
+		glfwSetWindowSizeCallback(contextHandle, [](GLFWwindow* _w, int _a, int _b) {static_cast<GLWindow*>(glfwGetWindowUserPointer(_w))->windowsizecallback(_w, _a, _b); });
+		glfwSetKeyCallback(contextHandle, [](GLFWwindow* _w, int _a, int _b, int _c, int _d) {static_cast<GLWindow*>(glfwGetWindowUserPointer(_w))->mainCamera->keycallback(_w, _a, _b, _c, _d); });
+		glfwSetScrollCallback(contextHandle, [](GLFWwindow* _w, double _a, double _b) {static_cast<GLWindow*>(glfwGetWindowUserPointer(_w))->mainCamera->scrollcallback(_w, _a, _b); });
         glfwSetWindowAspectRatio(contextHandle, aspectRatioWidth, aspectRatioHeight);
         gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
         glfwSwapInterval(swapInterval);
@@ -227,3 +228,4 @@ namespace cogl {
 		glfwSwapBuffers(contextHandle);
     }
 }
+

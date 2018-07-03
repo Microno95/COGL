@@ -21,12 +21,8 @@ set(SOURCE_FILES
         cogl/Shader.cpp
         cogl/Shader.h
         cogl/Renderable.h
-        cogl/StateBase.h 
-		cogl/StateBase.cpp 
 		cogl/Framebuffer.cpp 
 		cogl/Framebuffer.h 
-		cogl/StateBaseGLWindow.cpp 
-		cogl/StateBaseGLWindow.h
 		cogl/MeshRepresentation.cpp
 		cogl/MeshRepresentation.h)
 
@@ -88,6 +84,7 @@ target_link_libraries(${PROJECT_NAME} glad)
 add_executable(base_test "tests/Base_Test/main.cpp" ${SOURCE_FILES})
 add_executable(instancing_test "tests/Instancing_Test/main.cpp" ${SOURCE_FILES})
 add_executable(merge_test "tests/Merge_Test/main.cpp" ${SOURCE_FILES})
+add_executable(multiwindow_test "tests/MultiWindow_Test/main.cpp" ${SOURCE_FILES})
 target_link_libraries(base_test ${OPENGL_gl_LIBRARY})
 target_link_libraries(base_test glfw ${GLFW_LIBRARIES})
 target_link_libraries(base_test glm)
@@ -103,3 +100,8 @@ target_link_libraries(merge_test glfw ${GLFW_LIBRARIES})
 target_link_libraries(merge_test glm)
 target_link_libraries(merge_test glad)
 target_link_libraries(merge_test ${PROJECT_NAME})
+target_link_libraries(multiwindow_test ${OPENGL_gl_LIBRARY})
+target_link_libraries(multiwindow_test glfw ${GLFW_LIBRARIES})
+target_link_libraries(multiwindow_test glm)
+target_link_libraries(multiwindow_test glad)
+target_link_libraries(multiwindow_test ${PROJECT_NAME})

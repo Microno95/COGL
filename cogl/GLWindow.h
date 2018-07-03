@@ -9,16 +9,15 @@
 #include "Camera.h"
 #include "Renderable.h"
 #include "Framebuffer.h"
-#include "StateBaseGLWindow.h"
 #include "../Constants.h"
 
 namespace cogl {
 
-    class GLWindow : public StateBaseGLWindow {
+    class GLWindow {
     protected:
         // Stored handle to current context //
         GLFWwindow *contextHandle;
-
+		
         // Store the parameters of the current context //
         int swapInterval, aaSamples, contextMajor, contextMinor,
                 windowWidth, windowHeight, aspectRatioWidth, aspectRatioHeight;
@@ -40,7 +39,7 @@ namespace cogl {
         std::mutex paramLock;
         bool windowCreated = false;
 
-        Camera mainCamera;
+		Camera* mainCamera = nullptr;
 
     public:
         explicit GLWindow(int _swapInterval = 1, int _contextMajor = 4,
@@ -115,7 +114,11 @@ namespace cogl {
 
         static void error_callback(int error, const char *description);
 
-        void windowsizecallback(GLFWwindow *window, int width, int height) override;
+        void windowsizecallback(GLFWwindow *window, int width, int height);
+
+		void setMainCamera(cogl::Camera &_mainCamera){
+			mainCamera = &_mainCamera;
+		};
 
         void renderFramebuffers();
     };

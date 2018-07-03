@@ -82,11 +82,8 @@ namespace cogl {
         void generateRenderBuffer(int aaSamples, int windowWidth, int windowHeight);
 
         void regenerateBuffers(int aaSamples, int windowWidth, int windowHeight) {
-            width = windowWidth;
-            height = windowHeight;
-            numAAs = aaSamples;
-            generateColorBuffer(numAAs, windowWidth, windowHeight);
-            generateRenderBuffer(numAAs, windowWidth, windowHeight);
+            generateColorBuffer(aaSamples, windowWidth, windowHeight);
+            generateRenderBuffer(aaSamples, windowWidth, windowHeight);
         };
 
         void viewport() {

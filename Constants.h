@@ -111,8 +111,8 @@ class Timer {
 private:
 	std::string label = "";
 	std::chrono::high_resolution_clock::time_point startTime;
-	std::chrono::high_resolution_clock::time_point endTime;
-	bool endTimeSet = false;
+	std::chrono::high_resolution_clock::time_point stopTime;
+	bool stopTimeSet = false;
 	bool suppressReportOnDestruct = false;
 public:
 	Timer() {
@@ -122,28 +122,32 @@ public:
 	Timer(std::string _label, bool _suppressReportOnDestruct) : label(_label), startTime(std::chrono::high_resolution_clock::now()), suppressReportOnDestruct(_suppressReportOnDestruct) {}
 
 	~Timer() {
-		if (!endTimeSet) {
-			endTime = std::chrono::high_resolution_clock::now();
+		if (!stopTimeSet) {
+			stopTime = std::chrono::high_resolution_clock::now();
 		}
-		if (!suppressReportOnDestruct) std::cout << label << " : " << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() << "ms" << std::endl;
+		if (!suppressReportOnDestruct) std::cout << label << " : " << std::chrono::duration_cast<std::chrono::milliseconds>(stopTime - startTime).count() << "ms" << std::endl;
 	}
 
 	void Stop() {
-		endTime = std::chrono::high_resolution_clock::now();
-		endTimeSet = true;
+		stopTime = std::chrono::high_resolution_clock::now();
+		stopTimeSet = true;
 	}
 
 	void Start() {
 		startTime = std::chrono::high_resolution_clock::now();
-		endTimeSet = false;
+		stopTimeSet = false;
 	}
 
 	void Report() {
 		std::cout << label << " : " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count() << "ms" << std::endl;
 	}
 
-	auto GetTimeDelta() {
+	auto GetTimeDeltaNow() {
 		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime);
+	}
+
+	auto GetTimeDelta() {
+		return std::chrono::duration_cast<std::chrono::milliseconds>(stopTime - startTime);
 	}
 };
 

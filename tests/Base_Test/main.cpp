@@ -44,7 +44,7 @@ int main() {
     defaultCamera.changeZFar(1000.0);
     defaultCamera.changeZNear(0.001);
 
-    defaultCamera.setEventHandling();
+	mainWindow.setMainCamera(defaultCamera);
 
     cogl::Shader defShader("cogl/shaders/triTest");
     check_gl_error();

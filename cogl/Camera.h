@@ -6,7 +6,6 @@
 #define IDEK_CAMERA_H
 
 #include "../Constants.h"
-#include "StateBase.h"
 
 namespace cogl {
     enum projection {
@@ -16,7 +15,7 @@ namespace cogl {
         radians, degrees
     };
 
-    class Camera : public StateBase {
+    class Camera {
     private:
         double fieldOfView = 45.0f, aspectRatio = 1.0f, zNear = 0.05f, zFar = 100.0f;
         projection selfProj = projection::perspective;
@@ -108,11 +107,11 @@ namespace cogl {
                 int key,
                 int scancode,
                 int action,
-                int mods) override;
+                int mods);
 
         void scrollcallback(
                 GLFWwindow *window,
-                double xoffset, double yoffset) override;
+                double xoffset, double yoffset);
 
     };
 }
