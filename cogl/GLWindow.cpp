@@ -149,6 +149,7 @@ namespace cogl {
     };
 
     void GLWindow::renderBegin() {
+		if (glfwGetCurrentContext() != this->contextHandle) this->setCurrentContext();
         MSFBO->bindFBODraw();
         glViewport(0, 0, MSFBO->width, MSFBO->height);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

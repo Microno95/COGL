@@ -51,7 +51,7 @@ int main() {
 	cogl::Shader defShader("cogl/shaders/triTest");
 	cogl::Shader solidShader("cogl/shaders/solidColour");
 
-	cogl::GLWindow secWindow(1, 4, 5, 1, 1024, 768);
+	cogl::GLWindow secWindow(0, 4, 5, 1, 1024, 768);
 	secWindow.enableCapability(GL_DEPTH_TEST);
 	secWindow.enableCapability(GL_CULL_FACE);
 	secWindow.setCullType(GL_BACK);
@@ -82,16 +82,14 @@ int main() {
 		test_object.rotateMesh(PI * angular_speed, glm::vec3({ 0.0f, 1.0f, 0.0f }));
 		test_object2.rotateMesh(PI * angular_speed, glm::vec3({ 0.0f, 1.0f, 0.0f }));
 		Timer mainTimer = Timer("Frame Time for Main", true);
-		mainWindow.setCurrentContext();
 		mainWindow.renderBegin();
 		test_object.render(defShader, defaultCamera, true);
-		glFinish();
 		mainWindow.renderEnd();
+		glFinish();
 		mainTimer.Stop();
 		Timer secTimer = Timer("Frame Time for Sec", true);
-		secWindow.setCurrentContext();
 		secWindow.renderBegin();
-		test_object2.render(solidShader2, secCamera, true);
+		test_object2.render(defShader2, secCamera, true);
 		secWindow.renderEnd();
 		glFinish();
 		secTimer.Stop();
