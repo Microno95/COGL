@@ -2,27 +2,26 @@ cmake_minimum_required(VERSION 3.6)
 project(libcogl VERSION 1.0.0 LANGUAGES CXX )
 enable_testing()
 
-set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/OpenGL")
+set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
-set(SOURCE_FILES
-        cogl.h
-		Constants.h
-        cogl/Camera.cpp
-        cogl/Camera.h
-		cogl/Mesh.cpp
-        cogl/Mesh.h
-        cogl/MeshInstance.cpp
-        cogl/MeshInstance.h
-        cogl/GLWindow.cpp
-        cogl/GLWindow.h
-        cogl/Shader.cpp
-        cogl/Shader.h
-        cogl/Renderable.h
-		cogl/Framebuffer.cpp 
-		cogl/Framebuffer.h 
-		cogl/MeshRepresentation.cpp
-		cogl/MeshRepresentation.h)
+add_library(cogl "src/cogl.h")
+
+target_include_directories(cogl
+    PUBLIC 
+        $<INSTALL_INTERFACE:include>    
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+set(GENERAL_OPTIONS "-Wall -Wextra -Wno-unused-function")
+set(DEBUG_OPTIONS "-g")
+set(RELEASE_OPTIONS "-O3")
+
+target_compile_options(cogl PRIVATE "${GENERAL_OPTIONS}")
+target_compile_options(cogl PRIVATE "$<$<CONFIG:DEBUG>:${DEBUG_OPTIONS}>")
+target_compile_options(cogl PRIVATE "$<$<CONFIG:RELEASE>:${RELEASE_OPTIONS}>")
 
 # Include OpenMP libraries
 message(STATUS "Checking OpenMP")
@@ -37,12 +36,6 @@ IF (OPENMP_FOUND)
 ELSE ()
     message("Missed OpenMP!")
 ENDIF ()
-
-add_library(COGL ${SOURCE_FILES})
-
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-function")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 # Include OpenGL libraries
 find_package(OpenGL REQUIRED)
