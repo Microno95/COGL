@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.6)
-project(COGL)
+project(libcogl VERSION 1.0.0 LANGUAGES CXX )
 enable_testing()
-
-set(CMAKE_CXX_STANDARD 14)
 
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/OpenGL")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -40,7 +38,11 @@ ELSE ()
     message("Missed OpenMP!")
 ENDIF ()
 
-add_library(${PROJECT_NAME} ${SOURCE_FILES})
+add_library(COGL ${SOURCE_FILES})
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-function")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 # Include OpenGL libraries
 find_package(OpenGL REQUIRED)
@@ -81,10 +83,11 @@ add_subdirectory(${GLAD_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${GLAD_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} glad)
 
-add_executable(base_test "tests/Base_Test/main.cpp" ${SOURCE_FILES})
-add_executable(instancing_test "tests/Instancing_Test/main.cpp" ${SOURCE_FILES})
-add_executable(merge_test "tests/Merge_Test/main.cpp" ${SOURCE_FILES})
-add_executable(multiwindow_test "tests/MultiWindow_Test/main.cpp" ${SOURCE_FILES})
+add_executable(base_test "tests/Base_Test/main.cpp")
+add_executable(instancing_test "tests/Instancing_Test/main.cpp")
+add_executable(merge_test "tests/Merge_Test/main.cpp")
+add_executable(multiwindow_test "tests/MultiWindow_Test/main.cpp")
+
 target_link_libraries(base_test ${OPENGL_gl_LIBRARY})
 target_link_libraries(base_test glfw ${GLFW_LIBRARIES})
 target_link_libraries(base_test glm)

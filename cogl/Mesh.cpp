@@ -36,7 +36,7 @@ namespace cogl {
         initialiseVAO();
     }
 
-    Mesh::Mesh(Mesh &&other) noexcept : meshRepr(other.meshRepr), VAO(other.VAO), vertexBuffer(other.vertexBuffer), indexBuffer(other.indexBuffer){
+    Mesh::Mesh(Mesh &&other) noexcept : meshRepr(std::move(other.meshRepr)), VAO(other.VAO), vertexBuffer(other.vertexBuffer), indexBuffer(other.indexBuffer){
         other.VAO = 0;
         other.vertexBuffer = 0;
         other.indexBuffer = 0;
@@ -50,17 +50,17 @@ namespace cogl {
     Mesh &Mesh::operator=(Mesh &&other) noexcept {
         if (this != &other) {
             release();
+            this->meshRepr = MeshRepresentation(other.meshRepr);
             std::swap(this->VAO, other.VAO);
             std::swap(this->vertexBuffer, other.vertexBuffer);
             std::swap(this->indexBuffer, other.indexBuffer);
-            std::swap(this->meshRepr, other.meshRepr);
             std::swap(this->rotMatrix, other.rotMatrix);
             std::swap(this->transMatrix, other.transMatrix);
             std::swap(this->scaleMatrix, other.scaleMatrix);
             std::swap(this->normalMatrix, other.normalMatrix);
             std::swap(this->renderType, other.renderType);
-            return *this;
         }
+        return *this;
     }
 
     Mesh::~Mesh() {
@@ -121,15 +121,15 @@ namespace cogl {
         };
         if (program.getAttribLoc("modelMatrix") != -1 && update_gpu_data) {
             temp = getModelMatrix();
-            glVertexAttrib4fv(program.getAttribLoc("modelMatrix"), (const GLfloat *) &temp[0][0]);
+            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("modelMatrix")), (const GLfloat *) &temp[0][0]);
         };
         if (program.getAttribLoc("normalMatrix") != -1 && update_gpu_data) {
             temp = getNormalMatrix();
-            glVertexAttrib4fv(program.getAttribLoc("normalMatrix"), (const GLfloat *) &temp[0][0]);
+            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("normalMatrix")), (const GLfloat *) &temp[0][0]);
         };
         if (program.getAttribLoc("uTessLevel") != -1) {
             float tessLevel = 2.0;
-            glVertexAttrib4fv(program.getAttribLoc("uTessLevel"), (const GLfloat *) &tessLevel);
+            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("uTessLevel")), (const GLfloat *) &tessLevel);
         };
         glBindVertexArray(VAO);
         glDrawElements(renderType, static_cast<GLsizei>(meshRepr.indices.size()), GL_UNSIGNED_INT, (void *) 0);
@@ -175,7 +175,7 @@ namespace cogl {
         return (normalMatrix);
     }
 
-    const RenderTypes Mesh::getRenderType() const {
+    RenderTypes Mesh::getRenderType() const {
         return renderType;
     }
 

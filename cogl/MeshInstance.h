@@ -116,6 +116,8 @@ namespace cogl {
         GLuint getTransformBuffer() {
             return transformBuffer;
         }
+
+        const MeshRepresentation getMeshRepresentation() const;
     };
 
 }

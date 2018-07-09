@@ -91,7 +91,7 @@ namespace cogl {
 
         const MeshRepresentation getMeshRepresentation() const;
 
-        const RenderTypes getRenderType() const;
+        RenderTypes getRenderType() const;
 
         const glm::mat4x4 getModelMatrix() const;
 
@@ -103,7 +103,7 @@ namespace cogl {
 
         const glm::mat4x4 getScaleMatrix() const;
 
-		const GLuint getVAOLabel() const {
+		const GLuint& getVAOLabel() const {
 			return this->VAO;
 		}
 

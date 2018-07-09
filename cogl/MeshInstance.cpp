@@ -360,4 +360,7 @@ namespace cogl {
         glBindVertexArray(0);
     }
 
+    const MeshRepresentation MeshInstance::getMeshRepresentation() const {
+        return MeshRepresentation(this->meshRepr);
+    }
 }

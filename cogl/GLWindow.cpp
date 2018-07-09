@@ -209,20 +209,14 @@ namespace cogl {
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 		glViewport(0, 0, windowWidth, windowHeight);
-        /*glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);*/
-        glActiveTexture(GL_TEXTURE0);
-        GLuint fbo_textureID = postProcessingShader->getUniformLoc("fbo_texture");
         GLuint timeID = postProcessingShader->getUniformLoc("time");
         GLuint exposureID = postProcessingShader->getUniformLoc("exposure");
         postProcessingShader->bind();
-        glUniform1i(fbo_textureID, /*GL_TEXTURE*/0);
         glUniform1f(timeID, (float) glfwGetTime());
         glUniform1f(exposureID, (float) 1.0);
         glBindVertexArray(quad_vao);
-        glActiveTexture(GL_TEXTURE0 + 0);
-        glBindTexture(GL_TEXTURE_2D, nonMSFBO->colorBuffers);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        nonMSFBO->bindFBOColorBufferToTexture(GL_TEXTURE0, postProcessingShader->getUniformLoc("fbo_texture"));
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*) 0);
         postProcessingShader->unbind();
 		if (contains(enabled_capabilities, GL_CULL_FACE)) glEnable(GL_CULL_FACE);
 		if (contains(enabled_capabilities, GL_DEPTH_TEST)) glEnable(GL_DEPTH_TEST);

@@ -6,6 +6,7 @@
 #define CUSTOMOGL_FRAMEBUFFER_H
 
 #include "../Constants.h"
+#include "Shader.h"
 
 namespace cogl {
 
@@ -56,6 +57,18 @@ namespace cogl {
         void bindFBORead();
 
         void bindFBODraw();
+
+        void bindFBOColorBufferToTexture(GLenum textureID, GLuint bindLocation) {
+            glUniform1i(bindLocation, /*GL_TEXTURE*/ textureID - GL_TEXTURE0);
+            glActiveTexture(textureID);
+            glBindTexture(GL_TEXTURE_2D, colorBuffers);
+        }
+
+        void bindFBODepthStencilBufferToTexture(GLenum textureID, GLuint bindLocation) {
+            glUniform1i(bindLocation, /*GL_TEXTURE*/ textureID - GL_TEXTURE0);
+            glActiveTexture(textureID);
+            glBindTexture(GL_TEXTURE_2D, depthRenderBuffer);
+        }
     };
 
     class FramebufferMultisampled {
@@ -103,6 +116,18 @@ namespace cogl {
         void blitToBuffer(Framebuffer &other);
 
         void blitToBuffer(GLuint other);
+
+        void bindFBOColorBufferToTexture(GLenum textureID, GLuint bindLocation) {
+            glUniform1i(bindLocation, /*GL_TEXTURE*/ textureID - GL_TEXTURE0);
+            glActiveTexture(textureID);
+            glBindTexture(GL_TEXTURE_2D, colorBuffers);
+        }
+
+        void bindFBODepthStencilBufferToTexture(GLenum textureID, GLuint bindLocation) {
+            glUniform1i(bindLocation, /*GL_TEXTURE*/ textureID - GL_TEXTURE0);
+            glActiveTexture(textureID);
+            glBindTexture(GL_TEXTURE_2D, depthRenderBuffer);
+        }
     };
 
 }

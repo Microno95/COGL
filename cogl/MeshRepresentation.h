@@ -44,7 +44,7 @@ namespace cogl {
                     objectCode.emplace_back(Line);
                 objectStream.close();
             } else {
-                printf("Impossible to open %s. Are you in the right directory?\n", filename);
+                printf("Impossible to open %s. Are you in the right directory?\n", filename.c_str());
                 getchar();
             }
 

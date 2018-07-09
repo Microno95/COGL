@@ -17,7 +17,7 @@ int main() {
 
 	//cogl::MeshInstance cubes(cogl::Mesh::Cube, 25);
 	//auto cube = cogl::Mesh::Cube;
-	cogl::MeshInstance cubes(cogl::Mesh::load_from_obj("dragon.obj"), 250);
+	cogl::MeshInstance cubes(cogl::Mesh::load_from_obj("dragon.obj"), 1000);
 
     float radius = 3;
     float angle = 0.0;
@@ -31,6 +31,8 @@ int main() {
 
 	cubes.scaleMesh(-1, 0.025f);
 
+	std::cout << cubes.activeInstances() * cubes.getMeshRepresentation().vertices.size() << std::endl;
+
 	cogl::Camera defaultCamera = cogl::Camera(glm::vec3({1.0f, 1.0f, 0.0f}),
 		glm::vec3({ 0.f, 0.f, 0.f }),
 		glm::vec3({ 0.0f, 1.0f, 0.0f }), cogl::projection::perspective);
@@ -38,7 +40,7 @@ int main() {
 	defaultCamera.changeZFar(1000.0);
 	defaultCamera.changeZNear(0.001);
 
-	defaultCamera.setEventHandling();
+	mainWindow.setMainCamera(defaultCamera);
 
 	cogl::Shader defShader("cogl/shaders/triTestInst");
 
@@ -53,14 +55,14 @@ int main() {
     while (!mainWindow.shouldClose()) {
 		Timer test = Timer("Frame Time");
 		previousTime = glfwGetTime();
-        test1 = cogl::Mesh(cogl::MeshRepresentation::Cube);
-        test1.scaleMesh(.25f);
+        glFinish();
 		cubes.rotateMesh(-1, 2 * PI * rotation_speed, glm::vec3({ 0.0f, 1.0f, 0.0f }));
 		mainWindow.renderBegin();
-		test1.render(defShader, defaultCamera, true);
-//		cubes.render(defShader, defaultCamera, true);
+		cubes.render(defShader, defaultCamera, true);
 		mainWindow.renderEnd();
+        glFinish();
 		currentTime = glfwGetTime();
+		test.Stop();
         if (frameCount++ >= every_n_frames) {
             // Display the frame count here any way you want.
             mainWindow.setTitle(std::to_string(test.GetTimeDelta().count()) + "ms");

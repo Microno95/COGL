@@ -51,10 +51,10 @@ namespace cogl {
         }
 
         // Get uniform location
-        GLuint getUniformLoc(const char *uniformName) const;
+        GLint getUniformLoc(const char *uniformName) const;
 
         // Get attribute location
-        GLuint getAttribLoc(const char *attribName) const;
+        GLint getAttribLoc(const char *attribName) const;
     };
 
 }

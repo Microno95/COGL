@@ -135,12 +135,12 @@ namespace cogl {
         check_gl_error_w(Program);
     }
 
-    GLuint Shader::getUniformLoc(const char *uniformName) const {
-        return (GLuint) glGetUniformLocation(Program, uniformName);
+    GLint Shader::getUniformLoc(const char *uniformName) const {
+        return glGetUniformLocation(Program, uniformName);
     }
 
-    GLuint Shader::getAttribLoc(const char *attribName) const {
-        return (GLuint) glGetAttribLocation(Program, attribName);
+    GLint Shader::getAttribLoc(const char *attribName) const {
+        return glGetAttribLocation(Program, attribName);
     }
 
 
