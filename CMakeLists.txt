@@ -7,10 +7,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(SOURCE_FILES
         cogl.h
-		Constants.h
+	Constants.h
         cogl/Camera.cpp
         cogl/Camera.h
-		cogl/Mesh.cpp
+	cogl/Mesh.cpp
         cogl/Mesh.h
         cogl/MeshInstance.cpp
         cogl/MeshInstance.h
@@ -19,10 +19,10 @@ set(SOURCE_FILES
         cogl/Shader.cpp
         cogl/Shader.h
         cogl/Renderable.h
-		cogl/Framebuffer.cpp 
-		cogl/Framebuffer.h 
-		cogl/MeshRepresentation.cpp
-		cogl/MeshRepresentation.h)
+	cogl/Framebuffer.cpp 
+	cogl/Framebuffer.h 
+	cogl/MeshRepresentation.cpp
+	cogl/MeshRepresentation.h)
 
 # Include OpenMP libraries
 message(STATUS "Checking OpenMP")
@@ -38,7 +38,7 @@ ELSE ()
     message("Missed OpenMP!")
 ENDIF ()
 
-add_library(COGL ${SOURCE_FILES})
+add_library(${PROJECT_NAME} ${SOURCE_FILES})
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-function")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
