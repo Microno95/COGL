@@ -2,8 +2,7 @@
 // Created by ekin4 on 28/04/2017.
 //
 
-#include "../../Constants.h"
-#include "../../cogl.h"
+#include <cogl/cogl.h>
 #include <exception>
 
 #include <cstdio>  /* defines FILENAME_MAX */
@@ -27,10 +26,10 @@ std::string GetCurrentWorkingDir() {
 int main() {
     std::cout << GetCurrentWorkingDir() << std::endl;
 
-	auto initial_representation = cogl::MeshRepresentation::load_from_obj("dragon.obj");
+	auto initial_representation = cogl::MeshRepresentation::load_from_obj("data/dragon.obj");
 	initial_representation.mergeRepresentations(cogl::MeshRepresentation::Cube);
 
-	cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768);
+	cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768, 16, 9, "NULL", "data/postProcessing", false);
 	mainWindow.enableCapability(GL_DEPTH_TEST);
 	mainWindow.enableCapability(GL_CULL_FACE);
 	mainWindow.setCullType(GL_BACK);
@@ -48,8 +47,8 @@ int main() {
 
 	cogl::Mesh test_object = cogl::Mesh(initial_representation);
 
-	cogl::Shader defShader("cogl/shaders/triTest");
-	cogl::Shader solidShader("cogl/shaders/solidColour");
+	cogl::Shader defShader("data/triTest");
+	cogl::Shader solidShader("data/solidColour");
 
 	cogl::GLWindow secWindow(0, 4, 5, 1, 1024, 768);
 	secWindow.enableCapability(GL_DEPTH_TEST);
@@ -69,8 +68,8 @@ int main() {
 
 	secWindow.setMainCamera(secCamera);
 
-    cogl::Shader defShader2("cogl/shaders/triTest");
-    cogl::Shader solidShader2("cogl/shaders/solidColour");
+    cogl::Shader defShader2("data/triTest");
+    cogl::Shader solidShader2("data/solidColour");
 
     int frameCount = 0;
     int frameCounterDebug = 0;

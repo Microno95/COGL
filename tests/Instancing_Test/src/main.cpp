@@ -2,47 +2,106 @@
 // Created by ekin4 on 28/04/2017.
 //
 
-#include "../../Constants.h"
-#include "../../cogl.h"
+#include <cogl/cogl.h>
+
+class MyCamera : public cogl::Camera {
+	using cogl::Camera::Camera;
+
+public:
+	bool swap_mesh = true;
+
+	void keycallback(GLFWwindow *window, int key, int scancode,
+		int action, int mods) {
+		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+			glfwSetWindowShouldClose(window, GLFW_TRUE);
+		double motionVel = 0.01f * getDistanceToTarget();
+		glm::vec3 forward = glm::vec3({ 1.0f, 0.0f, 0.0f });
+		glm::vec3 left = glm::vec3({ 0.0f, 0.0f, 1.0f });
+		if (key == GLFW_KEY_W) {
+			moveCamera(motionVel * getCameraUp());
+		}
+		if (key == GLFW_KEY_S) {
+			moveCamera(-motionVel * getCameraUp());
+		}
+		if (key == GLFW_KEY_A) {
+			moveCamera(motionVel * getCameraLeft());
+		}
+		if (key == GLFW_KEY_D) {
+			moveCamera(-motionVel * getCameraLeft());
+		}
+		if (key == GLFW_KEY_R) {
+			moveCameraTo(glm::vec3(1.0f));
+			moveCameraTargetTo(glm::vec3(0.0f));
+		}
+		if (key == GLFW_KEY_UP) {
+			moveCamera(motionVel * forward);
+		}
+		if (key == GLFW_KEY_DOWN) {
+			moveCamera(-motionVel * forward);
+		}
+		if (key == GLFW_KEY_LEFT) {
+			moveCameraTarget(motionVel * left);
+		}
+		if (key == GLFW_KEY_RIGHT) {
+			moveCameraTarget(-motionVel * left);
+		}
+		if (key == GLFW_KEY_F && action == GLFW_RELEASE) {
+			printf("swapped\n");
+			swap_mesh = !swap_mesh;
+		}
+	}
+};
 
 int main() {
-	cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768);
+	cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768, 16, 9, "NULL", "data/postProcessing", false);
 	mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_DEPTH_TEST);
 	mainWindow.enableCapability(GL_CULL_FACE);
 	mainWindow.setCullType(GL_BACK);
 	mainWindow.setDepthFunction(GL_LESS);
-	mainWindow.setAASamples(1);
+	mainWindow.setAASamples(0);
 
 	//cogl::MeshInstance cubes(cogl::Mesh::Cube, 25);
 	//auto cube = cogl::Mesh::Cube;
-	cogl::MeshInstance cubes(cogl::Mesh::load_from_obj("dragon.obj"), 1000);
+	cogl::MeshInstance cubes(cogl::MeshRepresentation::Cube, 75000),
+					   dragons(cogl::Mesh::load_from_obj("data/dragon.obj"), 50);
 
     float radius = 3;
     float angle = 0.0;
 
-	double dx = 0.1;
+	double dx;
 	int rowWidth = 24;
+	dx = radius / rowWidth;
 
 	for (auto i = 0; i < cubes.activeInstances(); ++i) {
-		cubes.moveMeshTo(i, glm::vec3({ -1.0f * dx * (i / rowWidth - rowWidth / 2), 0.0f, dx * (i % rowWidth - rowWidth / 2)}));
+		cubes.moveMeshTo(i, glm::vec3({ -1.0f * dx * (i / rowWidth - rowWidth / 2), 0.0f, dx * (i % rowWidth - rowWidth / 2) }));
 	}
 
 	cubes.scaleMesh(-1, 0.025f);
 
-	std::cout << cubes.activeInstances() * cubes.getMeshRepresentation().vertices.size() << std::endl;
+	rowWidth = 5;
+	dx = radius / rowWidth;
 
-	cogl::Camera defaultCamera = cogl::Camera(glm::vec3({1.0f, 1.0f, 0.0f}),
+	for (auto i = 0; i < dragons.activeInstances(); ++i) {
+		dragons.moveMeshTo(i, glm::vec3({ -1.0f * dx * (i / rowWidth - rowWidth / 2), 0.0f, dx * (i % rowWidth - rowWidth / 2) }));
+	}
+
+	dragons.scaleMesh(-1, 0.025f);
+
+	std::cout << cubes.activeInstances() * cubes.getMeshRepresentation().vertices.size() << std::endl;
+	std::cout << dragons.activeInstances() * dragons.getMeshRepresentation().vertices.size() << std::endl;
+
+	MyCamera defaultCamera = MyCamera(glm::vec3({1.0f, 1.0f, 0.0f}),
 		glm::vec3({ 0.f, 0.f, 0.f }),
 		glm::vec3({ 0.0f, 1.0f, 0.0f }), cogl::projection::perspective);
 	defaultCamera.changeAR(16.0 / 9.0);
 	defaultCamera.changeZFar(1000.0);
 	defaultCamera.changeZNear(0.001);
 
-	mainWindow.setMainCamera(defaultCamera);
+	mainWindow.setMainCamera(&defaultCamera);
 
-	cogl::Shader defShader("cogl/shaders/triTestInst");
+	cogl::Shader defShader("data/triTestInst");
 
     double previousTime = glfwGetTime();
 	double currentTime = glfwGetTime();
@@ -50,15 +109,18 @@ int main() {
 	int every_n_frames = 5;
 	float rotation_speed = 0.001f;
 
-	cogl::Mesh test1 = cogl::Mesh(cogl::MeshRepresentation::Cube);
-
     while (!mainWindow.shouldClose()) {
 		Timer test = Timer("Frame Time");
 		previousTime = glfwGetTime();
         glFinish();
 		cubes.rotateMesh(-1, 2 * PI * rotation_speed, glm::vec3({ 0.0f, 1.0f, 0.0f }));
 		mainWindow.renderBegin();
-		cubes.render(defShader, defaultCamera, true);
+		if (defaultCamera.swap_mesh) {
+			cubes.render(defShader, defaultCamera, true);
+		}
+		else {
+			dragons.render(defShader, defaultCamera, true);
+		}
 		mainWindow.renderEnd();
         glFinish();
 		currentTime = glfwGetTime();

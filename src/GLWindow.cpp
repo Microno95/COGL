@@ -2,7 +2,7 @@
 // Created by ekin4 on 26/02/2017.
 //
 
-#include "GLWindow.h"
+#include "cogl/GLWindow.h"
 #include <utility>
 
 namespace cogl {

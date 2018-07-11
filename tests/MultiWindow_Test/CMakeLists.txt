@@ -1,3 +1,4 @@
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 add_executable(multiwindow_test src/main.cpp)
 target_include_directories (multiwindow_test PRIVATE 
 							src 
@@ -8,7 +9,4 @@ target_include_directories (multiwindow_test PRIVATE
 target_compile_features(multiwindow_test PRIVATE cxx_auto_type)
 target_link_libraries (multiwindow_test
                        cogl
-                       glm
-                       glad
-                       ${GLFW_LIBRARIES}
                        )

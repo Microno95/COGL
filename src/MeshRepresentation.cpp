@@ -2,7 +2,7 @@
 // Created by ekin4 on 7/2/2018.
 //
 
-#include "MeshRepresentation.h"
+#include "cogl/MeshRepresentation.h"
 
 namespace cogl {
     const MeshRepresentation MeshRepresentation::Cube = MeshRepresentation(std::vector<Vertex>(

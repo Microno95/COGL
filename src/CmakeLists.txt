@@ -1,32 +1,54 @@
-target_sources(cogl
+set(COGL_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/Camera.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/Framebuffer.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/GLWindow.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/Mesh.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/MeshInstance.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/MeshRepresentation.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/Shader.cpp")
+
+add_library(cogl ${COGL_SOURCES})
+
+set_target_properties(cogl PROPERTIES LINKER_LANGUAGE CXX)
+target_compile_features(cogl PRIVATE cxx_std_14)
+set_target_properties(cogl PROPERTIES CXX_EXTENSIONS OFF)
+
+set(COGL_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_include_directories(cogl
+    PUBLIC 
+        $<INSTALL_INTERFACE:include>    
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
-        "${CMAKE_CURRENT_LIST_DIR}/Camera.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Constants.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Framebuffer.h"
-        "${CMAKE_CURRENT_LIST_DIR}/FunctionWrapper.h"
-        "${CMAKE_CURRENT_LIST_DIR}/GLWindow.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Mesh.h"
-        "${CMAKE_CURRENT_LIST_DIR}/MeshInstance.h"
-        "${CMAKE_CURRENT_LIST_DIR}/MeshRepresentation.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Renderable.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Shader.h"
-		
-        "${CMAKE_CURRENT_LIST_DIR}/Camera.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/Framebuffer.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/GLWindow.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/Mesh.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/MeshInstance.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/MeshRepresentation.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/Shader.cpp"
-    PUBLIC
-        "${CMAKE_CURRENT_LIST_DIR}/Camera.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Constants.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Framebuffer.h"
-        "${CMAKE_CURRENT_LIST_DIR}/FunctionWrapper.h"
-        "${CMAKE_CURRENT_LIST_DIR}/GLWindow.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Mesh.h"
-        "${CMAKE_CURRENT_LIST_DIR}/MeshInstance.h"
-        "${CMAKE_CURRENT_LIST_DIR}/MeshRepresentation.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Renderable.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Shader.h"
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
+
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(cogl PUBLIC OpenMP::OpenMP_CXX)
+endif()
+
+include_directories(cogl ${OPENGL_INCLUDE_DIR})
+target_link_libraries(cogl PUBLIC ${OPENGL_gl_LIBRARY})
+
+target_include_directories(cogl PRIVATE "${GLFW_DIR}/include")
+target_compile_definitions(cogl PRIVATE "GLFW_INCLUDE_NONE")
+target_link_libraries(cogl PUBLIC glfw ${GLFW_LIBRARIES})
+
+target_include_directories(cogl PRIVATE "${GLM_DIR}/glm")
+target_link_libraries(cogl PUBLIC glm)
+
+target_include_directories(cogl PRIVATE ${GLAD_INCLUDE_DIRS})
+target_link_libraries(cogl PUBLIC glad)
+
+#[[# 'make install' to the correct locations (provided by GNUInstallDirs).
+install(TARGETS cogl EXPORT coglTargets
+    ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR})  # This is for Windows
+install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+# This makes the project importable from the install directory
+# Put config file in per-project dir (name MUST match), can also
+# just go into 'cmake'.
+install(EXPORT coglTargets DESTINATION share/COGL/cmake)
+]]

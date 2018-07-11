@@ -2,7 +2,7 @@
 // Created by ekin4 on 24/02/2017.
 //
 
-#include "Camera.h"
+#include "cogl/Camera.h"
 
 namespace cogl {
     Camera::Camera(projection proj) {
@@ -136,7 +136,7 @@ namespace cogl {
             moveCamera(-motionVel * getCameraLeft());
         }
         if (key == GLFW_KEY_R) {
-            moveCameraTo(glm::vec3(5.0f));
+            moveCameraTo(glm::vec3(1.0f));
             moveCameraTargetTo(glm::vec3(0.0f));
         }
         if (key == GLFW_KEY_UP) {

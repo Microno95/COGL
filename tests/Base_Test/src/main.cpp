@@ -2,8 +2,7 @@
 // Created by ekin4 on 28/04/2017.
 //
 
-#include "../../Constants.h"
-#include "../../cogl.h"
+#include <cogl/cogl.h>
 #include <exception>
 
 #include <cstdio>  /* defines FILENAME_MAX */
@@ -26,7 +25,7 @@ std::string GetCurrentWorkingDir() {
 
 int main() {
     std::cout << GetCurrentWorkingDir() << std::endl;
-    cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768);
+    cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768, 16, 9, "NULL", "data/postProcessing", false);
     mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_PROGRAM_POINT_SIZE);
     mainWindow.enableCapability(GL_DEPTH_TEST);
@@ -35,7 +34,8 @@ int main() {
     mainWindow.setDepthFunction(GL_LESS);
     mainWindow.setAASamples(0);
 
-    cogl::Mesh original_dragon = cogl::Mesh::load_from_obj("dragon.obj"), cube = cogl::Mesh::load_from_obj("dragon.obj");
+    cogl::Mesh original_dragon = cogl::Mesh::load_from_obj("data/dragon.obj"), cube = cogl::Mesh::load_from_obj("data/dragon.obj");
+	cube.scaleMesh(0.25f);
 
     cogl::Camera defaultCamera = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
                                               glm::vec3({0.f, 0.f, 0.f}),
@@ -44,11 +44,11 @@ int main() {
     defaultCamera.changeZFar(1000.0);
     defaultCamera.changeZNear(0.001);
 
-	mainWindow.setMainCamera(defaultCamera);
+	mainWindow.setMainCamera(&defaultCamera);
 
-    cogl::Shader defShader("cogl/shaders/triTest");
+    cogl::Shader defShader("data/triTest");
     check_gl_error();
-    cogl::Shader solidShader("cogl/shaders/solidColour");
+    cogl::Shader solidShader("data/solidColour");
     check_gl_error();
     double previousTime = glfwGetTime();
 	double otherPreviousTime = glfwGetTime();
@@ -73,12 +73,14 @@ int main() {
 				dragon_or_cube = true;
 			}
 			otherPreviousTime = glfwGetTime();
-			cube.scaleMesh(0.01f);
+			cube.scaleMesh(0.25f);
 		}
 		cube.moveMeshTo(target_on_floor);
         mainWindow.renderBegin();
 		cube.render(defShader, defaultCamera, true);
         mainWindow.renderEnd();
+		glFinish();
+		test.Stop();
 		double currentTime = glfwGetTime();
 		if (currentTime - previousTime >= 1.0) {
 			// Display the frame count here any way you want.

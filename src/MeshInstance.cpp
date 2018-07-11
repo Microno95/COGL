@@ -2,7 +2,7 @@
 // Created by ekin4 on 28/02/2017.
 //
 
-#include "MeshInstance.h"
+#include "cogl/MeshInstance.h"
 
 namespace cogl {
     MeshInstance::MeshInstance(const std::vector<Vertex> &verticesInit, const std::vector<unsigned int> &indicesInit, unsigned int numCopies, RenderTypes rType) : meshRepr(verticesInit, indicesInit){
@@ -75,8 +75,8 @@ namespace cogl {
             std::swap(this->transMatrix, other.transMatrix);
             std::swap(this->scaleMatrix, other.scaleMatrix);
             std::swap(this->renderType, other.renderType);
-            return *this;
         }
+		return *this;
     }
 
     MeshInstance::~MeshInstance() {
@@ -123,6 +123,7 @@ namespace cogl {
 
     void MeshInstance::rotateMesh(const int objectID, const double &angle, const glm::vec3 &axisOfRotation) {
         if (objectID == -1) {
+#pragma omp parallel for
             for (auto i = 0; i < rotMatrix.size(); ++i) {
                 rotMatrix[i] = glm::rotate((float) angle, axisOfRotation) * rotMatrix[i];
                 if (renderType != RenderTypes::Points) {
@@ -139,6 +140,7 @@ namespace cogl {
 
     void MeshInstance::scaleMesh(const int objectID, const double &xScale, const double &yScale, const double &zScale) {
         if (objectID == -1) {
+#pragma omp parallel for
             for (auto i = 0; i < rotMatrix.size(); ++i) {
                 scaleMatrix[i] = glm::scale(glm::vec3({xScale, yScale, zScale})) * scaleMatrix[i];
                 if (renderType != RenderTypes::Points) {
@@ -155,6 +157,7 @@ namespace cogl {
 
     void MeshInstance::moveMesh(const int objectID, const glm::vec3 &translation) {
         if (objectID == -1) {
+#pragma omp parallel for
             for (auto i = 0; i < rotMatrix.size(); ++i) {
                 transMatrix[i] = glm::translate(translation) * transMatrix[i];
                 if (renderType != RenderTypes::Points) {
@@ -171,6 +174,7 @@ namespace cogl {
 
     void MeshInstance::moveMeshTo(const int objectID, const glm::vec3 &translation) {
         if (objectID == -1) {
+#pragma omp parallel for
             for (auto i = 0; i < transMatrix.size(); ++i) {
                 transMatrix[i] = glm::translate(glm::mat4x4(1.0f), translation);
                 if (renderType != RenderTypes::Points) {
@@ -186,6 +190,7 @@ namespace cogl {
     }
 
     void MeshInstance::moveMeshTo(const std::vector<glm::vec3> &translation) {
+#pragma omp parallel for
         for (auto i = 0; i < translation.size(); ++i) {
             transMatrix[i] = glm::translate(glm::mat4x4(1.0f), translation[i]);
             if (renderType != RenderTypes::Points) {
@@ -259,7 +264,7 @@ namespace cogl {
     void
     MeshInstance::addInstances(const std::vector<glm::mat4x4> &transforms, const std::vector<glm::mat4x4> &rotations,
                                const std::vector<glm::mat4x4> &scales) {
-        for (auto i = 0; i < transforms.size(); ++i) {
+        for (size_t i = 0; i < transforms.size(); ++i) {
             transMatrix.push_back(transforms[i]);
             rotMatrix.push_back(rotations[i]);
             scaleMatrix.push_back(scales[i]);
@@ -284,7 +289,7 @@ namespace cogl {
         for (auto i : modelMatrices) addInstance(i);
     }
 
-    void MeshInstance::removeInstanceHelper(const unsigned long long objectID) {
+    void MeshInstance::removeInstanceHelper(const size_t objectID) {
         if (objectID < transMatrix.size()) {
             transMatrix.erase(transMatrix.begin() + objectID);
             rotMatrix.erase(rotMatrix.begin() + objectID);
@@ -292,7 +297,7 @@ namespace cogl {
         }
     }
 
-    void MeshInstance::removeInstance(const unsigned long long objectID) {
+    void MeshInstance::removeInstance(const size_t objectID) {
         if (objectID < transMatrix.size()) {
             removeInstanceHelper(objectID);
             release();
@@ -300,7 +305,7 @@ namespace cogl {
         }
     }
 
-    void MeshInstance::removeInstances(const std::vector<unsigned long long> objectID) {
+    void MeshInstance::removeInstances(const std::vector<size_t> objectID) {
         for (auto &&i : objectID) {
             if (i < transMatrix.size()) removeInstanceHelper(i);
         }

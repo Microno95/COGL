@@ -1,46 +1,34 @@
-cmake_minimum_required(VERSION 3.6)
-project(libcogl VERSION 1.0.0 LANGUAGES CXX )
-enable_testing()
+cmake_minimum_required(VERSION 3.9)
+project(libcogl VERSION 1.0.0 LANGUAGES CXX)
+
+# Must use GNUInstallDirs to install libraries into correct
+# locations on all platforms.
+include(GNUInstallDirs)
+
+file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
+if(EXISTS "${LOC_PATH}")
+    message(FATAL_ERROR "You cannot build in a source directory (or any directory with a CMakeLists.txt file). Please make a build subdirectory. Feel free to remove CMakeCache.txt and CMakeFiles.")
+endif()
 
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
-add_library(cogl "src/cogl.h")
-
-target_include_directories(cogl
-    PUBLIC 
-        $<INSTALL_INTERFACE:include>    
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
-)
-
-set(GENERAL_OPTIONS "-Wall -Wextra -Wno-unused-function")
-set(DEBUG_OPTIONS "-g")
-set(RELEASE_OPTIONS "-O3")
-
-target_compile_options(cogl PRIVATE "${GENERAL_OPTIONS}")
-target_compile_options(cogl PRIVATE "$<$<CONFIG:DEBUG>:${DEBUG_OPTIONS}>")
-target_compile_options(cogl PRIVATE "$<$<CONFIG:RELEASE>:${RELEASE_OPTIONS}>")
+if(MSVC)
+    add_compile_options("/W3" "$<$<CONFIG:RELEASE>:/O3>")
+else()
+    add_compile_options("-Wall" "-Wextra" "-Werror" "$<$<CONFIG:RELEASE>:-O3>")
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        add_compile_options("-stdlib=libc++")
+    else()
+        # nothing special for gcc at the moment
+    endif()
+endif()
 
 # Include OpenMP libraries
 message(STATUS "Checking OpenMP")
 find_package(OpenMP)
-IF (OPENMP_FOUND)
-    message("Found OpenMP!")
-    # add flags for OpenMP
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${OpenMP_SHARED_LINKER_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-ELSE ()
-    message("Missed OpenMP!")
-ENDIF ()
 
 # Include OpenGL libraries
 find_package(OpenGL REQUIRED)
-include_directories(${PROJECT_NAME} ${OPENGL_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY})
 
 # Add glfw libraries
 set(GLFW_DIR "${LIB_DIR}/glfw")
@@ -49,15 +37,10 @@ set(GLFW_BUILD_TESTS OFF CACHE INTERNAL "Build the GLFW test programs")
 set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "Build the GLFW documentation")
 set(GLFW_INSTALL OFF CACHE INTERNAL "Generate installation target")
 add_subdirectory(${GLFW_DIR})
-target_link_libraries(${PROJECT_NAME} "glfw" "${GLFW_LIBRARIES}")
-target_include_directories(${PROJECT_NAME} PRIVATE "${GLFW_DIR}/include")
-target_compile_definitions(${PROJECT_NAME} PRIVATE "GLFW_INCLUDE_NONE")
 
 # Add glm libraries
 set(GLM_DIR "${LIB_DIR}/glm")
 add_subdirectory(${GLM_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE "${GLM_DIR}/glm")
-target_link_libraries(${PROJECT_NAME} glm)
 
 # Add glad libraries
 set(GLAD_DIR "${LIB_DIR}/glad")
@@ -69,35 +52,16 @@ if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
 else ()
 	set(GLAD_GENERATOR "c-debug" CACHE STRING "Language to generate the binding for")
 endif (CMAKE_BUILD_TYPE EQUAL "DEBUG")
-
 set(GLAD_EXTENSIONS "" CACHE STRING "Path to extensions file or comma separated list of extensions, if missing all extensions are included")
 set(GLAD_SPEC "gl" CACHE STRING "Name of the spec")
+set(GLAD_INSTALL ON CACHE BOOL "Generate installation target")
 add_subdirectory(${GLAD_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${GLAD_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} glad)
 
-add_executable(base_test "tests/Base_Test/main.cpp")
-add_executable(instancing_test "tests/Instancing_Test/main.cpp")
-add_executable(merge_test "tests/Merge_Test/main.cpp")
-add_executable(multiwindow_test "tests/MultiWindow_Test/main.cpp")
+include("${CMAKE_CURRENT_SOURCE_DIR}/src/CMakeLists.txt")
 
-target_link_libraries(base_test ${OPENGL_gl_LIBRARY})
-target_link_libraries(base_test glfw ${GLFW_LIBRARIES})
-target_link_libraries(base_test glm)
-target_link_libraries(base_test glad)
-target_link_libraries(base_test ${PROJECT_NAME})
-target_link_libraries(instancing_test ${OPENGL_gl_LIBRARY})
-target_link_libraries(instancing_test glfw ${GLFW_LIBRARIES})
-target_link_libraries(instancing_test glm)
-target_link_libraries(instancing_test glad)
-target_link_libraries(instancing_test ${PROJECT_NAME})
-target_link_libraries(merge_test ${OPENGL_gl_LIBRARY})
-target_link_libraries(merge_test glfw ${GLFW_LIBRARIES})
-target_link_libraries(merge_test glm)
-target_link_libraries(merge_test glad)
-target_link_libraries(merge_test ${PROJECT_NAME})
-target_link_libraries(multiwindow_test ${OPENGL_gl_LIBRARY})
-target_link_libraries(multiwindow_test glfw ${GLFW_LIBRARIES})
-target_link_libraries(multiwindow_test glm)
-target_link_libraries(multiwindow_test glad)
-target_link_libraries(multiwindow_test ${PROJECT_NAME})
+enable_testing()
+
+add_subdirectory(tests/Base_Test)
+add_subdirectory(tests/Instancing_Test)
+add_subdirectory(tests/Merge_Test)
+add_subdirectory(tests/MultiWindow_Test)

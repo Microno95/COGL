@@ -2,8 +2,7 @@
 // Created by ekin4 on 28/04/2017.
 //
 
-#include "../../Constants.h"
-#include "../../cogl.h"
+#include <cogl/cogl.h>
 #include <exception>
 
 #include <cstdio>  /* defines FILENAME_MAX */
@@ -26,7 +25,7 @@ std::string GetCurrentWorkingDir() {
 
 int main() {
     std::cout << GetCurrentWorkingDir() << std::endl;
-    cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768);
+    cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768, 16, 9, "NULL", "data/postProcessing", false);
     mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_PROGRAM_POINT_SIZE);
     mainWindow.enableCapability(GL_DEPTH_TEST);
@@ -35,7 +34,7 @@ int main() {
     mainWindow.setDepthFunction(GL_LESS);
     mainWindow.setAASamples(0);
 
-	auto initial_representation = cogl::MeshRepresentation::load_from_obj("dragon.obj");
+	auto initial_representation = cogl::MeshRepresentation::load_from_obj("data/dragon.obj");
 	initial_representation.mergeRepresentations(cogl::MeshRepresentation::Cube);
     cogl::Mesh test_object = cogl::Mesh(initial_representation);
 
@@ -48,9 +47,9 @@ int main() {
 
 	mainWindow.setMainCamera(defaultCamera);
 
-    cogl::Shader defShader("cogl/shaders/triTest");
+    cogl::Shader defShader("data/triTest");
     check_gl_error();
-    cogl::Shader solidShader("cogl/shaders/solidColour");
+    cogl::Shader solidShader("data/solidColour");
     check_gl_error();
     double previousTime = glfwGetTime();
 	double otherPreviousTime = glfwGetTime();

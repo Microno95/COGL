@@ -5,12 +5,13 @@
 #ifndef CUSTOMOGL_COGL_H
 #define CUSTOMOGL_COGL_H
 
-#include "cogl/Renderable.h"
-#include "cogl/Camera.h"
-#include "cogl/Mesh.h"
-#include "cogl/MeshInstance.h"
-#include "cogl/GLWindow.h"
-#include "cogl/Shader.h"
-#include "MeshRepresentation.h"
+#include <cogl/Constants.h>
+#include <cogl/Renderable.h>
+#include <cogl/Camera.h>
+#include <cogl/Mesh.h>
+#include <cogl/MeshInstance.h>
+#include <cogl/GLWindow.h>
+#include <cogl/Shader.h>
+#include <cogl/MeshRepresentation.h>
 
 #endif //CUSTOMOGL_COGL_H

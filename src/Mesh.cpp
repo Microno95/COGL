@@ -2,7 +2,7 @@
 // Created by ekin4 on 23/02/2017.
 //
 
-#include "Mesh.h"
+#include "cogl/Mesh.h"
 
 namespace cogl {
     Mesh::Mesh(const std::vector<Vertex> &verticesInit) : meshRepr(verticesInit){

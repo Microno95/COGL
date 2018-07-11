@@ -2,7 +2,7 @@
 // Created by ekin4 on 30/04/2017.
 //
 
-#include "Framebuffer.h"
+#include "cogl/Framebuffer.h"
 
 cogl::Framebuffer::Framebuffer(int windowWidth, int windowHeight) {
     width = windowWidth;
