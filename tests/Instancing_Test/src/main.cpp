@@ -17,33 +17,39 @@ public:
 		double motionVel = 0.01f * getDistanceToTarget();
 		glm::vec3 forward = glm::vec3({ 1.0f, 0.0f, 0.0f });
 		glm::vec3 left = glm::vec3({ 0.0f, 0.0f, 1.0f });
-		if (key == GLFW_KEY_W) {
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 			moveCamera(motionVel * getCameraUp());
 		}
-		if (key == GLFW_KEY_S) {
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)  {
 			moveCamera(-motionVel * getCameraUp());
 		}
-		if (key == GLFW_KEY_A) {
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 			moveCamera(motionVel * getCameraLeft());
 		}
-		if (key == GLFW_KEY_D) {
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			moveCamera(-motionVel * getCameraLeft());
 		}
-		if (key == GLFW_KEY_R) {
+		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 			moveCameraTo(glm::vec3(1.0f));
 			moveCameraTargetTo(glm::vec3(0.0f));
 		}
-		if (key == GLFW_KEY_UP) {
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 			moveCamera(motionVel * forward);
 		}
-		if (key == GLFW_KEY_DOWN) {
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 			moveCamera(-motionVel * forward);
 		}
-		if (key == GLFW_KEY_LEFT) {
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
 			moveCameraTarget(motionVel * left);
 		}
-		if (key == GLFW_KEY_RIGHT) {
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 			moveCameraTarget(-motionVel * left);
+		}
+		if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS && mods == GLFW_MOD_SHIFT) {
+			printf("add\n");
+		}
+		if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS) {
+			printf("subtract\n");
 		}
 		if (key == GLFW_KEY_F && action == GLFW_RELEASE) {
 			printf("swapped\n");
@@ -64,14 +70,14 @@ int main() {
 
 	//cogl::MeshInstance cubes(cogl::Mesh::Cube, 25);
 	//auto cube = cogl::Mesh::Cube;
-	cogl::MeshInstance cubes(cogl::MeshRepresentation::Cube, 75000),
+	cogl::MeshInstance cubes(cogl::MeshRepresentation::Cube, 100000),
 					   dragons(cogl::Mesh::load_from_obj("data/dragon.obj"), 50);
 
-    float radius = 3;
+    float radius = 20;
     float angle = 0.0;
 
 	double dx;
-	int rowWidth = 24;
+	int rowWidth = 160;
 	dx = radius / rowWidth;
 
 	for (auto i = 0; i < cubes.activeInstances(); ++i) {
@@ -99,7 +105,7 @@ int main() {
 	defaultCamera.changeZFar(1000.0);
 	defaultCamera.changeZNear(0.001);
 
-	mainWindow.setMainCamera(&defaultCamera);
+	mainWindow.setMainCamera(defaultCamera);
 
 	cogl::Shader defShader("data/triTestInst");
 
@@ -110,7 +116,7 @@ int main() {
 	float rotation_speed = 0.001f;
 
     while (!mainWindow.shouldClose()) {
-		Timer test = Timer("Frame Time");
+		Timer test = Timer("Frame Time", true);
 		previousTime = glfwGetTime();
         glFinish();
 		cubes.rotateMesh(-1, 2 * PI * rotation_speed, glm::vec3({ 0.0f, 1.0f, 0.0f }));

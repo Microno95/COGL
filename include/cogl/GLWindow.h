@@ -39,7 +39,11 @@ namespace cogl {
         std::mutex paramLock;
         bool windowCreated = false;
 
-		Camera* mainCamera = nullptr;
+		Camera defCam = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
+									 glm::vec3({ 0.f, 0.f, 0.f }),
+									 glm::vec3({ 0.0f, 1.0f, 0.0f }), 
+									 cogl::projection::perspective);
+		Camera *mainCamera = &defCam;
 
     public:
         explicit GLWindow(int _swapInterval = 1, int _contextMajor = 4,
@@ -116,8 +120,8 @@ namespace cogl {
 
         void windowsizecallback(GLFWwindow *window, int width, int height);
 
-		void setMainCamera(cogl::Camera *_mainCamera){
-			mainCamera = _mainCamera;
+		void setMainCamera(cogl::Camera &_mainCamera){
+			mainCamera = &_mainCamera;
 		};
 
         void renderFramebuffers();
