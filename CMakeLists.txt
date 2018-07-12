@@ -5,6 +5,8 @@ project(libcogl VERSION 1.0.0 LANGUAGES CXX)
 # locations on all platforms.
 include(GNUInstallDirs)
 
+option(COGL_BUILD_EXAMPLES "Build the cogl example programs")
+
 file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
 if(EXISTS "${LOC_PATH}")
     message(FATAL_ERROR "You cannot build in a source directory (or any directory with a CMakeLists.txt file). Please make a build subdirectory. Feel free to remove CMakeCache.txt and CMakeFiles.")
@@ -59,9 +61,11 @@ add_subdirectory(${GLAD_DIR})
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/src/CMakeLists.txt")
 
-enable_testing()
+if (COGL_BUILD_EXAMPLES)
+	enable_testing()
 
-add_subdirectory(tests/Base_Test)
-add_subdirectory(tests/Instancing_Test)
-add_subdirectory(tests/Merge_Test)
-add_subdirectory(tests/MultiWindow_Test)
+	add_subdirectory(tests/Base_Test)
+	add_subdirectory(tests/Instancing_Test)
+	add_subdirectory(tests/Merge_Test)
+	add_subdirectory(tests/MultiWindow_Test)
+endif (COGL_BUILD_EXAMPLES)
