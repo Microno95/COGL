@@ -11,7 +11,7 @@ public:
 	bool swap_mesh = true;
 
 	void keycallback(GLFWwindow *window, int key, int scancode,
-		int action, int mods) {
+		int action, int mods) override {
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
 		double motionVel = 0.01f * getDistanceToTarget();
@@ -74,7 +74,6 @@ int main() {
 					   dragons(cogl::Mesh::load_from_obj("data/dragon.obj"), 50);
 
     float radius = 20;
-    float angle = 0.0;
 
 	double dx;
 	int rowWidth = 160;
@@ -108,16 +107,12 @@ int main() {
 	mainWindow.setMainCamera(defaultCamera);
 
 	cogl::Shader defShader("data/triTestInst");
-
-    double previousTime = glfwGetTime();
-	double currentTime = glfwGetTime();
     int frameCount = 0;
 	int every_n_frames = 5;
 	float rotation_speed = 0.001f;
 
     while (!mainWindow.shouldClose()) {
-		Timer test = Timer("Frame Time", true);
-		previousTime = glfwGetTime();
+		auto test = Timer<>("Frame Time", true);
         glFinish();
 		cubes.rotateMesh(-1, 2 * PI * rotation_speed, glm::vec3({ 0.0f, 1.0f, 0.0f }));
 		mainWindow.renderBegin();
@@ -129,7 +124,6 @@ int main() {
 		}
 		mainWindow.renderEnd();
         glFinish();
-		currentTime = glfwGetTime();
 		test.Stop();
         if (frameCount++ >= every_n_frames) {
             // Display the frame count here any way you want.

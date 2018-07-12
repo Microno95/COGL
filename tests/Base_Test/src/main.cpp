@@ -20,7 +20,7 @@ std::string GetCurrentWorkingDir() {
 
     cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
 
-    return cCurrentPath;
+    return std::string(cCurrentPath);
 }
 
 int main() {
@@ -44,7 +44,7 @@ int main() {
     defaultCamera.changeZFar(1000.0);
     defaultCamera.changeZNear(0.001);
 
-	mainWindow.setMainCamera(&defaultCamera);
+	mainWindow.setMainCamera(defaultCamera);
 
     cogl::Shader defShader("data/triTest");
     check_gl_error();
@@ -60,10 +60,10 @@ int main() {
 	float angular_speed = 0.01f;
 
     while (!mainWindow.shouldClose()) {
-		Timer test = Timer("Frame Time", true);
+		auto test = Timer<std::chrono::microseconds>("Frame Time", true, "us");
 		cube.rotateMesh(PI * angular_speed, glm::vec3({0.0f, 1.0f, 0.0f}));
 		if (previousTime - otherPreviousTime >= reloadPeriod) {
-			Timer load_test = Timer((dragon_or_cube ? "Dragon Load" : "Cube Load"), false);
+			auto load_test = Timer<std::chrono::microseconds>((dragon_or_cube ? "Dragon Load" : "Cube Load"), false, "us");
 			if (dragon_or_cube) {
 				cube = cogl::Mesh(original_dragon.getMeshRepresentation());
 				dragon_or_cube = false;
@@ -84,7 +84,7 @@ int main() {
 		double currentTime = glfwGetTime();
 		if (currentTime - previousTime >= 1.0) {
 			// Display the frame count here any way you want.
-			mainWindow.setTitle("FPS: " + std::to_string(frameCount / (currentTime - previousTime)) + " | " + std::to_string(test.GetTimeDelta().count()) + "ms | frame: " + std::to_string(frameCounterDebug));
+			mainWindow.setTitle("FPS: " + std::to_string(frameCount / (currentTime - previousTime)) + " | " + std::to_string(test.GetTimeDelta().count()) + "us | frame: " + std::to_string(frameCounterDebug));
 			previousTime = glfwGetTime();
 			frameCount = 0;
 		}

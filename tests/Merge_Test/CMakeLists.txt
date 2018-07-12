@@ -6,7 +6,7 @@ target_include_directories (merge_test PRIVATE
 							${COGL_INCLUDE_DIRS}
 							"${GLM_DIR}/glm" 
 							"${GLFW_DIR}/include")
-target_compile_features(merge_test PRIVATE cxx_auto_type)
+target_compile_features(merge_test PRIVATE cxx_auto_type cxx_decltype_auto)
 target_link_libraries (merge_test
                        cogl
                        )

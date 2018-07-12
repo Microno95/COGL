@@ -5,9 +5,7 @@ target_include_directories (base_test PRIVATE
 							${GLAD_INCLUDE_DIRS}
 							"${GLM_DIR}/glm" 
 							"${GLFW_DIR}/include")
-message("${COGL_INCLUDE_DIRS}")
-message("${GLFW_LIBRARIES}")
-target_compile_features(base_test PRIVATE cxx_auto_type)
+target_compile_features(base_test PRIVATE cxx_auto_type cxx_decltype_auto)
 target_link_libraries (base_test
                        cogl
                        )
