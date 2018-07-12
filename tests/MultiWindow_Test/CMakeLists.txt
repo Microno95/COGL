@@ -6,7 +6,7 @@ target_include_directories (multiwindow_test PRIVATE
 							${COGL_INCLUDE_DIRS}
 							"${GLM_DIR}/glm" 
 							"${GLFW_DIR}/include")
-target_compile_features(multiwindow_test PRIVATE cxx_auto_type)
+target_compile_features(multiwindow_test PRIVATE cxx_auto_type cxx_decltype_auto)
 target_link_libraries (multiwindow_test
                        cogl
                        )

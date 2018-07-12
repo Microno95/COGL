@@ -107,25 +107,27 @@ auto contains(const C& v, const T& x)
 	return end(v) != std::find(begin(v), end(v), x);
 }
 
+template<class T = std::chrono::milliseconds>
 class Timer {
 private:
-	std::string label = "";
+	std::string label = "", suffix = "ms";
 	std::chrono::high_resolution_clock::time_point startTime;
 	std::chrono::high_resolution_clock::time_point stopTime;
 	bool stopTimeSet = false;
 	bool suppressReportOnDestruct = false;
+
 public:
-	Timer() {
+	Timer(std::string _suffix = "ms") : suffix(_suffix) {
 		startTime = std::chrono::high_resolution_clock::now();
 	}
-	Timer(std::string _label) : label(_label), startTime(std::chrono::high_resolution_clock::now()) {}
-	Timer(std::string _label, bool _suppressReportOnDestruct) : label(_label), startTime(std::chrono::high_resolution_clock::now()), suppressReportOnDestruct(_suppressReportOnDestruct) {}
+	Timer(std::string _label, std::string _suffix = "ms") : label(_label), startTime(std::chrono::high_resolution_clock::now()), suffix(_suffix) {}
+	Timer(std::string _label, bool _suppressReportOnDestruct, std::string _suffix = "ms") : label(_label), startTime(std::chrono::high_resolution_clock::now()), suppressReportOnDestruct(_suppressReportOnDestruct), suffix(_suffix) {}
 
 	~Timer() {
 		if (!stopTimeSet) {
 			stopTime = std::chrono::high_resolution_clock::now();
 		}
-		if (!suppressReportOnDestruct) std::cout << label << " : " << std::chrono::duration_cast<std::chrono::milliseconds>(stopTime - startTime).count() << "ms" << std::endl;
+		if (!suppressReportOnDestruct) std::cout << label << " : " << std::chrono::duration_cast<T>(stopTime - startTime).count() << suffix << std::endl;
 	}
 
 	void Stop() {
@@ -139,15 +141,15 @@ public:
 	}
 
 	void Report() {
-		std::cout << label << " : " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime).count() << "ms" << std::endl;
+		std::cout << label << " : " << std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - startTime).count() << suffix << std::endl;
 	}
 
-	auto GetTimeDeltaNow() {
-		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime);
+    T GetTimeDeltaNow() {
+		return std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - startTime);
 	}
 
-	auto GetTimeDelta() {
-		return std::chrono::duration_cast<std::chrono::milliseconds>(stopTime - startTime);
+    T GetTimeDelta() {
+		return std::chrono::duration_cast<T>(stopTime - startTime);
 	}
 };
 

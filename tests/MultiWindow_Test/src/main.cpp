@@ -20,7 +20,7 @@ std::string GetCurrentWorkingDir() {
 
     cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
 
-    return cCurrentPath;
+    return std::string(cCurrentPath);
 }
 
 int main() {
@@ -77,10 +77,10 @@ int main() {
 	float angular_speed = 0.001f;
 
     while (!mainWindow.shouldClose() && !secWindow.shouldClose()) {
-		Timer test = Timer("Frame Time", false);
+		auto test = Timer<>("Frame Time", false);
 		test_object.rotateMesh(PI * angular_speed, glm::vec3({ 0.0f, 1.0f, 0.0f }));
 		test_object2.rotateMesh(PI * angular_speed, glm::vec3({ 0.0f, 1.0f, 0.0f }));
-		Timer mainTimer = Timer("Frame Time for Main", true);
+		auto mainTimer = Timer<>("Frame Time for Main", true);
 		mainWindow.renderBegin();
 		test_object.render(defShader, defaultCamera, true);
 		mainWindow.renderEnd();

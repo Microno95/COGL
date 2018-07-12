@@ -22,7 +22,7 @@ namespace cogl {
         MeshRepresentation(std::vector<Vertex> mesh_verts, std::vector<unsigned int> mesh_indices) : vertices(
                 std::move(mesh_verts)), indices(std::move(mesh_indices)) {}
 
-		MeshRepresentation& mergeRepresentations(const MeshRepresentation& other) {
+		MeshRepresentation& mergeRepresentations(MeshRepresentation other) {
 			auto initial_size = vertices.size();
 			vertices.insert(std::end(vertices), std::begin(other.vertices), std::end(other.vertices));
 			auto other_indices = other.indices;
@@ -30,6 +30,25 @@ namespace cogl {
 			indices.insert(std::end(indices), std::begin(other_indices), std::end(other_indices));
 			return *this;
 		}
+
+        MeshRepresentation& mergeRepresentations(MeshRepresentation other, const glm::mat4 transform) {
+            auto initial_size = vertices.size();
+            vertices.insert(std::end(vertices), std::begin(other.vertices), std::end(other.vertices));
+            auto start_iter = std::begin(vertices);
+            std::advance(start_iter, initial_size);
+            std::for_each(start_iter, std::end(vertices), [&](Vertex & i)
+            {
+                glm::vec4 temp{i.x, i.y, i.z, 1.0f};
+                temp = transform * temp;
+                i.x = temp.x;
+                i.y = temp.y;
+                i.z = temp.z;
+            });
+            auto other_indices = other.indices;
+            for (auto &i : other_indices) i += initial_size;
+            indices.insert(std::end(indices), std::begin(other_indices), std::end(other_indices));
+            return *this;
+        }
 
         static MeshRepresentation load_from_obj(const std::string &filename) {
             std::vector<Vertex> verticesVector;
