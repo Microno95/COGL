@@ -10,7 +10,7 @@ out vec4 color;
 void main()
 {
 	vec2 texcoord = f_texcoord;
-	texcoord.x += sin(texcoord.y * 4*2*3.14159 + time) / 100;
+//	texcoord.x += sin(texcoord.y * 4*2*3.14159 + time) / 100;
 //    vec2 offsets[9] = vec2[](
 //        vec2(-offset, offset),  // top-left
 //        vec2(0.0f,    offset),  // top-center

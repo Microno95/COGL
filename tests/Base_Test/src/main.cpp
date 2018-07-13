@@ -77,7 +77,7 @@ int main() {
 		}
 		cube.moveMeshTo(target_on_floor);
         mainWindow.renderBegin();
-		cube.render(defShader, defaultCamera, true);
+		cube.render(solidShader, defaultCamera, true);
         mainWindow.renderEnd();
 		glFinish();
 		test.Stop();

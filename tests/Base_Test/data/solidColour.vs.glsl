@@ -20,6 +20,6 @@ out vec4 color;
 vertex vertex_in = vertex(_pos, _normal, _colour, _uv);
 
 void main() {
-    gl_Position = mvp * vec4(vertex_in.pos, 1.0);
-    color = vec4(1.0f);
+    gl_Position = mvp * vec4(vertex_in.pos, 1.0f);
+    color = vec4(vec3(mvp * vec4(_normal, 0.0f)), 1.0f);
 }

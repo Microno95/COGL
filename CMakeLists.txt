@@ -5,7 +5,7 @@ project(libcogl VERSION 1.0.0 LANGUAGES CXX)
 # locations on all platforms.
 include(GNUInstallDirs)
 
-option(COGL_BUILD_EXAMPLES "Build the cogl example programs")
+option(COGL_BUILD_EXAMPLES "Build the cogl example programs" ON)
 
 file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
 if(EXISTS "${LOC_PATH}")
