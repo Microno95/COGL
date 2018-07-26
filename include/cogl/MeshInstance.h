@@ -113,10 +113,6 @@ namespace cogl {
             return modelMatrix.size();
         };
 
-        GLuint getTransformBuffer() {
-            return transformBuffer;
-        }
-
         const MeshRepresentation getMeshRepresentation() const;
     };
 

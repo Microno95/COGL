@@ -78,16 +78,16 @@ namespace cogl {
         glBufferData(GL_ARRAY_BUFFER, meshRepr.vertices.size() * sizeof(Vertex), meshRepr.vertices.data(), GL_STATIC_DRAW);
 
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr); // Position Vector
+		glVertexAttribPointer(0, sizeof(Vertex::pos) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr); // Position Vector
 
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) (sizeof(float) * 3)); // Normal Vector
+		glVertexAttribPointer(1, sizeof(Vertex::nrm) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos))); // Normal Vector
 
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) (sizeof(float) * 6)); // RGBA Values
+		glVertexAttribPointer(2, sizeof(Vertex::rgba) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos) + sizeof(Vertex::nrm))); // RGBA Values
 
         glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) (sizeof(float) * 10)); // UV Coords
+		glVertexAttribPointer(3, sizeof(Vertex::uv) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos) + sizeof(Vertex::nrm) + sizeof(Vertex::rgba))); // UV Coords
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshRepr.indices.size() * sizeof(unsigned int), meshRepr.indices.data(), GL_STATIC_DRAW);
@@ -127,10 +127,7 @@ namespace cogl {
             temp = getNormalMatrix();
             glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("normalMatrix")), (const GLfloat *) &temp[0][0]);
         };
-        if (program.getAttribLoc("uTessLevel") != -1) {
-            float tessLevel = 2.0;
-            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("uTessLevel")), (const GLfloat *) &tessLevel);
-        };
+
         glBindVertexArray(VAO);
         glDrawElements(renderType, static_cast<GLsizei>(meshRepr.indices.size()), GL_UNSIGNED_INT, (void *) 0);
         glBindVertexArray(0);

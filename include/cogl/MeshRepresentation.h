@@ -38,11 +38,12 @@ namespace cogl {
             std::advance(start_iter, initial_size);
             std::for_each(start_iter, std::end(vertices), [&](Vertex & i)
             {
-                glm::vec4 temp{i.x, i.y, i.z, 1.0f};
+                glm::vec4 temp{i.x, i.y, i.z, i.w};
                 temp = transform * temp;
                 i.x = temp.x;
                 i.y = temp.y;
                 i.z = temp.z;
+				i.w = temp.w;
             });
             auto other_indices = other.indices;
             for (auto &i : other_indices) i += initial_size;
@@ -70,12 +71,13 @@ namespace cogl {
             for (auto &i : objectCode) {
                 if (i[0] == 'v') {
                     std::stringstream temp(i);
-                    Vertex temp2{};
+					Vertex temp2{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
                     char throwaway;
                     temp >> throwaway;
                     temp >> temp2.x;
                     temp >> temp2.y;
                     temp >> temp2.z;
+					temp2.w = 1.0f;
                     verticesVector.push_back(temp2);
                 } else if (i[0] == 'f') {
                     std::stringstream temp(i);

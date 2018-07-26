@@ -103,10 +103,6 @@ namespace cogl {
 
         const glm::mat4x4 getScaleMatrix() const;
 
-		const GLuint& getVAOLabel() const {
-			return this->VAO;
-		}
-
         /*friend std::ostream &operator<<(std::ostream &outstream, const Mesh &rhs) {
             for (auto i = 0; i < rhs.vertices.size(); ++i) {
                 std::cout << "Vertex " << i << ":" << std::endl << rhs.vertices[i] << std::endl;
