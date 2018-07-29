@@ -41,19 +41,19 @@ namespace cogl {
     struct alignas(4) Vertex {
 		union {
 			struct { float pos[4]; };
-			struct { float x, y, z, k; };
+			struct { float x = 0, y = 0, z = 0, k = 0; };
 		};
 		union {
 			struct { float nrm[4]; };
-			struct { float nx, ny, nz, nw; };
+			struct { float nx = 0, ny = 0, nz = 0, nw = 0; };
 		};
 		union {
 			struct { float rgba[4]; };
-			struct { float r, g, b, a; };
+			struct { float r = 0, g = 0, b = 0, a = 0; };
 		};
 		union {
 			struct { float uv[4]; };
-			struct { float u, v, w, p; };
+			struct { float u = 0, v = 0, w = 0, p = 0; };
 		};
 
         friend std::ostream &operator<<(std::ostream &outstream, const Vertex &rhs) {

@@ -29,13 +29,15 @@ int main() {
     mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_PROGRAM_POINT_SIZE);
     mainWindow.enableCapability(GL_DEPTH_TEST);
-    mainWindow.enableCapability(GL_CULL_FACE);
-    mainWindow.setCullType(GL_BACK);
+//    mainWindow.enableCapability(GL_CULL_FACE);
+//    mainWindow.setCullType(GL_BACK);
     mainWindow.setDepthFunction(GL_LESS);
     mainWindow.setAASamples(0);
 
-    cogl::Mesh original_dragon = cogl::Mesh::load_from_obj("data/test.obj"), cube = cogl::Mesh::load_from_obj("data/test.obj");
+    cogl::Mesh original_dragon = cogl::Mesh::load_from_obj("data/untitled.obj"), cube = cogl::Mesh::load_from_obj("data/untitled.obj");
 	cube.scaleMesh(0.25f);
+
+	std::cout << cube.getMeshRepresentation();
 
     cogl::Camera defaultCamera = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
                                               glm::vec3({0.f, 0.f, 0.f}),
@@ -55,7 +57,7 @@ int main() {
 	double reloadPeriod = 2.0;
     int frameCount = 0;
     int frameCounterDebug = 0;
-	bool dragon_or_cube = false;
+	bool dragon_or_cube = true;
 	glm::vec3 target_on_floor{ 0.0,0.0,0.0 };
 	float angular_speed = 0.01f;
 
@@ -66,18 +68,18 @@ int main() {
 			auto load_test = cogl::utilities::Timer<std::chrono::microseconds>((dragon_or_cube ? "Dragon Load" : "Cube Load"), false, "us");
 			if (dragon_or_cube) {
 				cube = cogl::Mesh(original_dragon.getMeshRepresentation());
-				dragon_or_cube = false;
+//				dragon_or_cube = false;
 			}
 			else {
 				cube = cogl::Mesh(cogl::MeshRepresentation::Cube);
-				dragon_or_cube = true;
+//				dragon_or_cube = true;
 			}
 			otherPreviousTime = glfwGetTime();
 			cube.scaleMesh(0.25f);
 		}
 		cube.moveMeshTo(target_on_floor);
         mainWindow.renderBegin();
-		cube.render(defShader, defaultCamera, true);
+		cube.render(solidShader, defaultCamera, true);
         mainWindow.renderEnd();
 		glFinish();
 		test.Stop();
