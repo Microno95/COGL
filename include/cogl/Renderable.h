@@ -38,11 +38,32 @@ namespace cogl {
         Patches = GL_PATCHES,
     };
 
-    struct alignas(8) Vertex {
-        float x = 0, y = 0, z = 0;
-        float nx = 0, ny = 0, nz = 0;
-        float r = 0, g = 0, b = 0, alpha = 0;
-        float u = 0, v = 0;
+    struct alignas(4) Vertex {
+		union {
+			struct { float pos[4]; };
+			struct { float x, y, z, w; };
+			struct { glm::vec4 glm_pos; };
+		};
+		union {
+			struct { float nrm[4]; };
+			struct { float nx, ny, nz, nw; };
+			struct { glm::vec4 glm_nrm; };
+		};
+		union {
+			struct { float rgba[4]; };
+			struct { float r, g, b, a; };
+			struct { glm::vec4 glm_rgba; };
+		};
+		union {
+			struct { float uv[4]; };
+			struct { float u, v, w, p; };
+			struct { glm::vec4 glm_uv; };
+		};
+		
+		Vertex &Vertex::operator=(const Vertex& other) {
+			memcpy(this, &other, sizeof(Vertex));
+			return *this;
+		};
 
         friend std::ostream &operator<<(std::ostream &outstream, const Vertex &rhs) {
             outstream << "x: " << rhs.x << ", ";
@@ -54,7 +75,7 @@ namespace cogl {
             outstream << "r: " << rhs.r << ", ";
             outstream << "g: " << rhs.g << ", ";
             outstream << "b: " << rhs.b << ", ";
-            outstream << "alpha: " << rhs.alpha << " || ";
+            outstream << "a: " << rhs.a << " || ";
             outstream << "u: " << rhs.u << ", ";
             outstream << "v: " << rhs.v;
             return outstream;

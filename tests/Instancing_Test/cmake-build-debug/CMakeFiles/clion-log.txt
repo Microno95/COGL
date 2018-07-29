@@ -1,0 +1,4 @@
+"C:\External Program Files\JetBrains\apps\CLion\ch-0\181.5281.33\bin\cmake\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\ekin4\CLionProjects\COGL\tests\Instancing_Test
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/ekin4/CLionProjects/COGL/tests/Instancing_Test/cmake-build-debug

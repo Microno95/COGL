@@ -316,17 +316,17 @@ namespace cogl {
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         glBufferData(GL_ARRAY_BUFFER, meshRepr.vertices.size() * sizeof(Vertex), &meshRepr.vertices.front(), GL_STATIC_DRAW);
 
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid * ) 0); // Position Vector
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, sizeof(Vertex::pos) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr); // Position Vector
 
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 3)); // Normal Vector
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, sizeof(Vertex::nrm) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos))); // Normal Vector
 
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 6)); // RGBA Values
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, sizeof(Vertex::rgba) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos) + sizeof(Vertex::nrm))); // RGBA Values
 
-        glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 10)); // UV Coords
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, sizeof(Vertex::uv) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos) + sizeof(Vertex::nrm) + sizeof(Vertex::rgba))); // UV Coords
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshRepr.indices.size() * sizeof(unsigned int), &meshRepr.indices.front(), GL_STATIC_DRAW);

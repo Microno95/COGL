@@ -1,0 +1,1 @@
+-IC:/Users/ekin4/CLionProjects/COGL/cogl -IC:/Users/ekin4/CLionProjects/COGL/tests/MultiWindow_Test/src -IC:/Users/ekin4/CLionProjects/COGL/cmake-build-debug/deps/glad/include -IC:/Users/ekin4/CLionProjects/COGL/include -IC:/Users/ekin4/CLionProjects/COGL/deps/glm/glm -IC:/Users/ekin4/CLionProjects/COGL/deps/glfw/include -IC:/Users/ekin4/CLionProjects/COGL/deps/glm 
