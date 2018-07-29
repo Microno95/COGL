@@ -15,7 +15,7 @@ layout(location = 3) in vec4 _uv;
 
 layout(location = 4) in mat4 model;
 
-out vec4 color;
+flat out vec4 color;
 
 vertex vertex_in = vertex(_pos, _normal, _colour, _uv);
 

@@ -113,7 +113,7 @@ namespace cogl {
             return outstream;
         }*/
 
-        static Mesh load_from_obj(std::string filename);
+        static Mesh load_from_obj(const std::string filename, int merge_or_pick = -1);
     };
 };
 #endif //IDEK_MESHES_H

@@ -179,7 +179,14 @@ namespace cogl {
         return scaleMatrix;
     }
 
-    Mesh Mesh::load_from_obj(const std::string filename) {
-        return Mesh(MeshRepresentation::load_from_obj(filename));
+    Mesh Mesh::load_from_obj(const std::string filename, int merge_or_pick) {
+        auto representationsVector = MeshRepresentation::load_from_obj(filename);
+        auto mainRepresentation = representationsVector[0];
+        if (merge_or_pick == -1 && representationsVector.size() > 1) {
+            mainRepresentation.mergeRepresentations(std::vector<MeshRepresentation>(std::next(representationsVector.begin(), 1), representationsVector.end()));
+        } else if (merge_or_pick >= 0 && merge_or_pick < representationsVector.size()) {
+            mainRepresentation = representationsVector[static_cast<unsigned int>(merge_or_pick)];
+        }
+        return Mesh(mainRepresentation);
     }
 };

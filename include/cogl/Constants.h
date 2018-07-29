@@ -179,6 +179,39 @@ namespace cogl {
             return input.size() >= match.size()
                    && std::equal(std::begin(match), std::end(match), std::begin(input));
         };
+
+//        template<class ForwardIt, class Which>
+//        inline std::vector<ForwardIt> splitN(ForwardIt first, ForwardIt last, Which which) {
+//            std::vector<ForwardIt> ret;
+//
+//            ret.push_back(std::find(first, last,
+//                                    [&](const auto &v) { return which(v); }));
+//
+//            while (*ret.end() != last) {
+//                ret.push_back(std::find(ret[ret.size() - 1], last,
+//                                        [&](const auto &v) { return which(v); }));
+//            }
+//
+//            return std::move(ret);
+//        }
+
+        static inline std::vector<std::string> read_text_to_vector(const std::string &filepath) {
+            // Read the text file and store each line in a vector
+            std::vector<std::string> fileCode;
+            std::ifstream objectStream(filepath, std::ios::in);
+            if (objectStream.is_open()) {
+                std::string Line;
+                while (getline(objectStream, Line))
+                    fileCode.emplace_back(Line);
+                objectStream.close();
+            } else {
+                printf("Impossible to open %s. Are you in the right directory?\n", filepath.c_str());
+                getchar();
+            }
+            return std::move(fileCode);
+        }
+
+
     }
 }
 

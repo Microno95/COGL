@@ -4,6 +4,7 @@
 
 #include "cogl/GLWindow.h"
 #include <utility>
+#include <GL/gl.h>
 
 namespace cogl {
 

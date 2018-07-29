@@ -77,6 +77,10 @@ namespace cogl {
         }
     };
 
+    struct alignas(4) Face {
+        std::vector<cogl::Vertex> points;
+    };
+
     class Renderable {
     public:
         virtual void render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) = 0;
