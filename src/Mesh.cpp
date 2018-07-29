@@ -107,29 +107,13 @@ namespace cogl {
     void Mesh::render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) {
         program.bind();
         glm::mat4x4 temp;
-        if (program.getUniformLoc("mvp") != -1) {
-            temp = renderCamera.getMVPMatrix(getModelMatrix());
-            glUniformMatrix4fv(program.getUniformLoc("mvp"), 1, GL_FALSE, (const GLfloat *) &temp[0][0]);
+        if (program.getUniformLoc("vp") != -1) {
+            temp = renderCamera.getVPMatrix();
+            glUniformMatrix4fv(program.getUniformLoc("mvp"), 1, GL_FALSE, (const GLfloat *) &temp);
         };
-        if (program.getUniformLoc("proj") != -1) {
-            temp = renderCamera.getPMatrix();
-            glUniformMatrix4fv(program.getUniformLoc("proj"), 1, GL_FALSE, (const GLfloat *) &temp[0][0]);
-        };
-        if (program.getUniformLoc("view") != -1) {
-            temp = renderCamera.getVMatrix();
-            glUniformMatrix4fv(program.getUniformLoc("view"), 1, GL_FALSE, (const GLfloat *) &temp[0][0]);
-        };
-        if (program.getAttribLoc("modelMatrix") != -1 && update_gpu_data) {
+        if (program.getAttribLoc("model") != -1 && update_gpu_data) {
             temp = getModelMatrix();
-            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("modelMatrix")), (const GLfloat *) &temp[0][0]);
-        };
-        if (program.getAttribLoc("normalMatrix") != -1 && update_gpu_data) {
-            temp = getNormalMatrix();
-            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("normalMatrix")), (const GLfloat *) &temp[0][0]);
-        };
-        if (program.getAttribLoc("uTessLevel") != -1) {
-            float tessLevel = 2.0;
-            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("uTessLevel")), (const GLfloat *) &tessLevel);
+            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("modelMatrix")), (const GLfloat *) &temp);
         };
         glBindVertexArray(VAO);
         glDrawElements(renderType, static_cast<GLsizei>(meshRepr.indices.size()), GL_UNSIGNED_INT, (void *) 0);

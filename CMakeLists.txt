@@ -3,6 +3,7 @@ project(libcogl VERSION 1.0.0 LANGUAGES CXX)
 
 # Must use GNUInstallDirs to install libraries into correct
 # locations on all platforms.
+
 include(GNUInstallDirs)
 
 option(COGL_BUILD_EXAMPLES "Build the cogl example programs" ON)
@@ -59,6 +60,7 @@ set(GLAD_SPEC "gl" CACHE STRING "Name of the spec")
 set(GLAD_INSTALL ON CACHE BOOL "Generate installation target")
 add_subdirectory(${GLAD_DIR})
 
+include("${CMAKE_CURRENT_SOURCE_DIR}/include/cogl/CMakeLists.txt")
 include("${CMAKE_CURRENT_SOURCE_DIR}/src/CMakeLists.txt")
 
 if (COGL_BUILD_EXAMPLES)

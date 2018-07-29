@@ -1,0 +1,12 @@
+set(COGL_HEADERS
+    "${CMAKE_CURRENT_LIST_DIR}/Camera.h"
+    "${CMAKE_CURRENT_LIST_DIR}/Framebuffer.h"
+    "${CMAKE_CURRENT_LIST_DIR}/GLWindow.h"
+    "${CMAKE_CURRENT_LIST_DIR}/Mesh.h"
+    "${CMAKE_CURRENT_LIST_DIR}/Constants.h"
+    "${CMAKE_CURRENT_LIST_DIR}/cogl.h"
+    "${CMAKE_CURRENT_LIST_DIR}/FunctionWrapper.h"
+    "${CMAKE_CURRENT_LIST_DIR}/Renderable.h"
+    "${CMAKE_CURRENT_LIST_DIR}/MeshInstance.h"
+    "${CMAKE_CURRENT_LIST_DIR}/MeshRepresentation.h"
+    "${CMAKE_CURRENT_LIST_DIR}/Shader.h")

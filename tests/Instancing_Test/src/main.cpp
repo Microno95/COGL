@@ -9,6 +9,7 @@ class MyCamera : public cogl::Camera {
 
 public:
 	bool swap_mesh = true;
+	int frameCountDebug = 0;
 
 	void keycallback(GLFWwindow *window, int key, int scancode,
 		int action, int mods) override {
@@ -54,6 +55,7 @@ public:
 		if (key == GLFW_KEY_F && action == GLFW_RELEASE) {
 			printf("swapped\n");
 			swap_mesh = !swap_mesh;
+			frameCountDebug = 0;
 		}
 	}
 };
@@ -66,12 +68,12 @@ int main() {
 	mainWindow.enableCapability(GL_CULL_FACE);
 	mainWindow.setCullType(GL_BACK);
 	mainWindow.setDepthFunction(GL_LESS);
-	mainWindow.setAASamples(0);
+	mainWindow.setAASamples(4);
 
 	//cogl::MeshInstance cubes(cogl::Mesh::Cube, 25);
 	//auto cube = cogl::Mesh::Cube;
-	cogl::MeshInstance cubes(cogl::MeshRepresentation::Cube, 100000),
-					   dragons(cogl::Mesh::load_from_obj("data/dragon.obj"), 50);
+	cogl::MeshInstance cubes(cogl::MeshRepresentation::Cube, 200000),
+					   dragons(cogl::Mesh::load_from_obj("data/dragon.obj"), 100);
 
     float radius = 20;
 
@@ -106,10 +108,10 @@ int main() {
 
 	mainWindow.setMainCamera(defaultCamera);
 
-	cogl::Shader defShader("data/triTestInst");
+	cogl::Shader defShader("data/triTest");
     int frameCount = 0;
 	int every_n_frames = 5;
-	float rotation_speed = 0.001f;
+	float rotation_speed = 0.01f;
 
     while (!mainWindow.shouldClose()) {
 		auto test = Timer<>("Frame Time", true);

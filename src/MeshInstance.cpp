@@ -74,6 +74,7 @@ namespace cogl {
             std::swap(this->rotMatrix, other.rotMatrix);
             std::swap(this->transMatrix, other.transMatrix);
             std::swap(this->scaleMatrix, other.scaleMatrix);
+            std::swap(this->modelMatrix, other.modelMatrix);
             std::swap(this->renderType, other.renderType);
         }
 		return *this;
@@ -92,25 +93,17 @@ namespace cogl {
 
     void MeshInstance::render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) {
         program.bind();
-        glm::mat4x4 temp1, temp2, temp3;
-        if (program.getUniformLoc("proj") != -1) {
-            temp1 = renderCamera.getPMatrix();
-            glUniformMatrix4fv(program.getUniformLoc("proj"), 1, GL_FALSE, (const GLfloat *) &temp1);
-        };
-		if (program.getUniformLoc("view") != -1) {
-			temp2 = renderCamera.getVMatrix();
-			glUniformMatrix4fv(program.getUniformLoc("view"), 1, GL_FALSE, (const GLfloat *)&temp2);
-		};
+        glm::mat4x4 temp1;
 		if (program.getUniformLoc("vp") != -1) {
-			temp3 = renderCamera.getVPMatrix();
-			glUniformMatrix4fv(program.getUniformLoc("vp"), 1, GL_FALSE, (const GLfloat *)&temp3);
+			temp1 = renderCamera.getVPMatrix();
+			glUniformMatrix4fv(program.getUniformLoc("vp"), 1, GL_FALSE, (const GLfloat *)&temp1);
 		};
 
         glBindVertexArray(VAO);
 
         if (update_gpu_data) {
             glNamedBufferSubData(transformBuffer, 0, modelMatrix.size() * sizeof(glm::mat4x4),
-                                 (GLvoid * ) & modelMatrix.front());
+                                 (GLvoid * ) &modelMatrix.front());
         }
 
         glDrawElementsInstanced(renderType, (GLsizei) meshRepr.indices.size(), GL_UNSIGNED_INT, 0,
