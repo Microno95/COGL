@@ -2196,24 +2196,6 @@ sstream
 chrono
 -
 
-../include/cogl/Framebuffer.h
-cogl/Constants.h
-../include/cogl/cogl/Constants.h
-cogl/Shader.h
-../include/cogl/cogl/Shader.h
-
-../include/cogl/GLWindow.h
-Shader.h
-../include/cogl/Shader.h
-Camera.h
-../include/cogl/Camera.h
-Renderable.h
-../include/cogl/Renderable.h
-Framebuffer.h
-../include/cogl/Framebuffer.h
-Constants.h
-../include/cogl/Constants.h
-
 ../include/cogl/Mesh.h
 MeshRepresentation.h
 ../include/cogl/MeshRepresentation.h
@@ -2246,16 +2228,6 @@ Camera.h
 Constants.h
 ../include/cogl/Constants.h
 
-C:/Users/ekin4/CLionProjects/COGL/src/Camera.cpp
-cogl/Camera.h
-C:/Users/ekin4/CLionProjects/COGL/src/cogl/Camera.h
-
-C:/Users/ekin4/CLionProjects/COGL/src/GLWindow.cpp
-cogl/GLWindow.h
-C:/Users/ekin4/CLionProjects/COGL/src/cogl/GLWindow.h
-utility
--
-
 C:/Users/ekin4/CLionProjects/COGL/src/Mesh.cpp
 cogl/Mesh.h
 C:/Users/ekin4/CLionProjects/COGL/src/cogl/Mesh.h
@@ -2267,14 +2239,6 @@ C:/Users/ekin4/CLionProjects/COGL/src/cogl/MeshInstance.h
 C:/Users/ekin4/CLionProjects/COGL/src/MeshRepresentation.cpp
 cogl/MeshRepresentation.h
 C:/Users/ekin4/CLionProjects/COGL/src/cogl/MeshRepresentation.h
-
-C:/Users/ekin4/CLionProjects/COGL/src/Shader.cpp
-cogl/Shader.h
-C:/Users/ekin4/CLionProjects/COGL/src/cogl/Shader.h
-
-C:/Users/ekin4/CLionProjects/COGL/src/framebuffer.cpp
-cogl/Framebuffer.h
-C:/Users/ekin4/CLionProjects/COGL/src/cogl/Framebuffer.h
 
 deps/glad/include/KHR/khrplatform.h
 stdint.h

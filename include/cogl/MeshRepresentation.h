@@ -54,6 +54,8 @@ namespace cogl {
         static MeshRepresentation load_from_obj(const std::string &filename) {
             std::vector<Vertex> verticesVector;
             std::vector<unsigned int> indicesVector;
+            std::vector<glm::vec4> normalsVector;
+            std::vector<glm::vec4> texCoordsVector;
 
             // Read the Vertex Shader code from the file
             std::vector<std::string> objectCode;
@@ -69,28 +71,165 @@ namespace cogl {
             }
 
             for (auto &i : objectCode) {
-                if (i[0] == 'v') {
-                    std::stringstream temp(i);
-					Vertex temp2{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-                    char throwaway;
-                    temp >> throwaway;
-                    temp >> temp2.x;
-                    temp >> temp2.y;
-                    temp >> temp2.z;
-					temp2.w = 1.0f;
+                if (cogl::utilities::begins_with<std::string>(i, "v ")) {
+                    std::string temp(i);
+                    temp.erase(0, 3);
+                    std::vector<std::string> temp3 = cogl::utilities::split_string(temp, " ", true);
+                    Vertex temp2{};
+                    temp2.x = 0;
+                    temp2.y = 0;
+                    temp2.z = 0;
+                    temp2.k = 0;
+                    if (temp3.size() == 1) {
+                        temp2.x = std::stof(temp3[0]);
+                    } else if (temp3.size() == 2) {
+                        temp2.x = std::stof(temp3[0]);
+                        temp2.y = std::stof(temp3[1]);
+                    } else if (temp3.size() == 3) {
+                        temp2.x = std::stof(temp3[0]);
+                        temp2.y = std::stof(temp3[1]);
+                        temp2.z = std::stof(temp3[2]);
+                    }
+                    temp2.k = 1.0;
+                    temp2.nx = 0;
+                    temp2.ny = 0;
+                    temp2.nz = 0;
+                    temp2.nw = -1;
+                    temp2.u = 0;
+                    temp2.v = 0;
+                    temp2.w = 0;
+                    temp2.p = -1;
                     verticesVector.push_back(temp2);
-                } else if (i[0] == 'f') {
-                    std::stringstream temp(i);
-                    unsigned int temp2;
-                    char throwaway;
-                    temp >> throwaway;
-                    temp >> temp2;
-                    indicesVector.push_back(temp2 - 1);
-                    temp >> temp2;
-                    indicesVector.push_back(temp2 - 1);
-                    temp >> temp2;
-                    indicesVector.push_back(temp2 - 1);
+                } else if (cogl::utilities::begins_with<std::string>(i, "vt ")) {
+                    std::string temp(i);
+                    glm::vec4 temp2;
+                    temp.erase(0, 3);
+                    std::vector<std::string> temp3 = cogl::utilities::split_string(temp, " ", true);
+                    temp2.x = 0;
+                    temp2.y = 0;
+                    temp2.z = 0;
+                    temp2.w = 0;
+                    if (temp3.size() == 1) {
+                        temp2.x = std::stof(temp3[0]);
+                    } else if (temp3.size() == 2) {
+                        temp2.x = std::stof(temp3[0]);
+                        temp2.y = std::stof(temp3[1]);
+                    } else if (temp3.size() == 3) {
+                        temp2.x = std::stof(temp3[0]);
+                        temp2.y = std::stof(temp3[1]);
+                        temp2.z = std::stof(temp3[2]);
+                    } else if (temp3.size() == 4) {
+                        temp2.x = std::stof(temp3[0]);
+                        temp2.y = std::stof(temp3[1]);
+                        temp2.z = std::stof(temp3[2]);
+                        temp2.w = std::stof(temp3[3]);
+                    }
+                    texCoordsVector.push_back(temp2);
+                } else if (cogl::utilities::begins_with<std::string>(i, "vn ")) {
+                    std::string temp(i);
+                    glm::vec4 temp2;
+                    temp.erase(0, 3);
+                    std::vector<std::string> temp3 = cogl::utilities::split_string(temp, " ", true);
+                    temp2.x = 0;
+                    temp2.y = 0;
+                    temp2.z = 0;
+                    temp2.w = 0;
+                    if (temp3.size() == 1) {
+                        temp2.x = std::stof(temp3[0]);
+                    } else if (temp3.size() == 2) {
+                        temp2.x = std::stof(temp3[0]);
+                        temp2.y = std::stof(temp3[1]);
+                    } else if (temp3.size() == 3) {
+                        temp2.x = std::stof(temp3[0]);
+                        temp2.y = std::stof(temp3[1]);
+                        temp2.z = std::stof(temp3[2]);
+                    } else if (temp3.size() == 4) {
+                        temp2.x = std::stof(temp3[0]);
+                        temp2.y = std::stof(temp3[1]);
+                        temp2.z = std::stof(temp3[2]);
+                        temp2.w = std::stof(temp3[3]);
+                    }
+                    normalsVector.push_back(temp2);
+                } else if (cogl::utilities::begins_with<std::string>(i, "f ")) {
+                    std::string temp(i);
+                    std::vector<std::string> temp3;
+                    unsigned int temp4, temp5, temp6;
+                    temp.erase(0, 2);
+                    auto temp2 = cogl::utilities::split_string(temp, " ", true);
+                    for (auto &subtemp : temp2) {
+                        {
+                            temp3 = cogl::utilities::split_string(subtemp, "/", true);
+                            if (temp3.size() == 1) {
+                                std::stringstream(temp3[0]) >> temp4;
+                                indicesVector.push_back(temp4 - 1);
+                            } else if (temp3.size() == 2) {
+                                std::stringstream(temp3[0]) >> temp4;
+                                std::stringstream(temp3[1]) >> temp5;
+                                if (std::round(verticesVector[temp4 - 1].nw) != temp5 - 1) {
+                                    if (verticesVector[temp4 - 1].nw < 0) {
+                                        verticesVector[temp4 - 1].nx = normalsVector[temp5 - 1].x;
+                                        verticesVector[temp4 - 1].ny = normalsVector[temp5 - 1].y;
+                                        verticesVector[temp4 - 1].nz = normalsVector[temp5 - 1].z;
+                                        verticesVector[temp4 - 1].nw = temp5 - 1;
+                                        indicesVector.push_back(temp4 - 1);
+                                    } else {
+                                        verticesVector.push_back(verticesVector[temp4 - 1]);
+                                        verticesVector[verticesVector.size() - 1].nx = normalsVector[temp5 - 1].x;
+                                        verticesVector[verticesVector.size() - 1].ny = normalsVector[temp5 - 1].y;
+                                        verticesVector[verticesVector.size() - 1].nz = normalsVector[temp5 - 1].z;
+                                        verticesVector[verticesVector.size() - 1].nw = temp5 - 1;
+                                        indicesVector.push_back(verticesVector.size() - 1);
+                                    }
+                                } else {
+                                    indicesVector.push_back(temp4 - 1);
+                                }
+                            } else if (temp3.size() == 3) {
+                                std::stringstream(temp3[0]) >> temp4;
+                                if (!temp3[1].empty()) {
+                                    std::stringstream(temp3[1]) >> temp5;
+                                } else {
+                                    temp5 = 0;
+                                }
+                                if (!temp3[2].empty()) {
+                                    std::stringstream(temp3[2]) >> temp6;
+                                } else {
+                                    temp6 = 0;
+                                }
+                                if (std::round(verticesVector[temp4 - 1].nw) != temp6 - 1 || std::round(verticesVector[temp4 - 1].p) != temp5 - 1) {
+                                    if (verticesVector[temp4 - 1].nw < 0 && verticesVector[temp4 - 1].p < 0) {
+                                        verticesVector[temp4 - 1].nx = normalsVector[temp6 - 1].x;
+                                        verticesVector[temp4 - 1].ny = normalsVector[temp6 - 1].y;
+                                        verticesVector[temp4 - 1].nz = normalsVector[temp6 - 1].z;
+                                        verticesVector[temp4 - 1].nw = temp6 - 1;
+                                        verticesVector[temp4 - 1].u = texCoordsVector[temp5 - 1].x;
+                                        verticesVector[temp4 - 1].v = texCoordsVector[temp5 - 1].y;
+                                        verticesVector[temp4 - 1].w = texCoordsVector[temp5 - 1].z;
+                                        verticesVector[temp4 - 1].p = temp5 - 1;
+                                        indicesVector.push_back(temp4 - 1);
+                                    } else {
+                                        verticesVector.push_back(verticesVector[temp4 - 1]);
+                                        verticesVector[verticesVector.size() - 1].nx = normalsVector[temp6 - 1].x;
+                                        verticesVector[verticesVector.size() - 1].ny = normalsVector[temp6 - 1].y;
+                                        verticesVector[verticesVector.size() - 1].nz = normalsVector[temp6 - 1].z;
+                                        verticesVector[verticesVector.size() - 1].nw = temp6 - 1;
+                                        verticesVector[verticesVector.size() - 1].u = texCoordsVector[temp5 - 1].x;
+                                        verticesVector[verticesVector.size() - 1].v = texCoordsVector[temp5 - 1].y;
+                                        verticesVector[verticesVector.size() - 1].w = texCoordsVector[temp5 - 1].z;
+                                        verticesVector[verticesVector.size() - 1].p = temp5 - 1;
+                                        indicesVector.push_back(verticesVector.size() - 1);
+                                    }
+                                } else {
+                                    indicesVector.push_back(temp4 - 1);
+                                }
+                            }
+                        }
+                    }
                 }
+            }
+            for (auto &i : verticesVector) {
+                i.k = 1;
+                i.nw = 0.0;
+                i.p = 0.0;
             }
 
             return MeshRepresentation(verticesVector, indicesVector);

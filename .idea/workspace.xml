@@ -21,289 +21,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2036eb19-e1ed-4524-8d15-4251efc298de" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/COGL.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.10.3/CMakeCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.10.3/CMakeCXXCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.10.3/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.10.3/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.10.3/CMakeRCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.10.3/CMakeSystem.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.10.3/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.10.3/CompilerIdCXX/CMakeCXXCompilerId.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.0/CMakeCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.0/CMakeCXXCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.0/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.0/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.0/CMakeRCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.0/CMakeSystem.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.0/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.12.0/CompilerIdCXX/CMakeCXXCompilerId.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeRuleHashes.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FindOpenMP/OpenMPCheckVersion.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FindOpenMP/ompver_CXX.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cmake.check_cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/CXX.includecache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/cmake_clean_target.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.cxx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/Export/lib/cmake/glad/gladTargets-debug.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/Export/lib/cmake/glad/gladTargets.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad-generate-files.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad-generate-files.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad-generate-files.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad-generate-files.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad-generate-files.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad-generate-files.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/C.includecache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/cmake_clean_target.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/includes_C.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/GLAD.cbp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/gladConfig.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/gladConfigVersion.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/include/KHR/khrplatform.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/include/glad/glad.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/libglad.a" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/src/glad.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/GLFW.cbp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/C.includecache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/cmake_clean_target.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/includes_C.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/glfw3.pc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/glfw3Config.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/glfw3ConfigVersion.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/glfw_config.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/libglfw3.a" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/CMakeFiles/Export/lib/cmake/glm/glmTargets.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/CMakeFiles/uninstall.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/CMakeFiles/uninstall.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/CMakeFiles/uninstall.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/CMakeFiles/uninstall.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/cmake_uninstall.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm.cbp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm.pc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/glm_dummy.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/glm_dummy.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/glm_dummy.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/glm_dummy.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/glm_dummy.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/glm_dummy.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/glm_dummy.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/glm_dummy.dir/linklibs.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/glm_dummy.dir/objects1.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/glm_dummy.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glm/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glmConfig.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glmConfigVersion.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/glmTargets.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/lib/cmake/glm/glmConfig.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/bug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/bug/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/bug/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/bug/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/bug/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/core/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/core/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/core/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/core/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/core/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/ext/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/ext/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/ext/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/ext/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/ext/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/gtc/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/gtc/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/gtc/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/gtc/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/gtc/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/gtx/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/gtx/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/gtx/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/gtx/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glm/test/gtx/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/libcogl.a" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/libcogl.cbp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/CXX.includecache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/linklibs.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/objects.a" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/objects1.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/CXX.includecache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/linklibs.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/objects.a" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/objects1.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/instancing_test.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Instancing_Test/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/CXX.includecache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/linklibs.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/objects.a" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/objects1.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/merge_test.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Merge_Test/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/multiwindow_test.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/multiwindow_test.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/multiwindow_test.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/multiwindow_test.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/multiwindow_test.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/multiwindow_test.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/multiwindow_test.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/multiwindow_test.dir/linklibs.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/multiwindow_test.dir/objects1.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/multiwindow_test.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/CTestTestfile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmake-build-debug/tests/MultiWindow_Test/cmake_install.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/3.10.3/CMakeCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/3.10.3/CMakeCXXCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/3.10.3/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/3.10.3/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/3.10.3/CMakeRCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/3.10.3/CMakeSystem.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/3.10.3/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/3.10.3/CompilerIdCXX/CMakeCXXCompilerId.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/cmake.check_cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/feature_tests.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/feature_tests.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/feature_tests.cxx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/instancing_test.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/instancing_test.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/instancing_test.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/instancing_test.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/instancing_test.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/instancing_test.dir/includes_CXX.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/instancing_test.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/instancing_test.dir/linklibs.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/instancing_test.dir/objects1.rsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/instancing_test.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/Project.cbp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/cogl/Mesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/cogl/Mesh.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/cogl/MeshInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/cogl/MeshInstance.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cogl.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad-generate-files.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad-generate-files.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad-generate-files.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad-generate-files.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/CMakeFiles/glad.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/deps/glad/include/glad/glad.h" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/include/glad/glad.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/deps/glad/libglad.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/libglad.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/deps/glad/src/glad.c" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glad/src/glad.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/CMakeFiles/glfw.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/libglfw3.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/deps/glfw/src/libglfw3.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/libcogl.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/libcogl.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/depend.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/tests/Base_Test/CMakeFiles/base_test.dir/objects.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/cogl/Constants.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/cogl/Constants.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/cogl/MeshRepresentation.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/cogl/MeshRepresentation.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/cogl/Renderable.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/cogl/Renderable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GLWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/GLWindow.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Mesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Mesh.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MeshInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/MeshInstance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MeshRepresentation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/MeshRepresentation.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Base_Test/data/solidColour.vs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Base_Test/data/solidColour.vs.glsl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/Base_Test/data/triTest.vs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Base_Test/data/triTest.vs.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Base_Test/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Base_Test/src/main.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/tests/Instancing_Test/cmake-build-debug/" />
@@ -324,26 +65,32 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="h" value="5" />
+          <entry key="chrono" value="1" />
+          <entry key="cpp" value="4" />
+          <entry key="glsl" value="2" />
+          <entry key="h" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="ObjectiveC" value="5" />
+          <entry key="ObjectiveC" value="12" />
+          <entry key="PLAIN_TEXT" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cpp" value="10" />
-          <entry key="glsl" value="2" />
+          <entry key="cpp" value="73" />
+          <entry key="glsl" value="98" />
+          <entry key="h" value="298" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="ObjectiveC" value="10" />
-          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="ObjectiveC" value="371" />
+          <entry key="PLAIN_TEXT" value="98" />
         </counts>
       </usages-collector>
+      <usages-collector id="statistics.cidr.testingFrameworks.usages" />
     </session>
   </component>
   <component name="FavoritesManager">
@@ -352,28 +99,40 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/MeshInstance.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="186" selection-start-line="186" selection-end-line="186" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/Base_Test/src/main.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="524">
+              <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Mesh.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="854">
-              <caret line="122" column="115" selection-start-line="122" selection-start-column="115" selection-end-line="122" selection-end-column="115" />
+            <state relative-caret-position="912">
+              <caret line="115" column="77" selection-start-line="115" selection-start-column="77" selection-end-line="115" selection-end-column="77" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/Instancing_Test/src/main.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="566">
-              <caret line="113" column="30" selection-start-line="113" selection-start-column="30" selection-end-line="113" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/include/cogl/MeshRepresentation.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="60" column="41" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="41" />
+            <state relative-caret-position="830">
+              <caret line="196" column="46" selection-start-line="196" selection-start-column="46" selection-end-line="196" selection-end-column="46" />
+              <folding>
+                <element signature="e#97#115#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -381,58 +140,59 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/cogl/Renderable.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="614">
-              <caret line="41" column="15" selection-start-line="41" selection-start-column="15" selection-end-line="41" selection-end-column="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/cogl/Mesh.h">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/cogl/Constants.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1944">
-              <caret line="123" column="88" selection-start-line="123" selection-start-column="88" selection-end-line="123" selection-end-column="88" />
+            <state relative-caret-position="422">
+              <caret line="56" column="10" selection-start-line="56" selection-start-column="10" selection-end-line="56" selection-end-column="10" />
               <folding>
-                <element signature="e#99#122#0" expanded="true" />
-                <element signature="e#3211#3248#0" expanded="true" />
+                <element signature="e#105#127#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/cogl/Shader.h">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tests/Base_Test/data/triTest.vs.glsl">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+            <state relative-caret-position="624">
+              <caret line="26" column="33" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CmakeLists.txt">
+        <entry file="file://$PROJECT_DIR$/include/cogl/Constants.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="25" column="20" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="20" />
+            <state relative-caret-position="384">
+              <caret line="105" column="15" selection-start-line="105" selection-start-column="15" selection-end-line="105" selection-end-column="15" />
+              <folding>
+                <element signature="e#99#122#0" expanded="true" />
+                <element signature="e#3065#3083#0" expanded="true" />
+                <element signature="e#3211#3248#0" expanded="true" />
+                <element signature="e#6203#6221#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/Instancing_Test/CMakeLists.txt">
+        <entry file="file://$PROJECT_DIR$/include/cogl/GLWindow.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
+            <state relative-caret-position="70">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+              <folding>
+                <element signature="e#105#124#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GLWindow.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="710">
+              <caret line="208" column="32" selection-start-line="208" selection-start-column="32" selection-end-line="208" selection-end-column="32" />
+              <folding>
+                <element signature="e#42#68#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -452,9 +212,11 @@
       <find>render()</find>
       <find>render(</find>
       <find>mvp</find>
+      <find>stod</find>
     </findStrings>
     <replaceStrings>
       <replace>.h</replace>
+      <replace>stof</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -470,13 +232,10 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/tests/Merge_Test/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/include/cogl/MeshRepresentation.h" />
         <option value="$PROJECT_DIR$/tests/MultiWindow_Test/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/tests/Base_Test/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/tests/Merge_Test/src/main.cpp" />
-        <option value="$PROJECT_DIR$/include/cogl/Constants.h" />
         <option value="$PROJECT_DIR$/tests/MultiWindow_Test/src/main.cpp" />
-        <option value="$PROJECT_DIR$/tests/Base_Test/src/main.cpp" />
         <option value="$PROJECT_DIR$/include/cogl/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/src/CmakeLists.txt" />
         <option value="$PROJECT_DIR$/tests/Instancing_Test/CMakeLists.txt" />
@@ -485,8 +244,13 @@
         <option value="$PROJECT_DIR$/include/cogl/MeshInstance.h" />
         <option value="$PROJECT_DIR$/src/MeshInstance.cpp" />
         <option value="$PROJECT_DIR$/tests/Instancing_Test/src/main.cpp" />
+        <option value="$PROJECT_DIR$/include/cogl/Renderable.h" />
+        <option value="$PROJECT_DIR$/src/GLWindow.cpp" />
+        <option value="$PROJECT_DIR$/include/cogl/Constants.h" />
+        <option value="$PROJECT_DIR$/tests/Base_Test/src/main.cpp" />
         <option value="$PROJECT_DIR$/src/Mesh.cpp" />
         <option value="$PROJECT_DIR$/tests/Base_Test/data/triTest.vs.glsl" />
+        <option value="$PROJECT_DIR$/include/cogl/MeshRepresentation.h" />
       </list>
     </option>
   </component>
@@ -563,6 +327,13 @@
               <item name="libcogl" type="b2602c69:ProjectViewProjectNode" />
               <item name="COGL" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="Base_Test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="libcogl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="COGL" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
               <item name="Instancing_Test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -607,7 +378,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.instancing_test">
+  <component name="RunManager" selected="Application.base_test">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="libcogl" RUN_TARGET_NAME="merge_test" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -687,7 +458,7 @@
       <workItem from="1531254361287" duration="67000" />
       <workItem from="1531341605694" duration="6210000" />
       <workItem from="1532132935815" duration="3779000" />
-      <workItem from="1532823088650" duration="349000" />
+      <workItem from="1532823088650" duration="3465000" />
     </task>
     <task id="LOCAL-00001" summary="Added transformation support to mergeRepresentation, and further improved the Timer class to allow other durations.">
       <created>1531356927194</created>
@@ -700,28 +471,28 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10405000" />
+    <option name="totallyTimeSpent" value="13521000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="437" y="0" width="3214" height="2127" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49962604" visible="true" weight="0.25459734" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49962604" visible="true" weight="0.25459734" />
       <window_info id="Structure" order="1" sideWeight="0.50037396" side_tool="true" weight="0.25301206" />
       <window_info id="Favorites" order="2" sideWeight="0.50037396" side_tool="true" weight="0.25301206" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49682942" weight="0.32982457" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49270767" visible="true" weight="0.32948846" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="CMake" order="7" sideWeight="0.4993659" weight="0.32982457" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.4993659" visible="true" weight="0.32948846" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50063413" side_tool="true" visible="true" weight="0.32948846" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.4993659" weight="0.32948846" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50729233" side_tool="true" visible="true" weight="0.32948846" />
       <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49968293" weight="0.32982457" />
-      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.49968293" weight="0.32982457" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.49556118" weight="0.32948846" />
       <window_info anchor="right" id="Database" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -768,13 +539,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/External Program Files/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/chrono">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="302" column="13" selection-start-line="302" selection-start-column="13" selection-end-line="302" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/Base_Test/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -803,30 +567,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/Base_Test/src/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/framebuffer.cpp">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Camera.cpp">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/cogl/GLWindow.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/cogl/cogl.h">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GLWindow.cpp">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/include/cogl/CMakeLists.txt">
@@ -856,13 +600,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MeshInstance.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2304">
-          <caret line="96" column="48" selection-start-line="96" selection-start-column="48" selection-end-line="96" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/cogl/MeshInstance.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
@@ -884,55 +621,121 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/Instancing_Test/src/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="113" column="30" selection-start-line="113" selection-start-column="30" selection-end-line="113" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/cogl/MeshRepresentation.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="60" column="41" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/cogl/Mesh.h">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/cogl/Constants.h">
+    <entry file="file://$PROJECT_DIR$/include/cogl/cogl.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1944">
-          <caret line="123" column="88" selection-start-line="123" selection-start-column="88" selection-end-line="123" selection-end-column="88" />
+        <state relative-caret-position="168">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
           <folding>
-            <element signature="e#99#122#0" expanded="true" />
-            <element signature="e#3211#3248#0" expanded="true" />
+            <element signature="e#93#120#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tests/Instancing_Test/src/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="103" column="45" selection-start-line="103" selection-start-column="45" selection-end-line="103" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/External Program Files/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/chrono">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="593" column="44" selection-start-line="593" selection-start-column="44" selection-end-line="593" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/include/cogl/Shader.h">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/cogl/GLWindow.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="70">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+          <folding>
+            <element signature="e#105#124#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GLWindow.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="710">
+          <caret line="208" column="32" selection-start-line="208" selection-start-column="32" selection-end-line="208" selection-end-column="32" />
+          <folding>
+            <element signature="e#42#68#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MeshInstance.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="186" selection-start-line="186" selection-end-line="186" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/include/cogl/Renderable.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="614">
-          <caret line="41" column="15" selection-start-line="41" selection-start-column="15" selection-end-line="41" selection-end-column="15" />
+        <state relative-caret-position="422">
+          <caret line="56" column="10" selection-start-line="56" selection-start-column="10" selection-end-line="56" selection-end-column="10" />
+          <folding>
+            <element signature="e#105#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/cogl/Constants.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="105" column="15" selection-start-line="105" selection-start-column="15" selection-end-line="105" selection-end-column="15" />
+          <folding>
+            <element signature="e#99#122#0" expanded="true" />
+            <element signature="e#3065#3083#0" expanded="true" />
+            <element signature="e#3211#3248#0" expanded="true" />
+            <element signature="e#6203#6221#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/Base_Test/data/solidColour.vs.glsl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/Base_Test/src/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="524">
+          <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Mesh.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="854">
-          <caret line="122" column="115" selection-start-line="122" selection-start-column="115" selection-end-line="122" selection-end-column="115" />
+        <state relative-caret-position="912">
+          <caret line="115" column="77" selection-start-line="115" selection-start-column="77" selection-end-line="115" selection-end-column="77" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/Base_Test/data/triTest.vs.glsl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+        <state relative-caret-position="624">
+          <caret line="26" column="33" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/cogl/MeshRepresentation.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="830">
+          <caret line="196" column="46" selection-start-line="196" selection-start-column="46" selection-end-line="196" selection-end-column="46" />
+          <folding>
+            <element signature="e#97#115#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

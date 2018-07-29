@@ -34,7 +34,7 @@ int main() {
     mainWindow.setDepthFunction(GL_LESS);
     mainWindow.setAASamples(0);
 
-    cogl::Mesh original_dragon = cogl::Mesh::load_from_obj("data/dragon.obj"), cube = cogl::Mesh::load_from_obj("data/dragon.obj");
+    cogl::Mesh original_dragon = cogl::Mesh::load_from_obj("data/test.obj"), cube = cogl::Mesh::load_from_obj("data/test.obj");
 	cube.scaleMesh(0.25f);
 
     cogl::Camera defaultCamera = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
@@ -60,10 +60,10 @@ int main() {
 	float angular_speed = 0.01f;
 
     while (!mainWindow.shouldClose()) {
-		auto test = Timer<std::chrono::microseconds>("Frame Time", true, "us");
+		auto test = cogl::utilities::Timer<std::chrono::microseconds>("Frame Time", true, "us");
 		cube.rotateMesh(PI * angular_speed, glm::vec3({0.0f, 1.0f, 0.0f}));
 		if (previousTime - otherPreviousTime >= reloadPeriod) {
-			auto load_test = Timer<std::chrono::microseconds>((dragon_or_cube ? "Dragon Load" : "Cube Load"), false, "us");
+			auto load_test = cogl::utilities::Timer<std::chrono::microseconds>((dragon_or_cube ? "Dragon Load" : "Cube Load"), false, "us");
 			if (dragon_or_cube) {
 				cube = cogl::Mesh(original_dragon.getMeshRepresentation());
 				dragon_or_cube = false;
@@ -77,7 +77,7 @@ int main() {
 		}
 		cube.moveMeshTo(target_on_floor);
         mainWindow.renderBegin();
-		cube.render(solidShader, defaultCamera, true);
+		cube.render(defShader, defaultCamera, true);
         mainWindow.renderEnd();
 		glFinish();
 		test.Stop();

@@ -107,13 +107,13 @@ namespace cogl {
     void Mesh::render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) {
         program.bind();
         glm::mat4x4 temp;
-        if (program.getUniformLoc("vp") != -1) {
+        if (program.getUniformLoc("mvp") != -1) {
             temp = renderCamera.getVPMatrix();
             glUniformMatrix4fv(program.getUniformLoc("mvp"), 1, GL_FALSE, (const GLfloat *) &temp);
         };
         if (program.getAttribLoc("model") != -1 && update_gpu_data) {
             temp = getModelMatrix();
-            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("modelMatrix")), (const GLfloat *) &temp);
+            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("model")), (const GLfloat *) &temp);
         };
         if (program.getAttribLoc("normalMatrix") != -1 && update_gpu_data) {
             temp = getNormalMatrix();

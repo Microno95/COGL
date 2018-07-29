@@ -93,64 +93,93 @@ static void _check_fbo_status(const char *file, int line) {
 constexpr double PI = 3.141592653589793238462643383279502884197169399375105820975;
 constexpr double sqrt2 = 1.414213562373095048801688724209698078569671875376948073176;
 
-/*
+namespace cogl {
+    namespace utilities {
 
-Contains function to test if container contains an element. 
-Source: https://codereview.stackexchange.com/a/59999
+        /*
 
-*/
+        Contains function to test if container contains an element.
+        Source: https://codereview.stackexchange.com/a/59999
 
-template<class C, class T>
-auto contains(const C& v, const T& x)
--> decltype(end(v), true)
-{
-	return end(v) != std::find(begin(v), end(v), x);
+        */
+        template<class C, class T>
+        inline auto contains(const C& v, const T& x)
+        -> decltype(std::end(v), true)
+        {
+            return std::end(v) != std::find(std::begin(v), std::end(v), x);
+        }
+
+        template<class T = std::chrono::milliseconds>
+        class Timer {
+        private:
+            std::string label = "", suffix = "ms";
+            std::chrono::high_resolution_clock::time_point startTime;
+            std::chrono::high_resolution_clock::time_point stopTime;
+            bool stopTimeSet = false;
+            bool suppressReportOnDestruct = false;
+
+        public:
+            Timer(std::string _suffix = "ms") : suffix(_suffix) {
+                startTime = std::chrono::high_resolution_clock::now();
+            }
+            Timer(std::string _label, std::string _suffix = "ms") : label(_label), startTime(std::chrono::high_resolution_clock::now()), suffix(_suffix) {}
+            Timer(std::string _label, bool _suppressReportOnDestruct, std::string _suffix = "ms") : label(_label), startTime(std::chrono::high_resolution_clock::now()), suppressReportOnDestruct(_suppressReportOnDestruct), suffix(_suffix) {}
+
+            ~Timer() {
+                if (!stopTimeSet) {
+                    stopTime = std::chrono::high_resolution_clock::now();
+                }
+                if (!suppressReportOnDestruct) std::cout << label << " : " << std::chrono::duration_cast<T>(stopTime - startTime).count() << suffix << std::endl;
+            }
+
+            void Stop() {
+                stopTime = std::chrono::high_resolution_clock::now();
+                stopTimeSet = true;
+            }
+
+            void Start() {
+                startTime = std::chrono::high_resolution_clock::now();
+                stopTimeSet = false;
+            }
+
+            void Report() {
+                std::cout << label << " : " << std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - startTime).count() << suffix << std::endl;
+            }
+
+            T GetTimeDeltaNow() {
+                return std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - startTime);
+            }
+
+            T GetTimeDelta() {
+                return std::chrono::duration_cast<T>(stopTime - startTime);
+            }
+        };
+
+        inline std::vector<std::string> split_string(const std::string& s, const std::string& delim, const bool keep_empty = true) {
+            std::vector<std::string> result;
+            if (delim.empty()) {
+                result.push_back(s);
+                return result;
+            }
+            std::string::const_iterator subend;
+            for (std::string::const_iterator substart = s.begin(); subend != s.end(); substart = subend + delim.size()) {
+                subend = std::search(substart, s.end(), delim.begin(), delim.end());
+                std::string temp(substart, subend);
+                if (keep_empty || !temp.empty()) {
+                    result.push_back(temp);
+                }
+                substart = subend + delim.size();
+            }
+            return result;
+        };
+
+        template<class TContainer>
+        inline bool begins_with(const TContainer& input, const TContainer& match)
+        {
+            return input.size() >= match.size()
+                   && std::equal(std::begin(match), std::end(match), std::begin(input));
+        };
+    }
 }
-
-template<class T = std::chrono::milliseconds>
-class Timer {
-private:
-	std::string label = "", suffix = "ms";
-	std::chrono::high_resolution_clock::time_point startTime;
-	std::chrono::high_resolution_clock::time_point stopTime;
-	bool stopTimeSet = false;
-	bool suppressReportOnDestruct = false;
-
-public:
-	Timer(std::string _suffix = "ms") : suffix(_suffix) {
-		startTime = std::chrono::high_resolution_clock::now();
-	}
-	Timer(std::string _label, std::string _suffix = "ms") : label(_label), startTime(std::chrono::high_resolution_clock::now()), suffix(_suffix) {}
-	Timer(std::string _label, bool _suppressReportOnDestruct, std::string _suffix = "ms") : label(_label), startTime(std::chrono::high_resolution_clock::now()), suppressReportOnDestruct(_suppressReportOnDestruct), suffix(_suffix) {}
-
-	~Timer() {
-		if (!stopTimeSet) {
-			stopTime = std::chrono::high_resolution_clock::now();
-		}
-		if (!suppressReportOnDestruct) std::cout << label << " : " << std::chrono::duration_cast<T>(stopTime - startTime).count() << suffix << std::endl;
-	}
-
-	void Stop() {
-		stopTime = std::chrono::high_resolution_clock::now();
-		stopTimeSet = true;
-	}
-
-	void Start() {
-		startTime = std::chrono::high_resolution_clock::now();
-		stopTimeSet = false;
-	}
-
-	void Report() {
-		std::cout << label << " : " << std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - startTime).count() << suffix << std::endl;
-	}
-
-    T GetTimeDeltaNow() {
-		return std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - startTime);
-	}
-
-    T GetTimeDelta() {
-		return std::chrono::duration_cast<T>(stopTime - startTime);
-	}
-};
 
 #endif //CUSTOMOGL_CONSTANTS_H

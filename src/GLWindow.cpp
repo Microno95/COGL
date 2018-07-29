@@ -218,8 +218,8 @@ namespace cogl {
         nonMSFBO->bindFBOColorBufferToTexture(GL_TEXTURE0, postProcessingShader->getUniformLoc("fbo_texture"));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*) 0);
         postProcessingShader->unbind();
-		if (contains(enabled_capabilities, GL_CULL_FACE)) glEnable(GL_CULL_FACE);
-		if (contains(enabled_capabilities, GL_DEPTH_TEST)) glEnable(GL_DEPTH_TEST);
+		if (cogl::utilities::contains(enabled_capabilities, GL_CULL_FACE)) glEnable(GL_CULL_FACE);
+		if (cogl::utilities::contains(enabled_capabilities, GL_DEPTH_TEST)) glEnable(GL_DEPTH_TEST);
 		glfwSwapBuffers(contextHandle);
     }
 }
