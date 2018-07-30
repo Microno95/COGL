@@ -40,20 +40,20 @@ namespace cogl {
 
     struct alignas(4) Vertex {
 		union {
-			struct { float pos[4]; };
-			struct { float x = 0, y = 0, z = 0, k = 0; };
+			float pos[4] = { 0 };
+			struct { float x, y, z, k; };
 		};
 		union {
-			struct { float nrm[4]; };
-			struct { float nx = 0, ny = 0, nz = 0, nw = 0; };
+			float nrm[4] = { 0 };
+			struct { float nx, ny, nz, nw; };
 		};
 		union {
-			struct { float rgba[4]; };
-			struct { float r = 0, g = 0, b = 0, a = 0; };
+			float rgba[4] = { 0 };
+			struct { float r, g, b, a; };
 		};
 		union {
-			struct { float uv[4]; };
-			struct { float u = 0, v = 0, w = 0, p = 0; };
+			float uv[4] = { 0 };
+			struct { float u, v, w, p; };
 		};
 
         friend std::ostream &operator<<(std::ostream &outstream, const Vertex &rhs) {
@@ -77,9 +77,18 @@ namespace cogl {
         }
     };
 
-    struct alignas(4) Face {
-        std::vector<cogl::Vertex> points;
+    struct alignas(4) FaceVertexIdx {
+		int vertex_idx = -1, normal_idx = -1, texcoord_idx = -1;
     };
+
+	struct alignas(4) FaceVertex {
+		Vertex faceVertex;
+		FaceVertexIdx faceVertexIndices{ -1, -1, -1 };
+	};
+
+	struct alignas(4) Face {
+		std::vector<FaceVertexIdx> faceVertices;
+	};
 
     class Renderable {
     public:

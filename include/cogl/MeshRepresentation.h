@@ -67,9 +67,9 @@ namespace cogl {
             for (auto &i : rhs.vertices) {
                 outstream << "v " << i.x << " " << i.y << " " << i.z << " " << i.k << std::endl;
             }
-            for (auto &i : rhs.vertices) {
-                outstream << "vt " << i.u << " " << i.v << " " << i.w << " " << i.p << std::endl;
-            }
+			for (auto &i : rhs.vertices) {
+				outstream << "vt " << i.u << " " << i.v << " " << i.w << " " << i.p << std::endl;
+			}
             for (auto &i : rhs.vertices) {
                 outstream << "vn " << i.nx << " " << i.ny << " " << i.nz << " " << i.nw << std::endl;
             }
@@ -116,7 +116,7 @@ namespace cogl {
                 output.x = std::stof(string_tokens[0]);
                 output.y = std::stof(string_tokens[1]);
                 output.z = std::stof(string_tokens[2]);
-                output.w = std::stof(string_tokens[3]);
+                output.k = std::stof(string_tokens[3]);
             }
         };
 
@@ -124,20 +124,19 @@ namespace cogl {
             std::vector<cogl::MeshRepresentation> objects_in_obj;
 
             auto first = std::find_if(objectCode.begin(), objectCode.end(), [&](const std::string& x){return cogl::utilities::begins_with(x, std::string("o "));});
-            auto next = std::find_if(std::next(first, 1), objectCode.end(), [&](const std::string& x){return cogl::utilities::begins_with(x, std::string("o "));});
-            auto verticesVector = parse_vertices(objectCode);
-            auto texCoordsVector = parse_texture_coordinates(objectCode);
-            auto normalsVector = parse_normals(objectCode);
+			auto next = first;
 
             if (first == next) {
                 first = objectCode.begin();
-                next = objectCode.end();
             }
 
+			next = std::find_if(std::next(first, 1), objectCode.end(), [&](const std::string& x) {return cogl::utilities::begins_with(x, std::string("o ")); });
+
             while (first != next) {
-                objects_in_obj.push_back(create_MeshRepresentation_from_obj(std::vector<std::string>(first, next), verticesVector, texCoordsVector, normalsVector));
-                first = std::find_if(std::next(first, 1), objectCode.end(), [&](const std::string& x){return cogl::utilities::begins_with(x, std::string("o "));});
-                next = std::find_if(std::next(first, 1), objectCode.end(), [&](const std::string& x){return cogl::utilities::begins_with(x, std::string("o "));});
+                objects_in_obj.push_back(create_MeshRepresentation_from_obj(std::vector<std::string>(first, next)));
+				first = next;
+				if (first == objectCode.end()) break;
+				next = std::find_if(std::next(first, 1), objectCode.end(), [&](const std::string& x) {return cogl::utilities::begins_with(x, std::string("o ")); });
             }
 
             return std::move(objects_in_obj);
@@ -188,59 +187,218 @@ namespace cogl {
             return std::move(texCoordsVector);
         }
 
-        static MeshRepresentation create_MeshRepresentation_from_obj(const std::vector<std::string> &objectCode, std::vector<Vertex> verticesVector, std::vector<glm::vec4> texCoordsVector, std::vector<glm::vec4> normalsVector) {
-            std::vector<Vertex> retVertices;
+		static std::vector<Face> parse_faces(const std::vector<std::string> &objectCode) {
+			std::vector<Face> facesVector;
+			glm::ivec3 temp2{ -1,-1,-1 };
+			for (auto &line : objectCode) {
+				if (cogl::utilities::begins_with<std::string>(line, "f ")) {
+					Face tempFace;
+					auto sanitized_line = cogl::utilities::split_string(line, " ", false);
+					std::vector<decltype(sanitized_line)::value_type>(std::next(sanitized_line.begin(), 1), sanitized_line.end()).swap(sanitized_line);
+					for (auto &vert : sanitized_line) {
+						auto vertSplit = cogl::utilities::split_string(vert, "/", true);
+						switch (vertSplit.size()) {
+						case 1:
+							temp2.x = std::stol(vertSplit[0]);
+							break;
+						case 2 :
+							temp2.x = std::stol(vertSplit[0]);
+							temp2.z = (vertSplit[1].empty() ? -1 : std::stol(vertSplit[1]));
+							break;
+						case 3:
+							temp2.x = std::stoul(vertSplit[0]);
+							temp2.z = (vertSplit[1].empty() ? -1 : std::stol(vertSplit[1]));
+							temp2.y = (vertSplit[2].empty() ? -1 : std::stol(vertSplit[2]));
+							break;
+						}
+						tempFace.faceVertices.push_back({ temp2.x, temp2.y, temp2.z });
+					}
+					facesVector.push_back(tempFace);
+				}
+			}
+			return std::move(facesVector);
+		}
+
+		static std::vector<Face> align_vertex_indices(const std::vector<Face> &faceVector) {
+			auto min = std::numeric_limits<int>::max();
+#pragma omp parallel
+			{
+				float min_local = min;
+#pragma omp for nowait
+				for (auto i = 1; i < faceVector.size(); i++) {
+					for (auto j = 0; j < faceVector[j].faceVertices.size(); ++j) {
+						if (faceVector[i].faceVertices[j].vertex_idx < min_local) {
+							min_local = faceVector[i].faceVertices[j].vertex_idx;
+						}
+					}
+				}
+#pragma omp critical 
+				{
+					if (min_local < min) {
+						min = min_local;
+					}
+				}
+			}
+
+			auto faceVectorCopy = faceVector;
+#pragma omp parallel for
+			for (auto i = 0; i < faceVectorCopy.size(); ++i) {
+				for (auto j = 0; j < faceVectorCopy[i].faceVertices.size(); ++j) {
+					faceVectorCopy[i].faceVertices[j].vertex_idx -= min;
+				}
+			}
+
+			return std::move(faceVectorCopy);
+		}
+
+
+		static std::vector<Face> align_normal_indices(const std::vector<Face> &faceVector) {
+			auto min = std::numeric_limits<int>::max();
+#pragma omp parallel
+			{
+				float min_local = min;
+#pragma omp for nowait
+				for (auto i = 1; i < faceVector.size(); i++) {
+					for (auto j = 0; j < faceVector[j].faceVertices.size(); ++j) {
+						if (faceVector[i].faceVertices[j].normal_idx < min_local) {
+							min_local = faceVector[i].faceVertices[j].normal_idx;
+						}
+					}
+				}
+#pragma omp critical 
+				{
+					if (min_local < min) {
+						min = min_local;
+					}
+				}
+			}
+
+			auto faceVectorCopy = faceVector;
+#pragma omp parallel for
+			for (auto i = 0; i < faceVectorCopy.size(); ++i) {
+				for (auto j = 0; j < faceVectorCopy[i].faceVertices.size(); ++j) {
+					if (faceVectorCopy[i].faceVertices[j].normal_idx >= 0) faceVectorCopy[i].faceVertices[j].normal_idx -= min;
+				}
+			}
+
+			return std::move(faceVectorCopy);
+		}
+
+
+		static std::vector<Face> align_texcoord_indices(const std::vector<Face> &faceVector) {
+			auto min = std::numeric_limits<int>::max();
+#pragma omp parallel
+			{
+				float min_local = min;
+#pragma omp for nowait
+				for (auto i = 1; i < faceVector.size(); i++) {
+					for (auto j = 0; j < faceVector[j].faceVertices.size(); ++j) {
+						if (faceVector[i].faceVertices[j].texcoord_idx < min_local) {
+							min_local = faceVector[i].faceVertices[j].texcoord_idx;
+						}
+					}
+				}
+#pragma omp critical 
+				{
+					if (min_local < min) {
+						min = min_local;
+					}
+				}
+			}
+
+			auto faceVectorCopy = faceVector;
+#pragma omp parallel for
+			for (auto i = 0; i < faceVectorCopy.size(); ++i) {
+				for (auto j = 0; j < faceVectorCopy[i].faceVertices.size(); ++j) {
+					if (faceVectorCopy[i].faceVertices[j].texcoord_idx >= 0) faceVectorCopy[i].faceVertices[j].texcoord_idx -= min;
+				}
+			}
+
+			return std::move(faceVectorCopy);
+		}
+
+		static std::vector<Vertex> assign_nrm_texcoord_to_vertices(const std::vector<FaceVertex> &retVertices, const std::vector<glm::vec4> normalsVector, const std::vector<glm::vec4> texCoordsVector) {
+			std::vector<Vertex> vertices;
+
+			vertices.resize(retVertices.size());
+#pragma omp parallel for
+			for (auto i = 0; i < vertices.size(); ++i) {
+				vertices[i] = retVertices[i].faceVertex;
+				if (retVertices[i].faceVertexIndices.normal_idx >= 0) {
+					auto local_normal = normalsVector[retVertices[i].faceVertexIndices.normal_idx];
+					vertices[i].nx = local_normal.x;
+					vertices[i].ny = local_normal.y;
+					vertices[i].nz = local_normal.z;
+					vertices[i].nw = local_normal.w;
+				}
+				if (retVertices[i].faceVertexIndices.texcoord_idx >= 0) {
+					auto local_texcoords = texCoordsVector[retVertices[i].faceVertexIndices.texcoord_idx];
+					vertices[i].u = local_texcoords.x;
+					vertices[i].v = local_texcoords.y;
+					vertices[i].w = local_texcoords.z;
+					vertices[i].p = local_texcoords.w;
+				}
+			}
+
+			return std::move(vertices);
+		}
+
+		inline static glm::vec4 normal_to_plane(const glm::vec4 &a, const glm::vec4 &b, const glm::vec4 &c, const glm::vec4 &d) {
+			return glm::vec4(glm::cross(glm::vec3(c - a), glm::vec3(d - b)), 0.0);
+		}
+
+        static MeshRepresentation create_MeshRepresentation_from_obj(const std::vector<std::string> &objectCode) {
             std::vector<unsigned int> retIndices;
-            unsigned int index_count = 0;
 
-            for (auto &i : objectCode) {
-                if (cogl::utilities::begins_with<std::string>(i, "f ")) {
-                    std::string temp(i);
-                    std::vector<std::string> temp3;
-                    unsigned int temp4, temp5, temp6;
-                    temp.erase(0, 2);
-                    auto temp2 = cogl::utilities::split_string(temp, " ", true);
-                    for (auto &subtemp : temp2) {
-                        if (temp2.size() == 3) {
-                            temp3 = cogl::utilities::split_string(subtemp, "/", true);
-                            if (!temp3.empty() && temp3.size() <= 3) {
-                                retVertices.push_back(verticesVector[std::stoul(temp3[0]) - 1]);
-                                retIndices.push_back(index_count++);
-                                if (temp3.size() == 2) {
-                                    if (!temp3[1].empty()) temp5 = std::stoul(temp3[1]);
-                                    else temp5 = 1;
-                                    if (!temp3[1].empty()) {
-                                        retVertices[index_count - 1].u = texCoordsVector[temp5 - 1].x;
-                                        retVertices[index_count - 1].v = texCoordsVector[temp5 - 1].y;
-                                        retVertices[index_count - 1].w = texCoordsVector[temp5 - 1].z;
-                                        retVertices[index_count - 1].p = texCoordsVector[temp5 - 1].w;
-                                    }
-                                } else if (temp3.size() == 3) {
-                                    if (!temp3[2].empty()) temp5 = std::stoul(temp3[2]);
-                                    else temp5 = 1;
-                                    if (!temp3[1].empty()) temp6 = std::stoul(temp3[1]);
-                                    else temp6 = 1;
+			auto verticesVector = parse_vertices(objectCode);
+			auto normalsVector = parse_normals(objectCode);
+			auto texCoordsVector = parse_texture_coordinates(objectCode);
+			auto facesVector = parse_faces(objectCode);
+			facesVector = align_normal_indices(align_texcoord_indices(align_vertex_indices(facesVector)));
 
-                                    retVertices[index_count - 1].nx = normalsVector[temp5 - 1].x;
-                                    retVertices[index_count - 1].ny = normalsVector[temp5 - 1].y;
-                                    retVertices[index_count - 1].nz = normalsVector[temp5 - 1].z;
-                                    retVertices[index_count - 1].nw = normalsVector[temp5 - 1].w;
+			std::vector<FaceVertex> retVertices;
+			retVertices.resize(verticesVector.size());
+#pragma omp parallel for
+			for (auto i = 0; i < verticesVector.size(); ++i) {
+				retVertices[i] = { verticesVector[i], {i, -1, -1} };
+			}
 
-                                    if (!temp3[1].empty()) {
-                                        retVertices[index_count - 1].u = texCoordsVector[temp6 - 1].x;
-                                        retVertices[index_count - 1].v = texCoordsVector[temp6 - 1].y;
-                                        retVertices[index_count - 1].w = texCoordsVector[temp6 - 1].z;
-                                        retVertices[index_count - 1].p = texCoordsVector[temp6 - 1].w;
-                                    }
-                                }
-                            }
+			for (auto &i : facesVector) {
+				switch (i.faceVertices.size()) {
+				case 3:
+					for (auto &idx : i.faceVertices) {
+						if ((retVertices[idx.vertex_idx].faceVertexIndices.normal_idx != -1 && idx.normal_idx != retVertices[idx.vertex_idx].faceVertexIndices.normal_idx) ||
+							(retVertices[idx.vertex_idx].faceVertexIndices.texcoord_idx != -1 && idx.texcoord_idx != retVertices[idx.vertex_idx].faceVertexIndices.texcoord_idx)) {
+							retVertices.push_back(retVertices[idx.vertex_idx]);
+							retVertices.back().faceVertexIndices = { static_cast<int>(retVertices.size() - 1), static_cast<int>(idx.normal_idx), static_cast<int>(idx.texcoord_idx)};
+							retIndices.push_back(retVertices.size() - 1);
+						} else {
+							retVertices[idx.vertex_idx].faceVertexIndices = { static_cast<int>(idx.vertex_idx),  static_cast<int>(idx.normal_idx), static_cast<int>(idx.texcoord_idx) };
+							retIndices.push_back(idx.vertex_idx);
+						}
+					}
 
-                        }
-                    }
-                }
-            }
+					auto curr_face_indices = std::vector<unsigned int>(std::prev(retIndices.end(), 3), retIndices.end());
+					auto normals_curr_size = normalsVector.size();
 
-            return std::move(MeshRepresentation(retVertices, retIndices));
+					for (auto idx = 0; idx < curr_face_indices.size(); ++idx) {
+						if (retVertices[curr_face_indices[idx]].faceVertexIndices.normal_idx == -1) {
+							if (normalsVector.size() == normals_curr_size) {
+								Vertex a, b, c;
+								a = retVertices[curr_face_indices[0]].faceVertex;
+								b = retVertices[curr_face_indices[1]].faceVertex;
+								c = retVertices[curr_face_indices[2]].faceVertex;
+								normalsVector.push_back(normal_to_plane(glm::vec4(a.x,a.y,a.z,a.k),glm::vec4(a.x,a.y,a.z,a.k),glm::vec4(b.x,b.y,b.z,b.k),glm::vec4(c.x,c.y,c.z,c.k)));
+							}
+							retVertices[curr_face_indices[idx]].faceVertexIndices.normal_idx = normalsVector.size() - 1;
+						}
+					}
+
+					break;
+				}
+			}
+
+            return std::move(MeshRepresentation(assign_nrm_texcoord_to_vertices(retVertices, normalsVector, texCoordsVector), retIndices));
         }
 
         static std::vector<MeshRepresentation> load_from_obj(const std::string &obj_filepath) {

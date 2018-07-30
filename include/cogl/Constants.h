@@ -22,6 +22,7 @@
 #include <memory>
 #include <sstream>
 #include <chrono>
+#include <limits>
 
 #ifndef CUSTOMOGL_CONSTANTS_H
 #define CUSTOMOGL_CONSTANTS_H
@@ -161,14 +162,16 @@ namespace cogl {
                 result.push_back(s);
                 return result;
             }
-            std::string::const_iterator subend;
-            for (std::string::const_iterator substart = s.begin(); subend != s.end(); substart = subend + delim.size()) {
+            std::string::const_iterator subend = s.begin();
+            for (std::string::const_iterator substart = s.begin(); subend != s.end() ; substart = std::next(subend, delim.size())) {
                 subend = std::search(substart, s.end(), delim.begin(), delim.end());
                 std::string temp(substart, subend);
                 if (keep_empty || !temp.empty()) {
                     result.push_back(temp);
                 }
-                substart = subend + delim.size();
+				if (subend == s.end()) {
+					break;
+				}
             }
             return result;
         };

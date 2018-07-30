@@ -34,8 +34,15 @@ int main() {
     mainWindow.setDepthFunction(GL_LESS);
     mainWindow.setAASamples(0);
 
-    cogl::Mesh original_dragon = cogl::Mesh::load_from_obj("data/untitled.obj"), cube = cogl::Mesh::load_from_obj("data/untitled.obj");
+    cogl::Mesh original_dragon = cogl::Mesh::load_from_obj("data/dragon.obj"), cube = cogl::Mesh::load_from_obj("data/untitled.obj");
 	cube.scaleMesh(0.25f);
+
+	std::ofstream myfile;
+	myfile.open ("data/example.obj");
+	myfile << original_dragon.getMeshRepresentation();
+	myfile.close();
+
+	std::cout << std::endl << "DELIMITER" << std::endl << std::endl;
 
     cogl::Camera defaultCamera = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
                                               glm::vec3({0.f, 0.f, 0.f}),
@@ -79,12 +86,11 @@ int main() {
         mainWindow.renderBegin();
 		cube.render(defShader, defaultCamera, true);
         mainWindow.renderEnd();
-		glFinish();
 		test.Stop();
 		double currentTime = glfwGetTime();
-		if (currentTime - previousTime >= 1.0) {
+		if (currentTime - previousTime >= 0.1) {
 			// Display the frame count here any way you want.
-			mainWindow.setTitle("FPS: " + std::to_string(frameCount / (currentTime - previousTime)) + " | " + std::to_string(test.GetTimeDelta().count()) + "us | frame: " + std::to_string(frameCounterDebug));
+			mainWindow.setTitle("FPS: " + std::to_string(frameCount / (currentTime - previousTime)) + " | " + std::to_string(test.GetTimeDelta().count()) + "us | frame: " + std::to_string(frameCounterDebug) + " | " + (!dragon_or_cube ? "obj file" : "internal"));
 			previousTime = glfwGetTime();
 			frameCount = 0;
 		}
