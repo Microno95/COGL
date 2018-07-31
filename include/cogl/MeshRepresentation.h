@@ -126,7 +126,7 @@ namespace cogl {
             auto first = std::find_if(objectCode.begin(), objectCode.end(), [&](const std::string& x){return cogl::utilities::begins_with(x, std::string("o "));});
 			auto next = first;
 
-            if (first == next) {
+            if (first == objectCode.end()) {
                 first = objectCode.begin();
             }
 
@@ -144,16 +144,21 @@ namespace cogl {
 
         static std::vector<cogl::Vertex> parse_vertices(const std::vector<std::string> &objectCode) {
             std::vector<Vertex> verticesVector;
-            Vertex temp2{};
+			auto first_vertex_line = std::find_if(objectCode.begin(), objectCode.end(), [&](const auto &x) {return cogl::utilities::begins_with<std::string>(x, "v "); });
+			auto last_vertex_line = std::find_if(objectCode.rbegin(), objectCode.rend(), [&](const auto &x) {return cogl::utilities::begins_with<std::string>(x, "v "); }).base();
 
-            for (auto &i : objectCode) {
-                if (cogl::utilities::begins_with<std::string>(i, "v ")) {
-                    temp2.k = 1.0;
-                    set_to_split(std::string(std::next(i.begin(), 2), i.end()), " ", temp2);
-                    temp2.nw = 0;
-                    temp2.p = 0;
-                    verticesVector.push_back(temp2);
-                }
+			auto vertexCode = std::vector<std::string>(first_vertex_line, last_vertex_line);
+
+			verticesVector.resize(vertexCode.size());
+
+#pragma omp parallel for
+			for (auto i = 0; i < vertexCode.size(); ++i) {
+				Vertex temp{};
+				temp.k = 1.0;
+                set_to_split(std::string(std::next(vertexCode[i].begin(), 2), vertexCode[i].end()), " ", temp);
+				temp.nw = 0;
+				temp.p = 0;
+                verticesVector[i] = temp;
             }
 
             return std::move(verticesVector);
@@ -161,28 +166,47 @@ namespace cogl {
 
         static std::vector<glm::vec4> parse_normals(const std::vector<std::string> &objectCode) {
             std::vector<glm::vec4> normalsVector;
-            glm::vec4 temp2(0);
-            for (auto &i : objectCode) {
-                if (cogl::utilities::begins_with<std::string>(i, "vn ")) {
-                    temp2 = {0,0,0,0};
-                    set_to_split(std::string(std::next(i.begin(), 3), i.end()), " ", temp2);
-                    normalsVector.push_back(temp2);
-                }
-            }
+
+			auto first_normals_line = std::find_if(objectCode.begin(), objectCode.end(), [&](const auto &x) {return cogl::utilities::begins_with<std::string>(x, "vn "); });
+			auto last_normals_line = std::find_if(objectCode.rbegin(), objectCode.rend(), [&](const auto &x) {return cogl::utilities::begins_with<std::string>(x, "vn "); }).base();
+
+			if (first_normals_line != objectCode.end()) {
+				auto normalsCode = std::vector<std::string>(first_normals_line, last_normals_line);
+
+				if (normalsCode.size() > 0) {
+					normalsVector.resize(normalsCode.size());
+
+#pragma omp parallel for
+					for (auto i = 0; i < normalsCode.size(); ++i) {
+						glm::vec4 temp(0);
+						set_to_split(std::string(std::next(normalsCode[i].begin(), 3), normalsCode[i].end()), " ", temp);
+						normalsVector[i] = temp;
+					}
+				}
+			}
 
             return std::move(normalsVector);
         }
 
         static std::vector<glm::vec4> parse_texture_coordinates(const std::vector<std::string> &objectCode) {
             std::vector<glm::vec4> texCoordsVector;
-            glm::vec4 temp2(0);
-            for (auto &i : objectCode) {
-                if (cogl::utilities::begins_with<std::string>(i, "vt ")) {
-                    temp2 = {0,0,0,0};
-                    set_to_split(std::string(std::next(i.begin(), 3), i.end()), " ", temp2);
-                    texCoordsVector.push_back(temp2);
-                }
-            }
+
+			auto first_texCoords_line = std::find_if(objectCode.begin(), objectCode.end(), [&](const auto &x) {return cogl::utilities::begins_with<std::string>(x, "vt "); });
+			auto last_texCoords_line = std::find_if(objectCode.rbegin(), objectCode.rend(), [&](const auto &x) {return cogl::utilities::begins_with<std::string>(x, "vt "); }).base();
+
+			if (first_texCoords_line != objectCode.end()) {
+				auto texCoordsCode = std::vector<std::string>(first_texCoords_line, last_texCoords_line);
+
+				if (texCoordsCode.size() > 0) {
+					texCoordsVector.resize(texCoordsCode.size());
+#pragma omp parallel for
+					for (auto i = 0; i < texCoordsCode.size(); ++i) {
+						glm::vec4 temp(0);
+						set_to_split(std::string(std::next(texCoordsCode[i].begin(), 3), texCoordsCode[i].end()), " ", temp);
+						texCoordsVector[i] = temp;
+					}
+				}
+			}
 
             return std::move(texCoordsVector);
         }
@@ -190,31 +214,37 @@ namespace cogl {
 		static std::vector<Face> parse_faces(const std::vector<std::string> &objectCode) {
 			std::vector<Face> facesVector;
 			glm::ivec3 temp2{ -1,-1,-1 };
-			for (auto &line : objectCode) {
-				if (cogl::utilities::begins_with<std::string>(line, "f ")) {
-					Face tempFace;
-					auto sanitized_line = cogl::utilities::split_string(line, " ", false);
-					std::vector<decltype(sanitized_line)::value_type>(std::next(sanitized_line.begin(), 1), sanitized_line.end()).swap(sanitized_line);
-					for (auto &vert : sanitized_line) {
-						auto vertSplit = cogl::utilities::split_string(vert, "/", true);
-						switch (vertSplit.size()) {
-						case 1:
-							temp2.x = std::stol(vertSplit[0]);
-							break;
-						case 2 :
-							temp2.x = std::stol(vertSplit[0]);
-							temp2.z = (vertSplit[1].empty() ? -1 : std::stol(vertSplit[1]));
-							break;
-						case 3:
-							temp2.x = std::stoul(vertSplit[0]);
-							temp2.z = (vertSplit[1].empty() ? -1 : std::stol(vertSplit[1]));
-							temp2.y = (vertSplit[2].empty() ? -1 : std::stol(vertSplit[2]));
-							break;
-						}
-						tempFace.faceVertices.push_back({ temp2.x, temp2.y, temp2.z });
+			auto first_face_line = std::find_if(objectCode.begin(), objectCode.end(), [&](const auto &x) {return cogl::utilities::begins_with<std::string>(x, "f "); });
+			auto last_face_line = std::find_if(objectCode.rbegin(), objectCode.rend(), [&](const auto &x) {return cogl::utilities::begins_with<std::string>(x, "f "); }).base();
+
+			auto faceCode = std::vector<std::string>(first_face_line, last_face_line);
+
+			facesVector.resize(faceCode.size());
+
+			for (auto idx = 0; idx < faceCode.size(); ++idx) {
+				auto line = faceCode[idx];
+				Face tempFace;
+				auto sanitized_line = cogl::utilities::split_string(line, " ", false);
+				std::vector<decltype(sanitized_line)::value_type>(std::next(sanitized_line.begin(), 1), sanitized_line.end()).swap(sanitized_line);
+				for (auto &vert : sanitized_line) {
+					auto vertSplit = cogl::utilities::split_string(vert, "/", true);
+					switch (vertSplit.size()) {
+					case 1:
+						temp2.x = std::stol(vertSplit[0]);
+						break;
+					case 2 :
+						temp2.x = std::stol(vertSplit[0]);
+						temp2.z = (vertSplit[1].empty() ? -1 : std::stol(vertSplit[1]));
+						break;
+					case 3:
+						temp2.x = std::stoul(vertSplit[0]);
+						temp2.z = (vertSplit[1].empty() ? -1 : std::stol(vertSplit[1]));
+						temp2.y = (vertSplit[2].empty() ? -1 : std::stol(vertSplit[2]));
+						break;
 					}
-					facesVector.push_back(tempFace);
+					tempFace.faceVertices.push_back({ temp2.x, temp2.y, temp2.z });
 				}
+				facesVector[idx] = tempFace;
 			}
 			return std::move(facesVector);
 		}
@@ -326,6 +356,7 @@ namespace cogl {
 				vertices[i] = retVertices[i].faceVertex;
 				if (retVertices[i].faceVertexIndices.normal_idx >= 0) {
 					auto local_normal = normalsVector[retVertices[i].faceVertexIndices.normal_idx];
+					local_normal /= glm::length(local_normal);
 					vertices[i].nx = local_normal.x;
 					vertices[i].ny = local_normal.y;
 					vertices[i].nz = local_normal.z;
@@ -379,18 +410,21 @@ namespace cogl {
 					}
 
 					auto curr_face_indices = std::vector<unsigned int>(std::prev(retIndices.end(), 3), retIndices.end());
-					auto normals_curr_size = normalsVector.size();
 
 					for (auto idx = 0; idx < curr_face_indices.size(); ++idx) {
+						Vertex a, b, c;
+
+						a = retVertices[curr_face_indices[0]].faceVertex;
+						b = retVertices[curr_face_indices[1]].faceVertex;
+						c = retVertices[curr_face_indices[2]].faceVertex;
+
+						auto currNormal = normal_to_plane(glm::vec4(a.x, a.y, a.z, a.k), glm::vec4(a.x, a.y, a.z, a.k), glm::vec4(b.x, b.y, b.z, b.k), glm::vec4(c.x, c.y, c.z, c.k));
+
 						if (retVertices[curr_face_indices[idx]].faceVertexIndices.normal_idx == -1) {
-							if (normalsVector.size() == normals_curr_size) {
-								Vertex a, b, c;
-								a = retVertices[curr_face_indices[0]].faceVertex;
-								b = retVertices[curr_face_indices[1]].faceVertex;
-								c = retVertices[curr_face_indices[2]].faceVertex;
-								normalsVector.push_back(normal_to_plane(glm::vec4(a.x,a.y,a.z,a.k),glm::vec4(a.x,a.y,a.z,a.k),glm::vec4(b.x,b.y,b.z,b.k),glm::vec4(c.x,c.y,c.z,c.k)));
-							}
+							normalsVector.push_back(currNormal);
 							retVertices[curr_face_indices[idx]].faceVertexIndices.normal_idx = normalsVector.size() - 1;
+						} else {
+							normalsVector[retVertices[curr_face_indices[idx]].faceVertexIndices.normal_idx] += currNormal;
 						}
 					}
 

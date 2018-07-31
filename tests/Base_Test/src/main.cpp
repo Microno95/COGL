@@ -34,15 +34,27 @@ int main() {
     mainWindow.setDepthFunction(GL_LESS);
     mainWindow.setAASamples(0);
 
-    cogl::Mesh original_dragon = cogl::Mesh::load_from_obj("data/dragon.obj"), cube = cogl::Mesh::load_from_obj("data/untitled.obj");
+#if defined(_OPENMP)
+	std::cout << "OpenMP Defined" << std::endl;
+#else
+	std::cout << "OpenMP Not Defined" << std::endl;
+#endif
+
+    auto original_dragon = cogl::Mesh(cogl::MeshRepresentation::Cube);
+
+	{
+		auto load_test = cogl::utilities::Timer<std::chrono::microseconds>("Dragon Load", false, "us");
+		original_dragon = cogl::Mesh::load_from_obj("data/dragon.obj");
+	}
+
+	auto cube = cogl::Mesh(cogl::MeshRepresentation::Cube);
+
+	{
+		auto load_test = cogl::utilities::Timer<std::chrono::microseconds>("Test Obj Load", false, "us");
+		cube = cogl::Mesh::load_from_obj("data/untitled.obj");
+	}
+
 	cube.scaleMesh(0.25f);
-
-	std::ofstream myfile;
-	myfile.open ("data/example.obj");
-	myfile << original_dragon.getMeshRepresentation();
-	myfile.close();
-
-	std::cout << std::endl << "DELIMITER" << std::endl << std::endl;
 
     cogl::Camera defaultCamera = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
                                               glm::vec3({0.f, 0.f, 0.f}),
@@ -80,7 +92,7 @@ int main() {
 				dragon_or_cube = true;
 			}
 			otherPreviousTime = glfwGetTime();
-			cube.scaleMesh(0.25f);
+			cube.scaleMesh(0.1f);
 		}
 		cube.moveMeshTo(target_on_floor);
         mainWindow.renderBegin();
