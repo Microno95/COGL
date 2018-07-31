@@ -1,3 +1,0 @@
-"C:\External Program Files\JetBrains\apps\CLion\ch-0\182.3684.76\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\base_test.dir/objects.a
-C:\EXTERN~1\mingw-w64\mingw64\bin\ar.exe cr CMakeFiles\base_test.dir/objects.a @CMakeFiles\base_test.dir\objects1.rsp
-C:\EXTERN~1\mingw-w64\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\base_test.dir/objects.a -Wl,--no-whole-archive  -o ..\..\..\tests\Base_Test\base_test.exe -Wl,--out-implib,libbase_test.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\base_test.dir\linklibs.rsp

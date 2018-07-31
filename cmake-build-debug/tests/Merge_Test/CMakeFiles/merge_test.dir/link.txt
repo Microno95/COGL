@@ -1,3 +1,0 @@
-"C:\External Program Files\JetBrains\apps\CLion\ch-0\182.3684.76\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\merge_test.dir/objects.a
-C:\EXTERN~1\mingw-w64\mingw64\bin\ar.exe cr CMakeFiles\merge_test.dir/objects.a @CMakeFiles\merge_test.dir\objects1.rsp
-C:\EXTERN~1\mingw-w64\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\merge_test.dir/objects.a -Wl,--no-whole-archive  -o ..\..\..\tests\Merge_Test\merge_test.exe -Wl,--out-implib,libmerge_test.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\merge_test.dir\linklibs.rsp

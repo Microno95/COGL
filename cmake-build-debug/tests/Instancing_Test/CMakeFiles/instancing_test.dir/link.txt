@@ -1,3 +1,0 @@
-"C:\External Program Files\JetBrains\apps\CLion\ch-0\182.3684.76\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\instancing_test.dir/objects.a
-C:\EXTERN~1\mingw-w64\mingw64\bin\ar.exe cr CMakeFiles\instancing_test.dir/objects.a @CMakeFiles\instancing_test.dir\objects1.rsp
-C:\EXTERN~1\mingw-w64\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\instancing_test.dir/objects.a -Wl,--no-whole-archive  -o ..\..\..\tests\Instancing_Test\instancing_test.exe -Wl,--out-implib,libinstancing_test.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\instancing_test.dir\linklibs.rsp

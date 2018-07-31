@@ -1,1 +1,0 @@
-../../libcogl.a "C:/External Program Files/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/7.2.0/libgomp.dll.a" "C:/External Program Files/mingw-w64/mingw64/x86_64-w64-mingw32/lib/libmingwthrd.a" -lopengl32 ../../deps/glfw/src/libglfw3.a ../../deps/glad/libglad.a -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

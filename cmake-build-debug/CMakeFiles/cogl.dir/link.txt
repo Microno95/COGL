@@ -1,2 +1,0 @@
-C:\EXTERN~1\mingw-w64\mingw64\bin\ar.exe qc libcogl.a  CMakeFiles/cogl.dir/src/Camera.cpp.obj CMakeFiles/cogl.dir/src/framebuffer.cpp.obj CMakeFiles/cogl.dir/src/GLWindow.cpp.obj CMakeFiles/cogl.dir/src/Mesh.cpp.obj CMakeFiles/cogl.dir/src/MeshInstance.cpp.obj CMakeFiles/cogl.dir/src/MeshRepresentation.cpp.obj CMakeFiles/cogl.dir/src/Shader.cpp.obj
-C:\EXTERN~1\mingw-w64\mingw64\bin\ranlib.exe libcogl.a
