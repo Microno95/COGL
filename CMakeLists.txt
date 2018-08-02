@@ -8,6 +8,7 @@ project(libcogl VERSION 1.0.0 LANGUAGES CXX)
 include(GNUInstallDirs)
 
 option(COGL_BUILD_EXAMPLES "Build the cogl example programs" ON)
+option(COGL_USE_OPENMP "Enable OpenMP in compilation" ON)
 
 file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
 if(EXISTS "${LOC_PATH}")
@@ -28,8 +29,10 @@ else()
 endif()
 
 # Include OpenMP libraries
-message(STATUS "Checking OpenMP")
-find_package(OpenMP)
+if (COGL_USE_OPENMP) 
+	message(STATUS "Checking OpenMP")
+	find_package(OpenMP)
+endif (COGL_USE_OPENMP)
 
 # Include OpenGL libraries
 find_package(OpenGL REQUIRED)
@@ -66,7 +69,7 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/src/CMakeLists.txt")
 
 if (COGL_BUILD_EXAMPLES)
 	enable_testing()
-
+	message("Building Examples")
 	add_subdirectory(tests/Base_Test)
 	add_subdirectory(tests/Instancing_Test)
 	add_subdirectory(tests/Merge_Test)

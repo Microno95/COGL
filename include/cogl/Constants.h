@@ -120,9 +120,7 @@ namespace cogl {
             bool suppressReportOnDestruct = false;
 
         public:
-            Timer(std::string _suffix = "ms") : suffix(_suffix) {
-                startTime = std::chrono::high_resolution_clock::now();
-            }
+
             Timer(std::string _label, std::string _suffix = "ms") : label(_label), startTime(std::chrono::high_resolution_clock::now()), suffix(_suffix) {}
             Timer(std::string _label, bool _suppressReportOnDestruct, std::string _suffix = "ms") : label(_label), startTime(std::chrono::high_resolution_clock::now()), suppressReportOnDestruct(_suppressReportOnDestruct), suffix(_suffix) {}
 
@@ -202,10 +200,11 @@ namespace cogl {
             // Read the text file and store each line in a vector
             std::vector<std::string> fileCode;
             std::ifstream objectStream(filepath, std::ios::in);
-            if (objectStream.is_open()) {
-                std::string Line;
-                while (getline(objectStream, Line))
-                    fileCode.emplace_back(Line);
+			if (objectStream.is_open()) {
+				std::string Line;
+				while (getline(objectStream, Line)) {
+					fileCode.push_back(Line);
+				}
                 objectStream.close();
             } else {
                 printf("Impossible to open %s. Are you in the right directory?\n", filepath.c_str());

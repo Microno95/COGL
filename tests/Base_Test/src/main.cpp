@@ -43,22 +43,28 @@ int main() {
     auto original_dragon = cogl::Mesh(cogl::MeshRepresentation::Cube);
 
 	{
-		auto load_test = cogl::utilities::Timer<std::chrono::microseconds>("Dragon Load", false, "us");
+		auto load_test = cogl::utilities::Timer<std::chrono::microseconds>("Complex Obj Load", false, "us");
 		original_dragon = cogl::Mesh::load_from_obj("data/dragon.obj");
 	}
 
-	auto cube = cogl::Mesh(cogl::MeshRepresentation::Cube);
+	std::cout << "Complex Obj Tri Count: " << original_dragon.getMeshRepresentation().indices.size() / 3 << std::endl;
+
+	auto original_cube = cogl::Mesh(cogl::MeshRepresentation::Cube);
 
 	{
 		auto load_test = cogl::utilities::Timer<std::chrono::microseconds>("Test Obj Load", false, "us");
-		cube = cogl::Mesh::load_from_obj("data/untitled.obj");
+		original_cube = cogl::Mesh::load_from_obj("data/untitled.obj");
 	}
 
+	std::cout << "Test Obj Tri Count: " << original_cube.getMeshRepresentation().indices.size() / 3 << std::endl;
+
+	auto cube = cogl::Mesh(original_cube.getMeshRepresentation());
 	cube.scaleMesh(0.25f);
 
-    cogl::Camera defaultCamera = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
-                                              glm::vec3({0.f, 0.f, 0.f}),
-                                              glm::vec3({0.0f, 1.0f, 0.0f}), cogl::projection::perspective);
+	auto defaultCamera = cogl::Camera(glm::vec3(1.0f, 1.0f, 0.0f),
+                                      glm::vec3({0.f, 0.f, 0.f}),
+                                      glm::vec3({0.0f, 1.0f, 0.0f}), 
+									  cogl::projection::perspective);
     defaultCamera.changeAR(16.0 / 9.0);
     defaultCamera.changeZFar(1000.0);
     defaultCamera.changeZNear(0.001);
@@ -82,13 +88,13 @@ int main() {
 		auto test = cogl::utilities::Timer<std::chrono::microseconds>("Frame Time", true, "us");
 		cube.rotateMesh(PI * angular_speed, glm::vec3({0.0f, 1.0f, 0.0f}));
 		if (previousTime - otherPreviousTime >= reloadPeriod) {
-			auto load_test = cogl::utilities::Timer<std::chrono::microseconds>((dragon_or_cube ? "Dragon Load" : "Cube Load"), false, "us");
+			auto load_test = cogl::utilities::Timer<std::chrono::microseconds>((dragon_or_cube ? "Complex Obj Load" : "Test Obj Load"), false, "us");
 			if (dragon_or_cube) {
 				cube = cogl::Mesh(original_dragon.getMeshRepresentation());
 				dragon_or_cube = false;
 			}
 			else {
-				cube = cogl::Mesh(cogl::MeshRepresentation::Cube);
+				cube = cogl::Mesh(original_cube.getMeshRepresentation());
 				dragon_or_cube = true;
 			}
 			otherPreviousTime = glfwGetTime();

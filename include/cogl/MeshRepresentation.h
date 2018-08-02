@@ -175,7 +175,6 @@ namespace cogl {
 
 				if (normalsCode.size() > 0) {
 					normalsVector.resize(normalsCode.size());
-
 #pragma omp parallel for
 					for (auto i = 0; i < normalsCode.size(); ++i) {
 						glm::vec4 temp(0);
