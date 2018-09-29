@@ -78,16 +78,16 @@ namespace cogl {
         glBufferData(GL_ARRAY_BUFFER, meshRepr.vertices.size() * sizeof(Vertex), meshRepr.vertices.data(), GL_STATIC_DRAW);
 
         glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, sizeof(Vertex::pos) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr); // Position Vector
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr); // Position Vector
 
         glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, sizeof(Vertex::nrm) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos))); // Normal Vector
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) (sizeof(float) * 3)); // Normal Vector
 
         glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, sizeof(Vertex::rgba) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos) + sizeof(Vertex::nrm))); // RGBA Values
+        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) (sizeof(float) * 6)); // RGBA Values
 
         glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, sizeof(Vertex::uv) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos) + sizeof(Vertex::nrm) + sizeof(Vertex::rgba))); // UV Coords
+        glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) (sizeof(float) * 10)); // UV Coords
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshRepr.indices.size() * sizeof(unsigned int), meshRepr.indices.data(), GL_STATIC_DRAW);
@@ -108,19 +108,31 @@ namespace cogl {
         program.bind();
         glm::mat4x4 temp;
         if (program.getUniformLoc("mvp") != -1) {
-            temp = renderCamera.getVPMatrix();
-            glUniformMatrix4fv(program.getUniformLoc("mvp"), 1, GL_FALSE, (const GLfloat *) &temp);
+            temp = renderCamera.getMVPMatrix(getModelMatrix());
+            glUniformMatrix4fv(program.getUniformLoc("mvp"), 1, GL_FALSE, (const GLfloat *) &temp[0][0]);
         };
-        if (program.getAttribLoc("model") != -1 && update_gpu_data) {
+        if (program.getUniformLoc("proj") != -1) {
+            temp = renderCamera.getPMatrix();
+            glUniformMatrix4fv(program.getUniformLoc("proj"), 1, GL_FALSE, (const GLfloat *) &temp[0][0]);
+        };
+        if (program.getUniformLoc("view") != -1) {
+            temp = renderCamera.getVMatrix();
+            glUniformMatrix4fv(program.getUniformLoc("view"), 1, GL_FALSE, (const GLfloat *) &temp[0][0]);
+        };
+        if (program.getAttribLoc("modelMatrix") != -1 && update_gpu_data) {
             temp = getModelMatrix();
-            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("model")), (const GLfloat *) &temp);
+            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("modelMatrix")), (const GLfloat *) &temp[0][0]);
         };
         if (program.getAttribLoc("normalMatrix") != -1 && update_gpu_data) {
             temp = getNormalMatrix();
-            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("normalMatrix")), (const GLfloat *) &temp);
+            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("normalMatrix")), (const GLfloat *) &temp[0][0]);
+        };
+        if (program.getAttribLoc("uTessLevel") != -1) {
+            float tessLevel = 2.0;
+            glVertexAttrib4fv(static_cast<GLuint>(program.getAttribLoc("uTessLevel")), (const GLfloat *) &tessLevel);
         };
         glBindVertexArray(VAO);
-        glDrawElements(renderType, static_cast<GLsizei>(meshRepr.indices.size()), GL_UNSIGNED_INT, (void *) nullptr);
+        glDrawElements(renderType, static_cast<GLsizei>(meshRepr.indices.size()), GL_UNSIGNED_INT, (void *) 0);
         glBindVertexArray(0);
         cogl::Shader::unbind();
     }
@@ -179,14 +191,11 @@ namespace cogl {
         return scaleMatrix;
     }
 
-    Mesh Mesh::load_from_obj(const std::string filename, int merge_or_pick) {
-        auto representationsVector = MeshRepresentation::load_from_obj(filename);
-        auto mainRepresentation = representationsVector[0];
-        if (merge_or_pick == -1 && representationsVector.size() > 1) {
-            mainRepresentation.mergeRepresentations(std::vector<MeshRepresentation>(std::next(representationsVector.begin(), 1), representationsVector.end()));
-        } else if (merge_or_pick >= 0 && merge_or_pick < representationsVector.size()) {
-            mainRepresentation = representationsVector[static_cast<unsigned int>(merge_or_pick)];
-        }
-        return Mesh(mainRepresentation);
+    Mesh Mesh::load_from_obj(const std::string filename) {
+        return Mesh(MeshRepresentation::load_from_obj(filename));
+    }
+
+    MeshRepresentation::operator Mesh() const {
+        return Mesh(*this);
     }
 };
