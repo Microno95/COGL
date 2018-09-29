@@ -74,6 +74,7 @@ namespace cogl {
             std::swap(this->rotMatrix, other.rotMatrix);
             std::swap(this->transMatrix, other.transMatrix);
             std::swap(this->scaleMatrix, other.scaleMatrix);
+            std::swap(this->modelMatrix, other.modelMatrix);
             std::swap(this->renderType, other.renderType);
         }
 		return *this;
@@ -92,25 +93,17 @@ namespace cogl {
 
     void MeshInstance::render(const Shader &program, const Camera &renderCamera, bool update_gpu_data) {
         program.bind();
-        glm::mat4x4 temp1, temp2, temp3;
-        if (program.getUniformLoc("proj") != -1) {
-            temp1 = renderCamera.getPMatrix();
-            glUniformMatrix4fv(program.getUniformLoc("proj"), 1, GL_FALSE, (const GLfloat *) &temp1);
-        };
-		if (program.getUniformLoc("view") != -1) {
-			temp2 = renderCamera.getVMatrix();
-			glUniformMatrix4fv(program.getUniformLoc("view"), 1, GL_FALSE, (const GLfloat *)&temp2);
-		};
+        glm::mat4x4 temp1;
 		if (program.getUniformLoc("vp") != -1) {
-			temp3 = renderCamera.getVPMatrix();
-			glUniformMatrix4fv(program.getUniformLoc("vp"), 1, GL_FALSE, (const GLfloat *)&temp3);
+			temp1 = renderCamera.getVPMatrix();
+			glUniformMatrix4fv(program.getUniformLoc("vp"), 1, GL_FALSE, (const GLfloat *)&temp1);
 		};
 
         glBindVertexArray(VAO);
 
         if (update_gpu_data) {
             glNamedBufferSubData(transformBuffer, 0, modelMatrix.size() * sizeof(glm::mat4x4),
-                                 (GLvoid * ) & modelMatrix.front());
+                                 (GLvoid * ) &modelMatrix.front());
         }
 
         glDrawElementsInstanced(renderType, (GLsizei) meshRepr.indices.size(), GL_UNSIGNED_INT, 0,
@@ -323,17 +316,17 @@ namespace cogl {
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         glBufferData(GL_ARRAY_BUFFER, meshRepr.vertices.size() * sizeof(Vertex), &meshRepr.vertices.front(), GL_STATIC_DRAW);
 
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid * ) 0); // Position Vector
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, sizeof(Vertex::pos) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr); // Position Vector
 
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 3)); // Normal Vector
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, sizeof(Vertex::nrm) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos))); // Normal Vector
 
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 6)); // RGBA Values
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, sizeof(Vertex::rgba) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos) + sizeof(Vertex::nrm))); // RGBA Values
 
-        glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) (sizeof(float) * 10)); // UV Coords
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, sizeof(Vertex::uv) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(sizeof(Vertex::pos) + sizeof(Vertex::nrm) + sizeof(Vertex::rgba))); // UV Coords
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshRepr.indices.size() * sizeof(unsigned int), &meshRepr.indices.front(), GL_STATIC_DRAW);
@@ -367,9 +360,5 @@ namespace cogl {
 
     const MeshRepresentation MeshInstance::getMeshRepresentation() const {
         return MeshRepresentation(this->meshRepr);
-    }
-
-    MeshRepresentation::operator MeshInstance() const {
-        return MeshInstance(*this, 1);
     }
 }
