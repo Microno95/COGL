@@ -215,6 +215,15 @@ namespace cogl {
 
 
     }
+
+    class MeshRepresentation;
+    class Mesh;
+    class Renderable;
+    struct Vertex;
+    class Camera;
+    class MeshInstance;
+    class GLWindow;
+    class Shader;
 }
 
 #endif //CUSTOMOGL_CONSTANTS_H

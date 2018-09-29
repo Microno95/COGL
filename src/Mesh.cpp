@@ -189,4 +189,8 @@ namespace cogl {
         }
         return Mesh(mainRepresentation);
     }
+
+    MeshRepresentation::operator Mesh() const {
+        return Mesh(*this);
+    }
 };

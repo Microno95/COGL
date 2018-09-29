@@ -361,4 +361,8 @@ namespace cogl {
     const MeshRepresentation MeshInstance::getMeshRepresentation() const {
         return MeshRepresentation(this->meshRepr);
     }
+
+    MeshRepresentation::operator MeshInstance() const {
+        return MeshInstance(*this, 1);
+    }
 }

@@ -438,6 +438,9 @@ namespace cogl {
             return std::move(parse_obj(cogl::utilities::read_text_to_vector(obj_filepath)));
         }
 
+        operator Mesh() const;
+        operator MeshInstance() const;
+
         static const MeshRepresentation Cube;
         static const MeshRepresentation Icosahedron;
 

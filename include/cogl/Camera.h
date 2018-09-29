@@ -16,7 +16,7 @@ namespace cogl {
     };
 
     class Camera {
-    private:
+    protected:
         double fieldOfView = 45.0f, aspectRatio = 1.0f, zNear = 0.05f, zFar = 100.0f;
         projection selfProj = projection::perspective;
         glm::vec3 camPos, camTarget, camUp;
