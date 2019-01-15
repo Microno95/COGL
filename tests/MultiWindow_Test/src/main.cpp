@@ -23,13 +23,16 @@ std::string GetCurrentWorkingDir() {
     return std::string(cCurrentPath);
 }
 
+template<class T = std::chrono::milliseconds>
+using Timer = cogl::utilities::Timer<T>;
+
 int main() {
     std::cout << GetCurrentWorkingDir() << std::endl;
 
-	auto initial_representation = cogl::MeshRepresentation::load_from_obj("data/dragon.obj");
+	auto initial_representation = cogl::MeshRepresentation::load_from_obj("data/dragon.obj")[0];
 	initial_representation.mergeRepresentations(cogl::MeshRepresentation::Cube);
 
-	cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768, 16, 9, "NULL", "data/postProcessing", false);
+	cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768, 16, 9, "NULL", "./data/postProcessing", false);
 	mainWindow.enableCapability(GL_DEPTH_TEST);
 	mainWindow.enableCapability(GL_CULL_FACE);
 	mainWindow.setCullType(GL_BACK);
@@ -50,7 +53,7 @@ int main() {
 	cogl::Shader defShader("data/triTest");
 	cogl::Shader solidShader("data/solidColour");
 
-	cogl::GLWindow secWindow(0, 4, 5, 1, 1024, 768);
+	cogl::GLWindow secWindow(0, 4, 5, 1, 1024, 768, 16, 9, "NULL", "./data/postProcessing", false);
 	secWindow.enableCapability(GL_DEPTH_TEST);
 	secWindow.enableCapability(GL_CULL_FACE);
 	secWindow.setCullType(GL_BACK);
@@ -86,7 +89,7 @@ int main() {
 		mainWindow.renderEnd();
 		glFinish();
 		mainTimer.Stop();
-		Timer secTimer = Timer("Frame Time for Sec", true);
+		auto secTimer = Timer<>("Frame Time for Sec", true);
 		secWindow.renderBegin();
 		test_object2.render(defShader2, secCamera, true);
 		secWindow.renderEnd();
