@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.14)
 project(libcogl VERSION 1.0.0 LANGUAGES CXX)
 
 # Must use GNUInstallDirs to install libraries into correct
@@ -64,8 +64,43 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/src/CMakeLists.txt")
 if (COGL_BUILD_EXAMPLES)
 	enable_testing()
 
-	add_subdirectory(tests/Base_Test)
-	add_subdirectory(tests/Instancing_Test)
-	add_subdirectory(tests/Merge_Test)
-	add_subdirectory(tests/MultiWindow_Test)
+    add_executable(base_test tests/base_test.cpp)
+    add_executable(merge_test tests/merge_test.cpp)
+    add_executable(multiwindow_test tests/multiwindow_test.cpp)
+    add_executable(instancing_test tests/instancing_test.cpp)
+
+    target_include_directories (base_test PRIVATE
+            ${GLAD_INCLUDE_DIRS}
+            ${COGL_INCLUDE_DIRS}
+            ${GLM_DIR}
+            "${GLFW_DIR}/include")
+    target_compile_features(base_test PRIVATE cxx_auto_type cxx_decltype_auto)
+    target_include_directories (merge_test PRIVATE
+            ${GLAD_INCLUDE_DIRS}
+            ${COGL_INCLUDE_DIRS}
+            ${GLM_DIR}
+            "${GLFW_DIR}/include")
+    target_compile_features(merge_test PRIVATE cxx_auto_type cxx_decltype_auto)
+    target_include_directories (multiwindow_test PRIVATE
+            ${GLAD_INCLUDE_DIRS}
+            ${COGL_INCLUDE_DIRS}
+            ${GLM_DIR}
+            "${GLFW_DIR}/include")
+    target_compile_features(multiwindow_test PRIVATE cxx_auto_type cxx_decltype_auto)
+    target_include_directories (instancing_test PRIVATE
+            ${GLAD_INCLUDE_DIRS}
+            ${COGL_INCLUDE_DIRS}
+            ${GLM_DIR}
+            "${GLFW_DIR}/include")
+    target_compile_features(instancing_test PRIVATE cxx_auto_type cxx_decltype_auto)
+
+    target_link_libraries(base_test cogl)
+    target_link_libraries(merge_test cogl)
+    target_link_libraries(multiwindow_test cogl)
+    target_link_libraries(instancing_test cogl)
+
+    add_test(base_test base_test)
+    add_test(merge_test merge_test)
+    add_test(multiwindow_test multiwindow_test)
+    add_test(instancing_test instancing_test)
 endif (COGL_BUILD_EXAMPLES)

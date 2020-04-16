@@ -4,6 +4,21 @@
 
 #include <cogl/cogl.h>
 
+#ifdef WINDOWS
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
+
+std::string get_current_dir() {
+    char buff[FILENAME_MAX]; //create string buffer to hold path
+    GetCurrentDir( buff, FILENAME_MAX );
+    std::string current_working_dir(buff);
+    return current_working_dir;
+}
+
 class MyCamera : public cogl::Camera {
 	using cogl::Camera::Camera;
 
@@ -59,6 +74,7 @@ public:
 };
 
 int main() {
+    std::cout << get_current_dir() << std::endl;
 	cogl::GLWindow mainWindow(0, 4, 5, 1, 1024, 768, 16, 9, "NULL", "data/postProcessing", false);
 	mainWindow.enableCapability(GL_VERTEX_PROGRAM_POINT_SIZE);
 	mainWindow.enableCapability(GL_PROGRAM_POINT_SIZE);

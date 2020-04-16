@@ -6,25 +6,23 @@
 #include <exception>
 
 #include <cstdio>  /* defines FILENAME_MAX */
-
+#ifdef WINDOWS
 #include <direct.h>
 #define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
 
-std::string GetCurrentWorkingDir() {
-    char cCurrentPath[FILENAME_MAX];
-
-    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
-    {
-        throw std::runtime_error("Current Dir makes no sense");
-    }
-
-    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
-
-    return std::string(cCurrentPath);
+std::string get_current_dir() {
+    char buff[FILENAME_MAX]; //create string buffer to hold path
+    GetCurrentDir( buff, FILENAME_MAX );
+    std::string current_working_dir(buff);
+    return current_working_dir;
 }
 
 int main() {
-    std::cout << GetCurrentWorkingDir() << std::endl;
+    std::cout << get_current_dir() << std::endl;
 
 	auto initial_representation = cogl::MeshRepresentation::load_from_obj("data/dragon.obj");
 	initial_representation.mergeRepresentations(cogl::MeshRepresentation::Cube);
@@ -50,7 +48,7 @@ int main() {
 	cogl::Shader defShader("data/triTest");
 	cogl::Shader solidShader("data/solidColour");
 
-	cogl::GLWindow secWindow(0, 4, 5, 1, 1024, 768);
+	cogl::GLWindow secWindow(0, 4, 5, 1, 1024, 768, 16, 9, "NULL", "data/postProcessing", false);
 	secWindow.enableCapability(GL_DEPTH_TEST);
 	secWindow.enableCapability(GL_CULL_FACE);
 	secWindow.setCullType(GL_BACK);
@@ -86,7 +84,7 @@ int main() {
 		mainWindow.renderEnd();
 		glFinish();
 		mainTimer.Stop();
-		Timer secTimer = Timer("Frame Time for Sec", true);
+		auto secTimer = Timer<std::chrono::milliseconds>("Frame Time for Sec", true);
 		secWindow.renderBegin();
 		test_object2.render(defShader2, secCamera, true);
 		secWindow.renderEnd();
